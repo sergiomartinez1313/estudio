@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen API REST</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen API REST</h1>
+
+<div class="card">
+<p>¿Qué significa REST?</p>
+<button onclick="check('transfer','transfer','r1')">Representational State Transfer</button>
+<button onclick="check('remote','transfer','r1')">Remote EST</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Status code de éxito?</p>
+<button onclick="check('200','200','r2')">200</button>
+<button onclick="check('400','200','r2')">400</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Qué hace GET?</p>
+<button onclick="check('obtener','obtener','r3')">Obtener datos</button>
+<button onclick="check('crear','obtener','r3')">Crear datos</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Método para crear recurso?</p>
+<button onclick="check('POST','POST','r4')">POST</button>
+<button onclick="check('GET','POST','r4')">GET</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Status de recurso no encontrado?</p>
+<button onclick="check('404','404','r5')">404</button>
+<button onclick="check('400','404','r5')">400</button>
+<p id="r5"></p>
+</div>
+
+</div>
+
+</body>
+</html>

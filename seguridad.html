@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Seguridad Web</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-seguridad { font-size: 18px; line-height: 1.8; }
+  .content-seguridad h2 { font-size: 28px; margin-top: 30px; }
+  .content-seguridad h3 { font-size: 24px; margin-top: 20px; }
+  .content-seguridad p { font-size: 18px; }
+  .content-seguridad pre { font-size: 16px; }
+  .content-seguridad button { font-size: 16px; padding: 12px 18px; }
+  .content-seguridad li { font-size: 18px; margin: 8px 0; }
+  .content-seguridad ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-seguridad">
+
+<h1>🔒 Seguridad Web - Protege tus Aplicaciones</h1>
+
+<p>La seguridad es responsabilidad de todo desarrollador. La mayoría de brechas se deben a errores de código, no a fallos de hardware. Aprender buenas prácticas de seguridad es esencial para cualquier profesional IT.</p>
+
+<h2>⚠️ OWASP Top 10 - Vulnerabilidades Críticas</h2>
+
+<ol>
+<li><strong>Inyección SQL:</strong> Insertar código SQL malicioso</li>
+<li><strong>Autenticación débil:</strong> Contraseñas y sesiones inseguras</li>
+<li><strong>Exposición de datos sensibles:</strong> No encriptar información</li>
+<li><strong>XML External Entities (XXE):</strong> Procesamiento inseguro de XML</li>
+<li><strong>Control de acceso roto:</strong> Fallos en autorización</li>
+<li><strong>Configuración incorrecta:</strong> Errores en el servidor</li>
+<li><strong>XSS (Cross-Site Scripting):</strong> Inyectar scripts en el navegador</li>
+<li><strong>Deserialization insegura:</strong> Objetos no confiables</li>
+<li><strong>Componentes vulnerables:</strong> Librerías con bugs de seguridad</li>
+<li><strong>Registro y monitoreo deficientes:</strong> No detectar ataques</li>
+</ol>
+
+<h2>💉 Inyección SQL</h2>
+
+<h3>Vulnerable</h3>
+<pre>
+# PELIGROSO - No hacer esto
+query = f"SELECT * FROM usuarios WHERE email = '{email}'"
+# Si email = "admin@example.com' --" = SELECT todo
+
+# Entrada: ' OR '1'='1
+query = f"SELECT * FROM usuarios WHERE email = '{email}'"
+# Resultado: SELECT * FROM usuarios WHERE email = '' OR '1'='1'
+# Obtiene todos los usuarios
+</pre>
+
+<h3>Seguro</h3>
+<pre>
+# CORRECTO - Usar prepared statements
+import sqlite3
+
+cursor = db.cursor()
+query = "SELECT * FROM usuarios WHERE email = ?"
+cursor.execute(query, (email,))
+usuarios = cursor.fetchall()
+
+# Flask-SQLAlchemy
+usuarios = User.query.filter_by(email=email).all()
+
+# Con ORM se previene SQL injection automáticamente
+</pre>
+
+<h2>🔐 Hashing de Contraseñas</h2>
+
+<per>
+# VULNERABLE - No hacer esto
+import hashlib
+
+password = "mi_password"
+hashed = hashlib.md5(password.encode()).hexdigest()
+# MD5 es débil y rápido (malo para passwords)
+</pre>
+
+<h3>Seguro - Usar bcrypt</h3>
+<pre>
+import bcrypt
+
+password = "mi_password"
+
+# Hash
+hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+
+# Verificar
+if bcrypt.checkpw(password.encode(), hashed):
+    print("Contraseña correcta")
+else:
+    print("Contraseña incorrecta")
+
+# Con Django
+from django.contrib.auth.hashers import make_password, check_password
+
+hashed = make_password("mi_password")
+if check_password("mi_password", hashed):
+    print("Correcto")
+</pre>
+
+<h2>🔑 JWT (JSON Web Tokens)</h2>
+
+<pre>
+import jwt
+from datetime import datetime, timedelta
+
+SECRET_KEY = "mi_clave_secreta_muy_larga"
+
+# Crear token
+payload = {
+    "user_id": 123,
+    "email": "juan@example.com",
+    "exp": datetime.utcnow() + timedelta(hours=1)
+}
+
+token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+# Verificar token
+try:
+    decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    print(decoded)
+except jwt.ExpiredSignatureError:
+    print("Token expirado")
+except jwt.InvalidTokenError:
+    print("Token inválido")
+</pre>
+
+<h2>🛡️ CORS (Cross-Origin Resource Sharing)</h2>
+
+<pre>
+# Express.js
+const cors = require('cors');
+
+// Permitir solo ciertos orígenes
+const corsOptions = {
+    origin: 'https://example.com',
+    methods: ['GET', 'POST'],
+    credentials: true
+};
+
+app.use(cors(corsOptions));
+
+# Flask
+from flask_cors import CORS
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ["https://example.com"],
+        "methods": ["GET", "POST"]
+    }
+})
+</pre>
+
+<h2>✅ CSRF Protection</h2>
+
+<pre>
+# Django - Protección CSRF automática
+from django.middleware.csrf import csrf_protect
+
+@csrf_protect
+def mi_vista(request):
+    if request.method == 'POST':
+        # Token CSRF validado automáticamente
+        pass
+
+# En el template
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="campo">
+    <button>Enviar</button>
+</form>
+</pre>
+
+<h2>🚫 XSS (Cross-Site Scripting)</h2>
+
+<h3>Vulnerable</h3>
+<pre>
+# PELIGROSO
+{% autoescape off %}
+<p>{{ usuario_comentario }}</p>
+{% endautoescape %}
+
+# Si el usuario escribe: <script>alert('XSS')</script>
+# El script se ejecutará
+</pre>
+
+<h3>Seguro</h3>
+<pre>
+# CORRECTO - Escapar HTML
+<p>{{ usuario_comentario }}</p>
+# Django automáticamente escapa caracteres peligrosos
+
+# O explícitamente
+{% autoescape on %}
+{{ contenido_usuario }}
+{% endautoescape %}
+</pre>
+
+<h2>🔐 Buenas Prácticas de Seguridad</h2>
+
+<ul>
+<li><strong>Validar siempre:</strong> Entrada del usuario es maliciosa por defecto</li>
+<li><strong>Sanitizar:</strong> Limpiar datos antes de procesar</li>
+<li><strong>Usar HTTPS:</strong> Siempre encriptar en tránsito</li>
+<li><strong>Contraseñas fuertes:</strong> Mínimo 12 caracteres, mixtas</li>
+<li><strong>Actualizaciones:</strong> Mantén librerías al día</li>
+<li><strong>Principio de mínimo privilegio:</strong> Solo los permisos necesarios</li>
+<li><strong>Logs de auditoría:</strong> Registra acceso y cambios</li>
+<li><strong>Rate limiting:</strong> Limita intentos de login</li>
+<li><strong>Variables de entorno:</strong> Nunca hardcodear secretos</li>
+<li><strong>Pruebas de seguridad:</strong> Realiza penetration tests</li>
+</ul>
+
+<h2>🧪 Examen - Seguridad Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué es SQL Injection?</p>
+<button onclick="check('insertar','insertar','r1')">Insertar código SQL malicioso</button>
+<button onclick="check('error','insertar','r1')">Error de base de datos</button>
+<button onclick="check('lentitud','insertar','r1')">Consulta lenta</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Cómo protegen las prepared statements?</p>
+<button onclick="check('separar','separar','r2')">Separan código de datos</button>
+<button onclick="check('encriptar','separar','r2')">Encriptan datos</button>
+<button onclick="check('validar','separar','r2')">Validan datos</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Qué se debe usar para hash de contraseñas?</p>
+<button onclick="check('bcrypt','bcrypt','r3')">bcrypt o Argon2</button>
+<button onclick="check('md5','bcrypt','r3')">MD5</button>
+<button onclick="check('plaintext','bcrypt','r3')">Texto plano</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Qué es XSS?</p>
+<button onclick="check('script','script','r4')">Inyectar scripts en navegador</button>
+<button onclick="check('error','script','r4')">Error de servidor</button>
+<button onclick="check('virus','script','r4')">Programa malicioso</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Qué protocolo es seguro?</p>
+<button onclick="check('HTTPS','HTTPS','r5')">HTTPS</button>
+<button onclick="check('HTTP','HTTPS','r5')">HTTP</button>
+<button onclick="check('FTP','HTTPS','r5')">FTP</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+
+</body>
+</html>

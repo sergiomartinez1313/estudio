@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Python - Programación</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-python { font-size: 18px; line-height: 1.8; }
+  .content-python h2 { font-size: 28px; margin-top: 30px; }
+  .content-python h3 { font-size: 24px; margin-top: 20px; }
+  .content-python p { font-size: 18px; }
+  .content-python pre { font-size: 16px; }
+  .content-python button { font-size: 16px; padding: 12px 18px; }
+  .content-python li { font-size: 18px; margin: 8px 0; }
+  .content-python ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-python">
+
+<h1>🐍 Python - Lenguaje de Programación</h1>
+
+<p>Python es uno de los lenguajes de programación más populares y versátiles. Sua sintaxis clara y fácil de aprender lo hace ideal para principiantes, pero es lo suficientemente poderoso para aplicaciones complejas. Se usa en web, ciencia de datos, automatización y muchas más áreas.</p>
+
+<h2>🎯 ¿Por Qué Python?</h2>
+
+<ul>
+<li><strong>Fácil de aprender:</strong> Sintaxis clara y legible</li>
+<li><strong>Versátil:</strong> Web, datos, automatización, IA</li>
+<li><strong>Gran comunidad:</strong> Miles de librerías disponibles</li>
+<li><strong>Demandado:</strong> Altamente buscado en el mercado laboral</li>
+<li><strong>Productivo:</strong> Escribe menos, haz más</li>
+</ul>
+
+<h2>📦 Instalación y Configuración</h2>
+
+<pre>
+# Verificar si Python está instalado
+python --version
+python3 --version
+
+# En Ubuntu/Linux
+sudo apt install python3
+sudo apt install python3-pip
+
+# En Windows
+# Descargar de python.org e instalar
+
+# Crear entorno virtual
+python3 -m venv mi_entorno
+source mi_entorno/bin/activate    # Linux/Mac
+mi_entorno\Scripts\activate       # Windows
+</pre>
+
+<h2>📝 Sintaxis Básica</h2>
+
+<h3>Variables y Tipos de Datos</h3>
+<pre>
+# Variables
+nombre = "Juan"
+edad = 28
+altura = 1.75
+activo = True
+
+# Tipos de datos
+tipo(nombre)      # str
+tipo(edad)        # int
+tipo(altura)      # float
+tipo(activo)      # bool
+
+# Print
+print("Hola, mundo!")
+print(f"Me llamo {nombre} y tengo {edad} años")
+</pre>
+
+<h3>Operadores</h3>
+<pre>
+# Aritméticos
+suma = 10 + 5      # 15
+resta = 10 - 5     # 5
+mult = 10 * 5      # 50
+div = 10 / 5       # 2.0
+mod = 10 % 3       # 1
+pot = 2 ** 3       # 8
+
+# Comparación
+10 > 5             # True
+10 == 5            # False
+10 != 5            # True
+
+# Lógicos
+True and False     # False
+True or False      # True
+not True           # False
+</pre>
+
+<h3>Estructuras de Control</h3>
+<pre>
+# If - Elif - Else
+edad = 18
+if edad >= 18:
+    print("Eres mayor de edad")
+elif edad >= 13:
+    print("Eres adolescente")
+else:
+    print("Eres niño")
+
+# Bucle while
+contador = 0
+while contador < 5:
+    print(contador)
+    contador += 1
+
+# Bucle for
+for i in range(5):
+    print(i)
+
+for nombre in ["Juan", "María", "Carlos"]:
+    print(f"Hola {nombre}")
+</pre>
+
+<h2>🔧 Funciones</h2>
+
+<pre>
+# Función básica
+def saludo():
+    print("¡Hola!")
+
+saludo()
+
+# Función con parámetros
+def saludar(nombre):
+    print(f"¡Hola, {nombre}!")
+
+saludar("Juan")
+
+# Función con retorno
+def sumar(a, b):
+    return a + b
+
+resultado = sumar(5, 3)
+print(resultado)    # 8
+
+# Parámetros por defecto
+def presentarse(nombre, edad=0):
+    print(f"Me llamo {nombre} y tengo {edad} años")
+
+presentarse("Juan", 28)
+presentarse("María")
+</pre>
+
+<h2>📊 Estructuras de Datos</h2>
+
+<h3>Listas</h3>
+<pre>
+frutas = ["manzana", "plátano", "naranja"]
+numeros = [1, 2, 3, 4, 5]
+
+# Acceso
+print(frutas[0])        # manzana
+print(frutas[-1])       # naranja
+
+# Métodos
+frutas.append("fresa")  # Añadir
+frutas.remove("plátano") # Eliminar
+len(frutas)             # Longitud
+frutas.sort()           # Ordenar
+</pre>
+
+<h3>Diccionarios</h3>
+<pre>
+persona = {
+    "nombre": "Juan",
+    "edad": 28,
+    "ciudad": "Madrid"
+}
+
+# Acceso
+print(persona["nombre"])    # Juan
+print(persona.get("edad"))  # 28
+
+# Modificar
+persona["edad"] = 29
+persona["profesión"] = "Developer"
+
+# Recorrer
+for clave, valor in persona.items():
+    print(f"{clave}: {valor}")
+</pre>
+
+<h3>Tuplas</h3>
+<pre>
+# Tuplas (inmutables)
+coordenadas = (10, 20)
+print(coordenadas[0])    # 10
+
+# Desempacar
+x, y = coordenadas
+print(x, y)              # 10 20
+</pre>
+
+<h2>📚 Librerías Populares</h2>
+
+<pre>
+# Importar librerías
+import math
+from datetime import datetime
+import requests
+import pandas as pd
+import numpy as np
+
+# Usar librerías
+print(math.pi)
+fecha_hoy = datetime.now()
+respuesta = requests.get("http://example.com")
+</pre>
+
+<h2>🧪 Examen - Python Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué comando se usa para imprimir en pantalla?</p>
+<button onclick="check('print','print','r1')">print()</button>
+<button onclick="check('echo','print','r1')">echo</button>
+<button onclick="check('display','print','r1')">display()</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Cuál es el tipo de dato de: 3.14?</p>
+<button onclick="check('float','float','r2')">float</button>
+<button onclick="check('int','float','r2')">int</button>
+<button onclick="check('string','float','r2')">string</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Qué se usa para crear un bucle definido?</p>
+<button onclick="check('for','for','r3')">for</button>
+<button onclick="check('while','for','r3')">while</button>
+<button onclick="check('if','for','r3')">if</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Cómo defines una función?</p>
+<button onclick="check('def','def','r4')">def nombre():</button>
+<button onclick="check('function','def','r4')">function nombre()</button>
+<button onclick="check('func','def','r4')">func nombre()</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Qué estructura permite almacenar múltiples valores?</p>
+<button onclick="check('lista','lista','r5')">Lista</button>
+<button onclick="check('numero','lista','r5')">Número</button>
+<button onclick="check('string','lista','r5')">String</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+
+</body>
+</html>

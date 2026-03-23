@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Portal IT Profesional</title>
+<link rel="stylesheet" href="estudio.css">
+<style>
+  body { font-size: 16px; }
+  h1 { font-size: 32px; color: #333; }
+  h2 { font-size: 24px; margin-top: 30px; color: #333; }
+  h3 { font-size: 18px; color: #555; }
+  p { font-size: 15px; line-height: 1.7; color: #666; }
+  .sidebar h2 { font-size: 18px; }
+  .sidebar h3 { font-size: 11px; }
+  .sidebar p { font-size: 13px; }
+  .sidebar a { font-size: 13px; }
+  .card { font-size: 14px; }
+  button { font-size: 13px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 30px 0; }
+  .stat-box h3 { margin: 0; font-size: 32px; color: #666; }
+  .stat-box p { margin: 10px 0 0 0; font-size: 13px; }
+</style>
+<script>
+  function buscar() {
+    const input = document.getElementById('searchInput');
+    const filtro = input.value.toLowerCase();
+    const cards = document.querySelectorAll('.study-card');
+    
+    cards.forEach(card => {
+      const texto = card.textContent.toLowerCase();
+      const titulo = card.querySelector('h3').textContent.toLowerCase();
+      
+      if (titulo.includes(filtro) || texto.includes(filtro)) {
+        card.classList.remove('hidden');
+        card.classList.add('visible');
+      } else {
+        card.classList.add('hidden');
+        card.classList.remove('visible');
+      }
+    });
+  }
+</script>
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+    <h1>Portal IT</h1>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+<h2>📚 Menú Estudio</h2>
+
+<h3>🔗 Fundamentos</h3>
+<a href="github.html">GitHub</a>
+<a href="ubuntu.html">Ubuntu</a>
+<a href="dbeaver.html">DBeaver</a>
+
+<h3>🌐 Lenguajes</h3>
+<a href="python.html">Python</a>
+<a href="javascript.html">JavaScript</a>
+<a href="react.html">React</a>
+
+<h3>💻 Bases de Datos</h3>
+<a href="sql.html">SQL Avanzado</a>
+
+<h3>☁️ Cloud & DevOps</h3>
+<a href="aws.html">AWS Cloud</a>
+<a href="docker.html">Docker</a>
+<a href="api-rest.html">API REST</a>
+<a href="devops.html">DevOps</a>
+
+<h3>🔐 Avanzado</h3>
+<a href="seguridad.html">Seguridad</a>
+
+<h3>💻 Herramientas</h3>
+<a href="editor.html">📝 Editor de Código</a>
+
+<h3>🧪 Exámenes</h3>
+<a href="examen-github.html">Examen GitHub</a>
+<a href="examen-ubuntu.html">Examen Ubuntu</a>
+<a href="examen-dbeaver.html">Examen DBeaver</a>
+<a href="examen-python.html">Examen Python</a>
+<a href="examen-javascript.html">Examen JavaScript</a>
+<a href="examen-react.html">Examen React</a>
+<a href="examen-sql.html">Examen SQL</a>
+<a href="examen-aws.html">Examen AWS</a>
+<a href="examen-docker.html">Examen Docker</a>
+<a href="examen-api-rest.html">Examen API REST</a>
+<a href="examen-seguridad.html">Examen Seguridad</a>
+<a href="examen-devops.html">Examen DevOps</a>
+
+<div class="sidebar-search">
+  <input type="text" id="searchInput" placeholder="Buscar..." onkeyup="buscar()">
+</div>
+
+</aside>
+
+<main class="content">
+
+<!-- DASHBOARD DEL USUARIO -->
+<div class="dashboard">
+  <div class="user-level">
+    <div class="level-circle">
+      <span class="level-number">1</span>
+      <p class="level-name">Principiante</p>
+    </div>
+    <div class="level-info">
+      <h3>Tu Progreso</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 25%"></div>
+      </div>
+      <p class="progress-text">25% completado - 25/100 XP para siguiente nivel</p>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-box">
+    <h3>12</h3>
+    <p>Áreas disponibles</p>
+  </div>
+  <div class="stat-box">
+    <h3>250+</h3>
+    <p>Conceptos clave</p>
+  </div>
+  <div class="stat-box">
+    <h3 id="badgeCount">0</h3>
+    <p>Logros Desbloqueados</p>
+  </div>
+</div>
+
+<h2>Todas las Áreas de Estudio</h2>
+
+<div class="grid">
+
+<!-- GITHUB -->
+<div class="card study-card">
+<h3>🌐 GitHub - Control de Versiones</h3>
+<p>Domina Git y GitHub para trabajar profesionalmente. Crea repositorios, maneja cambios y colabora en equipo.</p>
+<a href="github.html">Ver contenido →</a>
+</div>
+
+<!-- UBUNTU -->
+<div class="card study-card">
+<h3>🐧 Ubuntu & Terminal</h3>
+<p>Conrol total desde línea de comandos. Navega el sistema, gestiona archivos y domina la terminal.</p>
+<a href="ubuntu.html">Ver contenido →</a>
+</div>
+
+<!-- DBEAVER -->
+<div class="card study-card">
+<h3>🗄️ DBeaver & SQL - Bases de Datos</h3>
+<p>Diseña y consulta bases de datos profesionales. Escribe SQL eficiente y gestiona datos.</p>
+<a href="dbeaver.html">Ver contenido →</a>
+</div>
+
+<!-- PYTHON -->
+<div class="card study-card">
+<h3>🐍 Python - Programación</h3>
+<p>Aprende uno de los lenguajes más populares. Ideal para principiantes y para ciencia de datos.</p>
+<a href="python.html">Ver contenido →</a>
+</div>
+
+<!-- JAVASCRIPT -->
+<div class="card study-card">
+<h3>⚡ JavaScript - Desarrollo Web</h3>
+<p>Domina JavaScript para web frontend y backend. DOM, eventos, async y frameworks modernos.</p>
+<a href="javascript.html">Ver contenido →</a>
+</div>
+
+<!-- REACT -->
+<div class="card study-card">
+<h3>⚛️ React - UI Moderno</h3>
+<p>Framework de componentes para interfaces dinámicas. Hooks, estado, y aplicaciones escalables.</p>
+<a href="react.html">Ver contenido →</a>
+</div>
+
+<!-- SQL AVANZADO -->
+<div class="card study-card">
+<h3>🔍 SQL Avanzado - Queries Complejas</h3>
+<p>JOINS, subconsultas, agregados y window functions. Optimización y transacciones avanzadas.</p>
+<a href="sql.html">Ver contenido →</a>
+</div>
+
+<!-- AWS CLOUD -->
+<div class="card study-card">
+<h3>☁️ AWS Cloud - Infraestructura</h3>
+<p>Servicios de Amazon Web Services. EC2, S3, Lambda, RDS y arquitectura en la nube moderna.</p>
+<a href="aws.html">Ver contenido →</a>
+</div>
+
+<!-- DOCKER -->
+<div class="card study-card">
+<h3>🐳 Docker - Contenedorización</h3>
+<p>Empaqueta aplicaciones en contenedores. Construye imágenes y orquesta aplicaciones profesionales.</p>
+<a href="docker.html">Ver contenido →</a>
+</div>
+
+<!-- API REST -->
+<div class="card study-card">
+<h3>🔗 API REST - Arquitectura Web</h3>
+<p>Diseña APIs REST profesionales. HTTP, autenticación, validación y mejores prácticas.</p>
+<a href="api-rest.html">Ver contenido →</a>
+</div>
+
+<!-- SEGURIDAD -->
+<div class="card study-card">
+<h3>🔒 Seguridad - Protege tus Apps</h3>
+<p>Aprende seguridad en aplicaciones. Criptografía, OWASP Top 10 y validación de datos.</p>
+<a href="seguridad.html">Ver contenido →</a>
+</div>
+
+<!-- DEVOPS -->
+<div class="card study-card">
+<h3>⚙️ DevOps - Deployment</h3>
+<p>CI/CD pipelines, monitoreo, logs. Automatización y gestión de infraestructura moderna.</p>
+<a href="devops.html">Ver contenido →</a>
+</div>
+
+<!-- EDITOR -->
+<div class="card study-card" style="border-left-color: #4CAF50; grid-column: 1 / -1;">
+<h3>💻 Editor de Código Interactivo</h3>
+<p>Practica HTML, CSS y JavaScript en tiempo real. Escribe código y ve el resultado inmediatamente. Incluye plantillas listas para usar.</p>
+<a href="editor.html">Abrir Editor →</a>
+</div>
+
+</div>
+
+<!-- SECCIÓN DE LOGROS/BADGES -->
+<h2>🏅 Tus Logros</h2>
+<div class="badges-grid">
+  <div class="badge locked" data-badge="first-steps" title="Completa tu primer tema">
+    <span class="badge-icon">🚀</span>
+    <p>Primeros Pasos</p>
+  </div>
+  <div class="badge locked" data-badge="coder" title="Aprueba 3 exámenes">
+    <span class="badge-icon">💻</span>
+    <p>Programador</p>
+  </div>
+  <div class="badge locked" data-badge="expert" title="Aprueba todos los exámenes de una área">
+    <span class="badge-icon">🎖️</span>
+    <p>Experto</p>
+  </div>
+  <div class="badge locked" data-badge="master" title="Completa una ruta de aprendizaje">
+    <span class="badge-icon">⭐</span>
+    <p>Maestro</p>
+  </div>
+  <div class="badge locked" data-badge="speedrun" title="Completa 3 desafíos">
+    <span class="badge-icon">⚡</span>
+    <p>Speedrunner</p>
+  </div>
+  <div class="badge locked" data-badge="legend" title="Alcanza nivel 5">
+    <span class="badge-icon">👑</span>
+    <p>Leyenda</p>
+  </div>
+</div>
+
+<!-- SECCIÓN DE DESAFÍOS/MINI-PROYECTOS POR TEMA -->
+<h2>⚡ Desafíos & Mini-Proyectos por Tema</h2>
+<p style="color: #666; margin-bottom: 20px; font-size: 14px;">
+  Después de estudiar cada tema, practica con desafíos específicos. Los desafíos están vinculados a la teoría que aprendiste.
+</p>
+<div id="challengesByThemeContainer"></div>
+
+<!-- SECCIÓN DE RECURSOS EXTERNOS -->
+<h2>📚 Recursos Externos</h2>
+<div class="resources-grid">
+  <div class="resource-card">
+    <h3>🐍 Python</h3>
+    <div class="resource-items">
+      <a href="https://docs.python.org/" target="_blank">📖 Documentación Oficial</a>
+      <a href="https://www.python.org/dev/peps/pep-0008/" target="_blank">📝 PEP 8 - Estilo de Código</a>
+      <a href="https://www.youtube.com/results?search_query=python+tutorial" target="_blank">🎥 Tutoriales en YouTube</a>
+      <a href="https://github.com/awesome-python/awesome-python" target="_blank">⭐ Awesome Python</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>⚡ JavaScript</h3>
+    <div class="resource-items">
+      <a href="https://developer.mozilla.org/es/docs/Web/JavaScript" target="_blank">📖 MDN Web Docs</a>
+      <a href="https://tc39.es/ecma262/" target="_blank">📝 Especificación ES2024</a>
+      <a href="https://github.com/topics/javascript" target="_blank">💾 Repositorios en GitHub</a>
+      <a href="https://javascript.info/" target="_blank">🎓 JavaScript.info</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>⚛️ React</h3>
+    <div class="resource-items">
+      <a href="https://react.dev/" target="_blank">📖 Documentación React</a>
+      <a href="https://nextjs.org/" target="_blank">🚀 Next.js Framework</a>
+      <a href="https://www.youtube.com/results?search_query=react+tutorial" target="_blank">🎥 Tutoriales React</a>
+      <a href="https://github.com/topics/react" target="_blank">💾 Componentes React</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>🗄️ SQL & Bases de Datos</h3>
+    <div class="resource-items">
+      <a href="https://www.postgresql.org/docs/" target="_blank">📖 PostgreSQL Docs</a>
+      <a href="https://dev.mysql.com/doc/" target="_blank">📖 MySQL Docs</a>
+      <a href="https://www.dbeaver.io/" target="_blank">🛠️ DBeaver Oficial</a>
+      <a href="https://sqlzoo.net/" target="_blank">🎓 SQLZoo - Ejercicios</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>☁️ AWS Cloud</h3>
+    <div class="resource-items">
+      <a href="https://aws.amazon.com/documentation/" target="_blank">📖 AWS Documentation</a>
+      <a href="https://aws.amazon.com/training/" target="_blank">🎓 AWS Training</a>
+      <a href="https://www.youtube.com/results?search_query=aws+tutorial" target="_blank">🎥 AWS Tutoriales</a>
+      <a href="https://aws.amazon.com/free/" target="_blank">💰 AWS Free Tier</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>🐳 Docker & DevOps</h3>
+    <div class="resource-items">
+      <a href="https://docs.docker.com/" target="_blank">📖 Docker Docs</a>
+      <a href="https://kubernetes.io/docs/" target="_blank">📖 Kubernetes</a>
+      <a href="https://www.youtube.com/results?search_query=docker+tutorial" target="_blank">🎥 Docker Tutoriales</a>
+      <a href="https://github.com/topics/devops" target="_blank">💾 DevOps en GitHub</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>🔒 Seguridad</h3>
+    <div class="resource-items">
+      <a href="https://owasp.org/www-project-top-ten/" target="_blank">📖 OWASP Top 10</a>
+      <a href="https://portswigger.net/web-security" target="_blank">🎓 Web Security Academy</a>
+      <a href="https://cwe.mitre.org/" target="_blank">📝 CWE - Common Weaknesses</a>
+      <a href="https://www.youtube.com/results?search_query=web+security" target="_blank">🎥 Seguridad Web</a>
+    </div>
+  </div>
+
+  <div class="resource-card">
+    <h3>🌐 Otros Recursos</h3>
+    <div class="resource-items">
+      <a href="https://stackoverflow.com/" target="_blank">❓ Stack Overflow - Q&A</a>
+      <a href="https://github.com/" target="_blank">💾 GitHub - Repositorios</a>
+      <a href="https://dev.to/" target="_blank">📝 Dev.to - Blog Técnico</a>
+      <a href="https://www.freecodecamp.org/" target="_blank">🎓 FreeCodeCamp</a>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="card">
+<h3>1. Selecciona un Tema</h3>
+<p>Usa el menú de la izquierda o busca qué quieres aprender. Cada tema tiene apuntes y exámenes.</p>
+
+<h3>2. Estudia los Apuntes</h3>
+<p>Encontrarás conceptos teóricos, ejemplos prácticos y código que puedes copiar.</p>
+
+<h3>3. Practica con Ejemplos</h3>
+<p>Ejecuta cada ejemplo en tu máquina. La práctica es la mejor forma de aprender.</p>
+
+<h3>4. Haz los Exámenes</h3>
+<p>Verifica tu comprensión con exámenes interactivos. No dudes en revisar si necesitas reforzar.</p>
+</div>
+
+</main>
+
+</div>
+
+</body>
+<script src="desafios.js"></script>
+<script src="chatbot.js"></script>
+<script>
+// SISTEMA DE LOGROS Y PROGRESO
+const badges = {
+  'primer-paso': { name: 'Primer Paso', icon: '🚀', require: 'desafiosPrincipiante', value: 1 },
+  'aprendiz': { name: 'Aprendiz', icon: '📚', require: 'desafiosIntermedio', value: 1 },
+  'competente': { name: 'Competente', icon: '💪', require: 'desafiosAvanzado', value: 1 },
+  'especialista': { name: 'Especialista', icon: '🎖️', require: 'desafiosPrincipiante', value: 3 },
+  'maestro': { name: 'Maestro', icon: '⭐', require: 'desafiosIntermedio', value: 2 },
+  'leyenda': { name: 'Leyenda', icon: '👑', require: 'desafiosAvanzado', value: 2 }
+};
+
+let userProgress = JSON.parse(localStorage.getItem('userProgress')) || {
+  level: 1,
+  xp: 0,
+  completedTopics: [],
+  examsApproved: 0,
+  completedChallenges: {
+    principiante: [],  // Array de IDs
+    intermedio: [],
+    avanzado: []
+  },
+  unlockedBadges: [],
+  challengesByArea: {} // {area: {principiante: [], intermedio: [], avanzado: []}}
+};
+
+// Guardar progreso
+function saveProgress() {
+  localStorage.setItem('userProgress', JSON.stringify(userProgress));
+  updateUI();
+}
+
+// Actualizar interfaz
+function updateUI() {
+  // Actualizar nivel
+  const levelNumber = document.querySelector('.level-number');
+  const levelName = document.querySelector('.level-name');
+  const progressFill = document.querySelector('.progress-fill');
+  const progressText = document.querySelector('.progress-text');
+  const badgeCount = document.getElementById('badgeCount');
+
+  if (levelNumber) {
+    const levelNames = ['', 'Principiante', 'Aprendiz', 'Experto', 'Profesional', 'Leyenda'];
+    levelNumber.textContent = userProgress.level;
+    levelName.textContent = levelNames[userProgress.level] || 'Leyenda';
+    
+    const xpForLevel = userProgress.level * 100;
+    const percentage = Math.min((userProgress.xp % xpForLevel) / xpForLevel * 100, 100);
+    progressFill.style.width = percentage + '%';
+    progressText.textContent = `${Math.round(percentage)}% completado - ${userProgress.xp % xpForLevel}/${xpForLevel} XP para siguiente nivel`;
+  }
+
+  // Actualizar badges
+  checkAndUnlockBadges();
+  if (badgeCount) {
+    badgeCount.textContent = userProgress.unlockedBadges.length;
+  }
+
+  // Mostrar/ocultar badges
+  document.querySelectorAll('.badge').forEach(badge => {
+    const badgeId = badge.dataset.badge;
+    if (userProgress.unlockedBadges.includes(badgeId)) {
+      badge.classList.add('unlocked');
+      badge.classList.remove('locked');
+    }
+  });
+}
+
+// Verificar y desbloquear badges (basado en desafíos por dificultad)
+function checkAndUnlockBadges() {
+  Object.keys(badges).forEach(badgeId => {
+    if (userProgress.unlockedBadges.includes(badgeId)) return;
+
+    const badge = badges[badgeId];
+    let shouldUnlock = false;
+
+    switch (badge.require) {
+      case 'desafiosPrincipiante':
+        shouldUnlock = userProgress.completedChallenges.principiante.length >= badge.value;
+        break;
+      case 'desafiosIntermedio':
+        shouldUnlock = userProgress.completedChallenges.intermedio.length >= badge.value;
+        break;
+      case 'desafiosAvanzado':
+        shouldUnlock = userProgress.completedChallenges.avanzado.length >= badge.value;
+        break;
+    }
+
+    if (shouldUnlock) {
+      userProgress.unlockedBadges.push(badgeId);
+      showBadgeNotification(badge.name, badge.icon);
+      saveProgress();
+    }
+  });
+}
+
+// Notificación de nuevo badge
+function showBadgeNotification(badgeName, badgeIcon) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(30, 136, 229, 0.3);
+    font-weight: bold;
+    z-index: 10000;
+    animation: slideInRight 0.5s ease;
+  `;
+  notification.textContent = `¡Desbloqueado! ${badgeIcon} ${badgeName}`;
+  document.body.appendChild(notification);
+  setTimeout(() => notification.remove(), 3000);
+}
+
+// Añadir XP
+function addXP(amount) {
+  userProgress.xp += amount;
+  const xpForLevel = userProgress.level * 100;
+  
+  while (userProgress.xp >= xpForLevel && userProgress.level < 5) {
+    userProgress.xp -= xpForLevel;
+    userProgress.level++;
+    showLevelUpNotification(userProgress.level);
+  }
+  
+  saveProgress();
+}
+
+// Notificación de subida de nivel
+function showLevelUpNotification(newLevel) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+    font-weight: bold;
+    font-size: 18px;
+    z-index: 10000;
+    animation: slideInRight 0.5s ease;
+  `;
+  notification.textContent = `¡SUBISTE DE NIVEL! Nivel ${newLevel}`;
+  document.body.appendChild(notification);
+  setTimeout(() => notification.remove(), 3000);
+}
+
+// Renderizar desafíos agrupados por tema de estudio - MEJORADO
+function renderChallengesByTheme() {
+  if (typeof desafios === 'undefined') return;
+
+  const container = document.getElementById('challengesByThemeContainer');
+  if (!container) return;
+
+  container.innerHTML = '';
+  const areas = Object.keys(desafios);
+
+  // Crear una sección por cada área de estudio
+  areas.forEach(area => {
+    const areaChallenges = desafios[area];
+    
+    // Crear sección para el tema
+    const themeSection = document.createElement('div');
+    themeSection.style.cssText = `
+      margin-bottom: 50px;
+      padding: 25px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
+      border-radius: 10px;
+      border-left: 5px solid #1e88e5;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    `;
+
+    // Header del tema con teoría + progreso
+    const themeHeader = document.createElement('div');
+    themeHeader.style.cssText = `
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    `;
+
+    const titleDiv = document.createElement('div');
+    titleDiv.innerHTML = `
+      <h3 style="margin: 0; color: #1e88e5; font-size: 20px; font-weight: 600;">
+        ${getThemeIcon(area)} ${capitalizeArea(area)}
+      </h3>
+      <p style="margin: 5px 0 0 0; color: #666; font-size: 13px;">
+        Aprende y practica desafíos de diferentes niveles
+      </p>
+    `;
+    themeHeader.appendChild(titleDiv);
+
+    const buttonsDiv = document.createElement('div');
+    buttonsDiv.style.cssText = `
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    `;
+    
+    const theoryBtn = document.createElement('a');
+    theoryBtn.href = area + '.html';
+    theoryBtn.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1e88e5;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      cursor: pointer;
+    `;
+    theoryBtn.textContent = '📚 Ver Teoría';
+    theoryBtn.onmouseover = () => theoryBtn.style.background = '#1565c0';
+    theoryBtn.onmouseout = () => theoryBtn.style.background = '#1e88e5';
+    
+    const progressDiv = document.createElement('div');
+    const completedCount = ['principiante', 'intermedio', 'avanzado'].filter(
+      dif => (userProgress.completedChallenges[dif] || []).some(id => 
+        desafios[area]?.[dif]?.id === id
+      )
+    ).length;
+    
+    progressDiv.style.cssText = `
+      background: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e88e5;
+      border: 1px solid #e0e0e0;
+    `;
+    progressDiv.textContent = `${completedCount}/3 Completados`;
+    
+    buttonsDiv.appendChild(theoryBtn);
+    buttonsDiv.appendChild(progressDiv);
+    themeHeader.appendChild(buttonsDiv);
+    themeSection.appendChild(themeHeader);
+
+    // Grid de desafíos organizados por dificultad
+    const challengesContainer = document.createElement('div');
+    challengesContainer.style.cssText = `
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    `;
+
+    // Mostrar 3 desafíos: Principiante, Intermedio, Avanzado
+    const difficulties = [
+      { key: 'principiante', label: '🟢 BÁSICO', color: '#4CAF50', bgColor: '#e8f5e9' },
+      { key: 'intermedio', label: '🟡 INTERMEDIO', color: '#FF9800', bgColor: '#fff3e0' },
+      { key: 'avanzado', label: '🔴 AVANZADO', color: '#f44336', bgColor: '#ffebee' }
+    ];
+    
+    difficulties.forEach(diff => {
+      const challenge = areaChallenges[diff.key];
+      if (!challenge) return;
+
+      const isCompleted = (userProgress.completedChallenges[diff.key] || []).includes(challenge.id);
+      
+      // Card del desafío - MEJORADO
+      const card = document.createElement('div');
+      card.style.cssText = `
+        position: relative;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s;
+        cursor: ${isCompleted ? 'default' : 'pointer'};
+      `;
+      
+      if (!isCompleted) {
+        card.onmouseover = () => {
+          card.style.transform = 'translateY(-6px)';
+          card.style.boxShadow = `0 8px 20px ${diff.color}30`;
+          card.style.borderColor = diff.color;
+        };
+        card.onmouseout = () => {
+          card.style.transform = '';
+          card.style.boxShadow = '';
+        };
+      }
+
+      // Etiqueta de dificultad
+      const diffBadge = document.createElement('div');
+      diffBadge.style.cssText = `
+        display: inline-block;
+        background: ${diff.bgColor};
+        color: ${diff.color};
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      `;
+      diffBadge.textContent = diff.label;
+
+      // XP Badge
+      const xpBadge = document.createElement('div');
+      xpBadge.style.cssText = `
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        color: white;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+      `;
+      xpBadge.textContent = `⭐ ${challenge.xp} XP`;
+
+      // Título
+      const titleEl = document.createElement('h4');
+      titleEl.style.cssText = `
+        margin: 0 0 10px 0;
+        color: #333;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+        padding-right: 80px;
+      `;
+      titleEl.textContent = challenge.titulo;
+
+      // Resumen
+      const summaryEl = document.createElement('p');
+      summaryEl.style.cssText = `
+        margin: 10px 0;
+        color: #666;
+        font-size: 13px;
+        line-height: 1.6;
+      `;
+      summaryEl.textContent = getChallengeSummary(challenge.enunciado);
+
+      // Botón de acción
+      const actionBtn = document.createElement('button');
+      actionBtn.style.cssText = `
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 16px;
+        background: ${isCompleted ? '#ccc' : '#e0e0e0'};
+        color: ${isCompleted ? '#999' : '#333'};
+        border: none;
+        border-radius: 6px;
+        cursor: ${isCompleted ? 'not-allowed' : 'pointer'};
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(30, 136, 229, 0.15);
+        transition: all 0.3s;
+        position: relative;
+        z-index: 1;
+        border-left: 4px solid ${diff.color};
+      `;
+      
+      if (isCompleted) {
+        actionBtn.textContent = '✅ COMPLETADO';
+        actionBtn.style.opacity = '0.7';
+      } else {
+        actionBtn.textContent = '🎯 INTENTAR DESAFÍO';
+        actionBtn.onclick = () => startChallenge(challenge.id);
+        actionBtn.onmouseover = () => {
+          actionBtn.style.background = '#d0d0d0';
+          actionBtn.style.transform = 'scale(1.03)';
+          actionBtn.style.boxShadow = '0 4px 12px rgba(30, 136, 229, 0.2)';
+        };
+        actionBtn.onmouseout = () => {
+          actionBtn.style.background = '#e0e0e0';
+          actionBtn.style.transform = '';
+          actionBtn.style.boxShadow = '0 2px 8px rgba(30, 136, 229, 0.15)';
+        };
+      }
+
+      // Meter todo junto
+      card.appendChild(diffBadge);
+      card.appendChild(xpBadge);
+      card.appendChild(titleEl);
+      card.appendChild(summaryEl);
+      card.appendChild(actionBtn);
+
+      challengesContainer.appendChild(card);
+    });
+
+    themeSection.appendChild(challengesContainer);
+    container.appendChild(themeSection);
+  });
+}
+
+// Función auxiliar para ajustar brillo de color
+function adjustBrightness(color, percent) {
+  const usePound = color[0] === "#";
+  const col = usePound ? color.slice(1) : color;
+  const num = parseInt(col, 16);
+  const amt = Math.round(2.55 * percent);
+  const R = (num >> 16) + amt;
+  const G = (num >> 8 & 0x00FF) + amt;
+  const B = (num & 0x0000FF) + amt;
+  return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
+    (G<255?G<1?0:G:255)*0x100 +
+    (B<255?B<1?0:B:255))
+    .toString(16).slice(1);
+}
+
+// Obtener emoji del tema
+function getThemeIcon(area) {
+  const icons = {
+    'github': '🌐',
+    'python': '🐍',
+    'javascript': '⚡',
+    'react': '⚛️',
+    'sql': '🗄️',
+    'docker': '🐳',
+    'aws': '☁️',
+    'seguridad': '🔒',
+    'devops': '🚀',
+    'api-rest': '🔗',
+    'ubuntu': '🐧',
+    'dbeaver': '🛠️'
+  };
+  return icons[area] || '📌';
+}
+
+// Obtener resumen corto del enunciado
+function getChallengeSummary(enunciado) {
+  const lines = enunciado.split('\n').filter(l => l.trim());
+  for (let line of lines) {
+    if (line.length > 20 && !line.startsWith('#') && !line.startsWith('-')) {
+      return line.substring(0, 80) + '...';
+    }
+  }
+  return 'Presiona el botón para ver detalles completos';
+}
+
+// Capitalizar nombre del área
+function capitalizeArea(area) {
+  const names = {
+    'github': 'GitHub - Control de Versiones',
+    'python': 'Python - Programación',
+    'javascript': 'JavaScript - Web',
+    'react': 'React - Frontend',
+    'sql': 'SQL - Bases de Datos',
+    'docker': 'Docker - Contenedores',
+    'aws': 'AWS - Cloud Computing',
+    'seguridad': 'Seguridad - Protección',
+    'devops': 'DevOps - Deployment',
+    'api-rest': 'API REST - Arquitectura',
+    'ubuntu': 'Ubuntu - Terminal',
+    'dbeaver': 'DBeaver - Gestión de BD'
+  };
+  return names[area] || area.toUpperCase();
+}
+
+// Iniciar desafío
+function startChallenge(challengeId) {
+  window.location.href = `editor.html?challenge=${challengeId}`;
+}
+
+// Completar desafío (se llama desde editor.html)
+window.completeChallenge = function(challengeId, dificultad, area) {
+  // Evitar duplicados
+  if (!userProgress.completedChallenges[dificultad]) {
+    userProgress.completedChallenges[dificultad] = [];
+  }
+  
+  if (!userProgress.completedChallenges[dificultad].includes(challengeId)) {
+    userProgress.completedChallenges[dificultad].push(challengeId);
+  }
+  
+  // Rastrear por área
+  if (!userProgress.challengesByArea[area]) {
+    userProgress.challengesByArea[area] = {
+      principiante: [],
+      intermedio: [],
+      avanzado: []
+    };
+  }
+  
+  if (!userProgress.challengesByArea[area][dificultad]) {
+    userProgress.challengesByArea[area][dificultad] = [];
+  }
+  
+  if (!userProgress.challengesByArea[area][dificultad].includes(challengeId)) {
+    userProgress.challengesByArea[area][dificultad].push(challengeId);
+  }
+  
+  saveProgress();
+};
+
+// Inicializar
+window.addEventListener('load', () => {
+  renderChallengesByTheme();
+  updateUI();
+  
+  // Agregar estilos para animación de notificación
+  if (!document.getElementById('notification-styles')) {
+    const style = document.createElement('style');
+    style.id = 'notification-styles';
+    style.textContent = `
+      @keyframes slideInRight {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+});
+
+// Funciones públicas para usar desde otros archivos
+window.completeTopic = function(topicName) {
+  if (!userProgress.completedTopics.includes(topicName)) {
+    userProgress.completedTopics.push(topicName);
+    addXP(50);
+  }
+};
+
+window.addXP = function(amount) {
+  addXP(amount);
+};
+</script>
+</body>
+</html>

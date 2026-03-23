@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen DevOps</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen DevOps</h1>
+
+<div class="card">
+<p>¿Qué es CI/CD?</p>
+<button onclick="check('automatizacion','automatizacion','r1')">Automatizar tests y deploy</button>
+<button onclick="check('herramienta','automatizacion','r1')">Herramienta Git</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Para qué GitHub Actions?</p>
+<button onclick="check('automatizar','automatizar','r2')">Automatizar workflows</button>
+<button onclick="check('hosting','automatizar','r2')">Alojar código</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Qué es Infrastructure as Code?</p>
+<button onclick="check('codigo','codigo','r3')">Definir infraestructura en código</button>
+<button onclick="check('manual','codigo','r3')">Configuración manual</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Kubernetes qué orquesta?</p>
+<button onclick="check('contenedores','contenedores','r4')">Contenedores</button>
+<button onclick="check('codigo','contenedores','r4')">Código fuente</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Qué es monitoring?</p>
+<button onclick="check('vigilancia','vigilancia','r5')">Vigilar aplicaciones</button>
+<button onclick="check('testing','vigilancia','r5')">Pruebas de código</button>
+<p id="r5"></p>
+</div>
+
+</div>
+
+</body>
+</html>

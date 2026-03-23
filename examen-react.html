@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen React - Portal IT</title>
+    <link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📝 Examen React</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>Menú</h2>
+            <h3>Navegación</h3>
+            <a href="estudio.html">← Volver</a>
+            <a href="react.html">📚 Apuntes React</a>
+            
+            <h3>Instrucciones</h3>
+            <p>Responde las 5 preguntas. Haz clic en "Revisar Respuestas" al terminar.</p>
+        </aside>
+
+        <main class="content">
+
+<h1>Examen: React - 5 Preguntas</h1>
+<p>Prueba tus conocimientos sobre React. Selecciona la respuesta correcta para cada pregunta.</p>
+
+<div class="exam-container">
+
+<div class="question">
+    <h3>Pregunta 1: ¿Cuál es la función principal de React?</h3>
+    <label><input type="radio" name="q1" value="a"> a) Crear bases de datos</label><br>
+    <label><input type="radio" name="q1" value="b"> b) Construir interfaces de usuario con componentes reutilizables</label><br>
+    <label><input type="radio" name="q1" value="c"> c) Gestionar servidores web</label><br>
+    <label><input type="radio" name="q1" value="d"> d) Controlar hardware del ordenador</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 2: ¿Qué es JSX?</h3>
+    <label><input type="radio" name="q2" value="a"> a) Un lenguaje de programación independiente</label><br>
+    <label><input type="radio" name="q2" value="b"> b) Sintaxis que mezcla JavaScript y HTML</label><br>
+    <label><input type="radio" name="q2" value="c"> c) Una base de datos</label><br>
+    <label><input type="radio" name="q2" value="d"> d) Un framework de CSS</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 3: ¿Cuál es la diferencia entre Props y State?</h3>
+    <label><input type="radio" name="q3" value="a"> a) Props es mutable, State es inmutable</label><br>
+    <label><input type="radio" name="q3" value="b"> b) No hay diferencia, son lo mismo</label><br>
+    <label><input type="radio" name="q3" value="c"> c) Props vienen del padre (inmutables), State es local y mutable</label><br>
+    <label><input type="radio" name="q3" value="d"> d) Props es para CSS, State para JavaScript</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 4: ¿Qué hook se usa para manejar efectos secundarios?</h3>
+    <label><input type="radio" name="q4" value="a"> a) useState</label><br>
+    <label><input type="radio" name="q4" value="b"> b) useCallback</label><br>
+    <label><input type="radio" name="q4" value="c"> c) useEffect</label><br>
+    <label><input type="radio" name="q4" value="d"> d) useContext</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 5: ¿Para qué sirve el Virtual DOM de React?</h3>
+    <label><input type="radio" name="q5" value="a"> a) Para almacenar datos</label><br>
+    <label><input type="radio" name="q5" value="b"> b) Optimizar actualizaciones del DOM real comparando cambios</label><br>
+    <label><input type="radio" name="q5" value="c"> c) Para crear componentes</label><br>
+    <label><input type="radio" name="q5" value="d"> d) Para gestionar transacciones de BD</label><br>
+</div>
+
+<button onclick="revisarRespuestas()">✓ Revisar Respuestas</button>
+<div id="resultado" style="margin-top: 20px; display: none;"></div>
+
+</div>
+
+<script>
+function revisarRespuestas() {
+    const respuestasCorrectas = {
+        q1: 'b',
+        q2: 'b',
+        q3: 'c',
+        q4: 'c',
+        q5: 'b'
+    };
+
+    let aciertos = 0;
+    let resultadoHTML = '<h2>Resultados:</h2><ul>';
+
+    for (let i = 1; i <= 5; i++) {
+        const respuesta = document.querySelector(`input[name="q${i}"]:checked`);
+        const pregunta = i;
+        
+        if (!respuesta) {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ❌ No respondida</li>`;
+        } else if (respuesta.value === respuestasCorrectas[`q${i}`]) {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ✓ Correcta</li>`;
+            aciertos++;
+        } else {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ❌ Incorrecta (respuesta correcta: ${respuestasCorrectas[`q${i}`].toUpperCase()})</li>`;
+        }
+    }
+
+    resultadoHTML += '</ul>';
+    const porcentaje = (aciertos / 5) * 100;
+    resultadoHTML += `<h3>Puntuación: ${aciertos}/5 (${porcentaje}%)</h3>`;
+
+    if (porcentaje >= 80) {
+        resultadoHTML += '<p style="color: green; font-weight: bold;">¡Excelente! Dominas React</p>';
+    } else if (porcentaje >= 60) {
+        resultadoHTML += '<p style="color: orange; font-weight: bold;">Bien, pero necesitas repasar algunos conceptos</p>';
+    } else {
+        resultadoHTML += '<p style="color: red; font-weight: bold;">Necesitas estudiar más. Vuelve a los apuntes</p>';
+    }
+
+    const resultadoDiv = document.getElementById('resultado');
+    resultadoDiv.innerHTML = resultadoHTML;
+    resultadoDiv.style.display = 'block';
+
+    window.scrollTo(0, resultadoDiv.offsetTop - 100);
+}
+</script>
+
+        </main>
+    </div>
+</body>
+</html>

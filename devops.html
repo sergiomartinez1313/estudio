@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DevOps</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-devops { font-size: 18px; line-height: 1.8; }
+  .content-devops h2 { font-size: 28px; margin-top: 30px; }
+  .content-devops h3 { font-size: 24px; margin-top: 20px; }
+  .content-devops p { font-size: 18px; }
+  .content-devops pre { font-size: 16px; }
+  .content-devops button { font-size: 16px; padding: 12px 18px; }
+  .content-devops li { font-size: 18px; margin: 8px 0; }
+  .content-devops ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-devops">
+
+<h1>⚙️ DevOps - Deployment y Automatización</h1>
+
+<p>DevOps es la combinación de Development y Operations. Se enfoca en automatizar el deployment, monitoreo y mantenimiento de aplicaciones. Los desarrolladores modernos necesitan entender deployment y operaciones.</p>
+
+<h2>🎯 ¿Qué es DevOps?</h2>
+
+<ul>
+<li><strong>Automatización:</strong> Automatizar tareas repetitivas</li>
+<li><strong>Continuidad:</strong> Continuous Integration y Continuous Deployment</li>
+<li><strong>Monitoreo:</strong> Vigilar aplicaciones en producción</li>
+<li><strong>Escalabilidad:</strong> Crecer sin interrupciones</li>
+<li><strong>Confiabilidad:</strong> Sistemas resilientes y tolerantes a fallos</li>
+<li><strong>Colaboración:</strong> Developers y Operations trabajando juntos</li>
+</ul>
+
+<h2>🔄 CI/CD (Continuous Integration / Continuous Deployment)</h2>
+
+<h3>Continuous Integration (CI)</h3>
+<pre>
+# Proceso
+1. Developer hace commit
+2. Sistema automáticamente:
+   - Descarga código
+   - Ejecuta tests
+   - Verifica estilos de código
+   - Genera reportes
+
+3. Si falla algo, developer lo corrige
+4. Si todo ok, pasa a siguiente etapa
+</pre>
+
+<h3>Continuous Deployment (CD)</h3>
+<pre>
+# Proceso
+1. Código pasa CI
+2. Automáticamente se:
+   - Construye imagen Docker
+   - Se despliega a staging
+   - Se ejecutan tests E2E
+   - Se despliega a producción
+
+3. Sin intervención manual
+</pre>
+
+<h2>💻 GitHub Actions</h2>
+
+<pre>
+# .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: pytest
+    
+    - name: Build Docker image
+      run: docker build -t mi-app:latest .
+    
+    - name: Push to Docker Hub
+      run: |
+        docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
+        docker push mi-app:latest
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deploy to production
+      run: |
+        ssh -i ${{ secrets.SSH_KEY }} user@server "docker pull mi-app:latest && docker run -d -p 80:5000 mi-app:latest"
+</pre>
+
+<h2>📊 Monitoreo y Logs</h2>
+
+<h3>Prometheus + Grafana</h3>
+<pre>
+# prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'mi-app'
+    static_configs:
+      - targets: ['localhost:9090']
+
+# docker-compose.yml
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+</pre>
+
+<h3>Logs con ELK Stack</h3>
+<pre>
+# docker-compose.yml (ELK Stack)
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.0
+    ports:
+      - "5601:5601"
+  
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.9.0
+    ports:
+      - "5000:5000"
+</pre>
+
+<h2>🚀 Deployment en la Nube</h2>
+
+<h3>AWS - Elastic Beanstalk</h3>
+<pre>
+# .ebextensions/01_flask.config
+option_settings:
+  aws:elasticbeanstalk:container:python:
+    WSGIPath: app:app
+
+# Comandos
+eb create mi-app-env
+eb deploy
+eb status
+eb logs
+</pre>
+
+<h3>Heroku</h3>
+<pre>
+# Procfile
+web: gunicorn app:app
+
+# Commands
+heroku create mi-app
+git push heroku main
+heroku logs --tail
+
+# Escalar
+heroku ps:scale web=2
+</pre>
+
+<h3>Kubernetes</h3>
+<pre>
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mi-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mi-app
+  template:
+    metadata:
+      labels:
+        app: mi-app
+    spec:
+      containers:
+      - name: mi-app
+        image: mi-app:latest
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mi-app-service
+spec:
+  selector:
+    app: mi-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
+
+# Desplegar
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl get pods
+</pre>
+
+<h2>🔍 Mejores Prácticas DevOps</h2>
+
+<ul>
+<li><strong>Infrastructure as Code:</strong> Define infraestructura con código</li>
+<li><strong>Automatización:</strong> Automatiza todo lo posible</li>
+<li><strong>Versionado:</strong> Versiona todo incluyendo configuración</li>
+<li><strong>Testing:</strong> Unit tests, integration tests, E2E tests</li>
+<li><strong>Logs centralizados:</strong> Recopila logs en un lugar</li>
+<li><strong>Monitoreo activo:</strong> Alertas antes de problemas</li>
+<li><strong>Rollback rápido:</strong> Poder volver atrás si falla</li>
+<li><strong>Feature flags:</strong> Activar/desactivar features sin deploy</li>
+<li><strong>Blue-green deployment:</strong> Cambiar sin downtime</li>
+<li><strong>Disaster recovery:</strong> Plan de recuperación ante crisis</li>
+</ul>
+
+<h2>🧪 Examen - DevOps Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué es CI/CD?</p>
+<button onclick="check('automatizacion','automatizacion','r1')">Automatizar tests y deployment</button>
+<button onclick="check('herramienta','automatizacion','r1')">Una herramienta de Git</button>
+<button onclick="check('servidor','automatizacion','r1')">Un servidor web</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Para qué sirve GitHub Actions?</p>
+<button onclick="check('automatizar','automatizar','r2')">Automatizar workflows</button>
+<button onclick="check('hosting','automatizar','r2')">Alojar código</button>
+<button onclick="check('editor','automatizar','r2')">Editar código</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Qué es Infrastructure as Code?</p>
+<button onclick="check('codigo','codigo','r3')">Definir infraestructura con código</button>
+<button onclick="check('manual','codigo','r3')">Configuração manual</button>
+<button onclick="check('nube','codigo','r3')">Un servicio en la nube</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Qué plataforma usa Kubernetes?</p>
+<button onclick="check('orquestacion','orquestacion','r4')">Orquestar contenedores</button>
+<button onclick="check('programacion','orquestacion','r4')">Lenguaje de programación</button>
+<button onclick="check('editor','orquestacion','r4')">Editor de código</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Qué es monitoring?</p>
+<button onclick="check('vigilancia','vigilancia','r5')">Vigilar aplicaciones en producción</button>
+<button onclick="check('testing','vigilancia','r5')">Pruebas de código</button>
+<button onclick="check('deployment','vigilancia','r5')">Despliegue automático</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+
+</body>
+</html>

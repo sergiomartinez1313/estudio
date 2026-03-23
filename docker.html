@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Docker - Contenedorización</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-docker { font-size: 18px; line-height: 1.8; }
+  .content-docker h2 { font-size: 28px; margin-top: 30px; }
+  .content-docker h3 { font-size: 24px; margin-top: 20px; }
+  .content-docker p { font-size: 18px; }
+  .content-docker pre { font-size: 16px; }
+  .content-docker button { font-size: 16px; padding: 12px 18px; }
+  .content-docker li { font-size: 18px; margin: 8px 0; }
+  .content-docker ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-docker">
+
+<h1>🐳 Docker - Contenedorización</h1>
+
+<p>Docker es una plataforma de contenedorización que permite empaquetar aplicaciones con todas sus dependencias. Los contenedores garantizan que tu aplicación funcione igual en cualquier máquina, eliminando el problema "funciona en mi máquina".</p>
+
+<h2>🎯 ¿Por Qué Docker?</h2>
+
+<ul>
+<li><strong>Consistencia:</strong> Funciona igual en desarrollo, testing y producción</li>
+<li><strong>Aislamiento:</strong> Las aplicaciones no interfieren entre sí</li>
+<li><strong>Escalabilidad:</strong> Fácil de replicar y escalar</li>
+<li><strong>Eficiencia:</strong> Más ligero que máquinas virtuales</li>
+<li><strong>DevOps:</strong> Facilita el deployment y la automatización</li>
+</ul>
+
+<h2>📦 Conceptos Clave</h2>
+
+<ul>
+<li><strong>Imagen:</strong> Plantilla de solo lectura con toda la aplicación</li>
+<li><strong>Contenedor:</strong> Instancia ejecutable de una imagen</li>
+<li><strong>Dockerfile:</strong> Archivo con instrucciones para construir una imagen</li>
+<li><strong>Docker Hub:</strong> Registro público de imágenes</li>
+<li><strong>Volumen:</strong> Almacenamiento persistente para contenedores</li>
+<li><strong>Red:</strong> Conexión entre contenedores</li>
+</ul>
+
+<h2>📥 Instalación de Docker</h2>
+
+<pre>
+# En Ubuntu/Debian
+sudo apt update
+sudo apt install docker.io
+sudo apt install docker-compose
+
+# Verificar instalación
+docker --version
+docker-compose --version
+
+# Dar permisos de usuario
+sudo usermod -aG docker $USER
+</pre>
+
+<h2>📄 Crear un Dockerfile</h2>
+
+<pre>
+# Dockerfile para aplicación Python
+FROM python:3.9
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
+</pre>
+
+<h2>🔨 Comandos Básicos de Docker</h2>
+
+<pre>
+# Construir imagen
+docker build -t mi-app:1.0 .
+
+# Listar imágenes
+docker images
+
+# Ejecutar contenedor
+docker run -d --name mi-contenedor mi-app:1.0
+docker run -p 8000:8000 mi-app:1.0    # Con puerto
+docker run -v /datos:/app/datos mi-app:1.0  # Con volumen
+
+# Listar contenedores
+docker ps              # Activos
+docker ps -a           # Todos
+
+# Ver logs
+docker logs mi-contenedor
+docker logs -f mi-contenedor   # En tiempo real
+
+# Entrar en contenedor
+docker exec -it mi-contenedor bash
+docker exec -it mi-contenedor sh
+
+# Parar contenedor
+docker stop mi-contenedor
+
+# Eliminar contenedor
+docker rm mi-contenedor
+
+# Eliminar imagen
+docker rmi mi-app:1.0
+</pre>
+
+<h2>📋 Docker Compose</h2>
+
+<pre>
+# docker-compose.yml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    environment:
+      - DEBUG=True
+    
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+# Comandos
+docker-compose up -d           # Levantar servicios
+docker-compose down            # Bajar servicios
+docker-compose logs -f         # Ver logs
+docker-compose ps              # Ver estado
+</pre>
+
+<h2>🌐 Ejemplo Completo - Aplicación Web</h2>
+
+<pre>
+# app.py (Flask)
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Hello from Docker!'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
+# requirements.txt
+Flask==2.0.1
+
+# Dockerfile
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD ["python", "app.py"]
+
+# Construir y ejecutar
+docker build -t mi-app .
+docker run -p 5000:5000 mi-app
+</pre>
+
+<h2>🧪 Examen - Docker Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué es una imagen Docker?</p>
+<button onclick="check('plantilla','plantilla','r1')">Plantilla de contenedor</button>
+<button onclick="check('contenedor','plantilla','r1')">Un contenedor activo</button>
+<button onclick="check('archivo','plantilla','r1')">Archivo de configuración</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Qué archivo contiene instrucciones para construir imagen?</p>
+<button onclick="check('Dockerfile','dockerfile','r2')">Dockerfile</button>
+<button onclick="check('docker.yml','dockerfile','r2')">docker.yml</button>
+<button onclick="check('config.txt','dockerfile','r2')">config.txt</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Qué comando ejecuta un contenedor?</p>
+<button onclick="check('run','run','r3')">docker run</button>
+<button onclick="check('execute','run','r3')">docker execute</button>
+<button onclick="check('start','run','r3')">docker start</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Para qué sirve Docker Compose?</p>
+<button onclick="check('multiples','multiples','r4')">Ejecutar múltiples servicios</button>
+<button onclick="check('imagenes','multiples','r4')">Crear imágenes</button>
+<button onclick="check('registry','multiples','r4')">Repositorio remoto</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Qué es un volumen en Docker?</p>
+<button onclick="check('persistencia','persistencia','r5')">Almacenamiento persistente</button>
+<button onclick="check('red','persistencia','r5')">Conexión de red</button>
+<button onclick="check('imagen','persistencia','r5')">Tipo de imagen</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+
+</body>
+</html>

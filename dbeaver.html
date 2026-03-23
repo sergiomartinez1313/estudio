@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DBeaver</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-dbeaver { font-size: 18px; line-height: 1.8; }
+  .content-dbeaver h2 { font-size: 28px; margin-top: 30px; }
+  .content-dbeaver h3 { font-size: 24px; margin-top: 20px; }
+  .content-dbeaver p { font-size: 18px; }
+  .content-dbeaver pre { font-size: 16px; }
+  .content-dbeaver button { font-size: 16px; padding: 12px 18px; }
+  .content-dbeaver li { font-size: 18px; margin: 8px 0; }
+</style>
+</head>
+
+<body>
+
+<header><h1>🗄️ DBeaver y Bases de Datos</h1></header>
+
+<main class="center">
+<div class="card content-dbeaver">
+
+<h2>📚 ¿Qué es DBeaver?</h2>
+<p>DBeaver es una herramienta de software gratuito que permite conectarse a bases de datos, ejecutar consultas SQL, visualizar datos y gestionar las estructuras de las bases de datos. Es muy utilizada por desarrolladores y administradores de bases de datos.</p>
+
+<h2>💾 Conceptos de Bases de Datos</h2>
+<ul>
+<li><strong>Base de Datos:</strong> Conjunto organizado de datos relacionados</li>
+<li><strong>Tabla:</strong> Estructura con filas (registros) y columnas (campos)</li>
+<li><strong>Registro:</strong> Una fila de datos en una tabla</li>
+<li><strong>Campo/Columna:</strong> Atributo de los datos (ej: nombre, edad)</li>
+<li><strong>Clave Primaria:</strong> Identificador único de cada registro</li>
+<li><strong>Índice:</strong> Acelera búsquedas en la base de datos</li>
+</ul>
+
+<h2>🔤 SQL (Structured Query Language)</h2>
+<p>SQL es el lenguaje estándar para interactuar con bases de datos. Permite crear, leer, actualizar y eliminar datos.</p>
+
+<h3>Crear Tabla</h3>
+<pre>
+CREATE TABLE usuarios (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    edad INTEGER,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</pre>
+
+<h3>Insertar Datos</h3>
+<pre>
+INSERT INTO usuarios (nombre, email, edad) 
+VALUES ('Juan', 'juan@email.com', 28);
+
+INSERT INTO usuarios (nombre, email, edad) 
+VALUES 
+('María', 'maria@email.com', 25),
+('Carlos', 'carlos@email.com', 30);
+</pre>
+
+<h3>Consultar Datos</h3>
+<pre>
+SELECT * FROM usuarios;                    # Todos los datos
+SELECT nombre, email FROM usuarios;        # Campos específicos
+SELECT * FROM usuarios WHERE edad > 25;   # Con condición
+SELECT * FROM usuarios ORDER BY edad DESC; # Ordenado
+SELECT * FROM usuarios LIMIT 10;           # Límite de resultados
+</pre>
+
+<h3>Actualizar Datos</h3>
+<pre>
+UPDATE usuarios SET edad = 26 WHERE id = 1;
+UPDATE usuarios SET email = 'nuevo@email.com' WHERE nombre = 'Juan';
+</pre>
+
+<h3>Eliminar Datos</h3>
+<pre>
+DELETE FROM usuarios WHERE id = 1;
+DELETE FROM usuarios WHERE edad < 20;
+</pre>
+
+<h3>Consultas Avanzadas</h3>
+<pre>
+# Contar registros
+SELECT COUNT(*) FROM usuarios;
+
+# Filtrar duplicados
+SELECT DISTINCT edad FROM usuarios;
+
+# Búsqueda con LIKE
+SELECT * FROM usuarios WHERE nombre LIKE 'J%';
+
+# Agrupar y contar
+SELECT edad, COUNT(*) FROM usuarios GROUP BY edad;
+
+# Unir tablas
+SELECT u.nombre, p.titulo 
+FROM usuarios u 
+JOIN posts p ON u.id = p.usuario_id;
+</pre>
+
+<h2>🖥️ Tipos de Datos SQL</h2>
+<ul>
+<li><strong>VARCHAR(n):</strong> Texto de hasta n caracteres</li>
+<li><strong>INTEGER:</strong> Números enteros</li>
+<li><strong>FLOAT/DECIMAL:</strong> Números decimales</li>
+<li><strong>DATE:</strong> Fechas (YYYY-MM-DD)</li>
+<li><strong>TIMESTAMP:</strong> Fecha y hora</li>
+<li><strong>BOOLEAN:</strong> Verdadero o Falso</li>
+<li><strong>TEXT:</strong> Texto largo</li>
+</ul>
+
+<h2>⚙️ Usando DBeaver</h2>
+<pre>
+1. Crear nueva conexión
+2. Seleccionar tipo de BD (MySQL, PostgreSQL, etc)
+3. Ingresar host, usuario, contraseña
+4. Conectar
+5. Crear o abrir base de datos
+6. Ejecutar queries en el editor SQL
+7. Ver resultados en tiempo real
+</pre>
+
+<h2>🧪 Examen - DBeaver y SQL Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué es DBeaver?</p>
+<button onclick="check('manager','manager','r1')">Gestor de BD</button>
+<button onclick="check('editor','manager','r1')">Editor de código</button>
+<button onclick="check('navegador','manager','r1')">Navegador web</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Qué comando crea una tabla?</p>
+<button onclick="check('create','create','r2')">CREATE TABLE</button>
+<button onclick="check('select','create','r2')">SELECT</button>
+<button onclick="check('insert','create','r2')">INSERT</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Cómo insertas datos en una tabla?</p>
+<button onclick="check('insert','insert','r3')">INSERT INTO</button>
+<button onclick="check('update','insert','r3')">UPDATE</button>
+<button onclick="check('delete','insert','r3')">DELETE</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Para qué sirve SELECT?</p>
+<button onclick="check('consultar','consultar','r4')">Consultar datos</button>
+<button onclick="check('eliminar','consultar','r4')">Eliminar datos</button>
+<button onclick="check('crear','consultar','r4')">Crear tabla</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Qué significa PRIMARY KEY?</p>
+<button onclick="check('identificador','identificador','r5')">Identificador único</button>
+<button onclick="check('llave','identificador','r5')">Llave de seguridad</button>
+<button onclick="check('contraseña','identificador','r5')">Contraseña</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+</main>
+
+</body>
+</html>

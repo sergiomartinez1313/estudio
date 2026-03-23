@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>JavaScript - Desarrollo Web</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-js { font-size: 18px; line-height: 1.8; }
+  .content-js h2 { font-size: 28px; margin-top: 30px; }
+  .content-js h3 { font-size: 24px; margin-top: 20px; }
+  .content-js p { font-size: 18px; }
+  .content-js pre { font-size: 16px; }
+  .content-js button { font-size: 16px; padding: 12px 18px; }
+  .content-js li { font-size: 18px; margin: 8px 0; }
+  .content-js ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-js">
+
+<h1>⚡ JavaScript - Desarrollo Web</h1>
+
+<p>JavaScript es el lenguaje de programación que corre en todos los navegadores. Es esencial para crear sitios web dinámicos e interactivos. Además de frontend, JavaScript también se usa en backend con Node.js, convirtiéndose en una herramienta fullstack poderosa.</p>
+
+<h2>🎯 ¿Por Qué JavaScript?</h2>
+
+<ul>
+<li><strong>Ubicuo:</strong> Corre en cualquier navegador</li>
+<li><strong>Fullstack:</strong> Frontend y backend con Node.js</li>
+<li><strong>Frameworks potentes:</strong> React, Vue, Angular</li>
+<li><strong>Verificación del lado cliente:</strong> Valida datos antes de enviar</li>
+<li><strong>Experiencia de usuario:</strong> Interactividad sin recargar la página</li>
+</ul>
+
+<h2>📝 Sintaxis Básica</h2>
+
+<h3>Variables</h3>
+<pre>
+// var (antigua, evitar)
+var nombre = "Juan";
+
+// let (variable mutable)
+let edad = 28;
+
+// const (constante, inmutable)
+const PI = 3.14159;
+
+// Tipos de datos
+typeof nombre     // string
+typeof edad       // number
+typeof true       // boolean
+typeof {}         // object
+typeof null       // object (bug histórico)
+typeof undefined  // undefined
+</pre>
+
+<h3>Operadores</h3>
+<pre>
+// Aritméticos
+10 + 5        // 15
+10 - 5        // 5
+10 * 5        // 50
+10 / 5        // 2
+10 % 3        // 1
+
+// Comparación
+10 > 5        // true
+10 == "10"    // true (comparar valor)
+10 === "10"   // false (comparar tipo)
+
+// Lógicos
+true && false       // false
+true || false       // true
+!true              // false
+</pre>
+
+<h3>Condicionales</h3>
+<pre>
+if (edad >= 18) {
+    console.log("Mayor de edad");
+} else if (edad >= 13) {
+    console.log("Adolescente");
+} else {
+    console.log("Niño");
+}
+
+// Operador ternario
+status = edad >= 18 ? "Mayor" : "Menor";
+</pre>
+
+<h2>🔄 Bucles</h2>
+
+<pre>
+// For tradicional
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}
+
+// While
+let contador = 0;
+while (contador < 5) {
+    console.log(contador);
+    contador++;
+}
+
+// For...of (valores)
+for (let valor of [1, 2, 3]) {
+    console.log(valor);
+}
+
+// ForEach
+[1, 2, 3].forEach(num => {
+    console.log(num);
+});
+</pre>
+
+<h2>🔧 Funciones</h2>
+
+<pre>
+// Función tradicional
+function sumar(a, b) {
+    return a + b;
+}
+
+// Arrow function (moderna)
+const sumar = (a, b) => a + b;
+
+// Función con parámetro por defecto
+const saludar = (nombre = "Usuario") => {
+    console.log(`Hola, ${nombre}`);
+}
+
+// Función que retorna función
+const multiplicar = (x) => (y) => x * y;
+mult3 = multiplicar(3);
+console.log(mult3(5));  // 15
+</pre>
+
+<h2>📊 Objetos y Arrays</h2>
+
+<h3>Arrays</h3>
+<pre>
+const numeros = [1, 2, 3, 4, 5];
+
+// Acceso
+console.log(numeros[0]);      // 1
+console.log(numeros.length);  // 5
+
+// Métodos
+numeros.push(6);              // Añadir al final
+numeros.pop();                // Quitar del final
+numeros.map(n => n * 2);      // Transformar
+numeros.filter(n => n > 2);   // Filtrar
+numeros.find(n => n === 3);   // Buscar
+</pre>
+
+<h3>Objetos</h3>
+<pre>
+const persona = {
+    nombre: "Juan",
+    edad: 28,
+    ciudad: "Madrid",
+    saludar: function() {
+        console.log(`Hola, me llamo ${this.nombre}`);
+    }
+};
+
+// Acceso
+persona.nombre        // "Juan"
+persona["edad"]       // 28
+persona.saludar();    // Hola, me llamo Juan
+
+// Propiedades dinámicas
+persona.profesion = "Developer";
+delete persona.ciudad;
+</pre>
+
+<h2>🌐 DOM y Eventos</h2>
+
+<pre>
+// Seleccionar elementos
+const btn = document.getElementById("miBoton");
+const elementos = document.querySelectorAll(".clase");
+const div = document.querySelector("div");
+
+// Modificar DOM
+btn.textContent = "Nuevo texto";
+btn.style.color = "red";
+btn.classList.add("activo");
+btn.classList.remove("inactivo");
+
+// Eventos
+btn.addEventListener("click", () => {
+    console.log("Botón clickeado");
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Página cargada");
+});
+</pre>
+
+<h2>🔌 Fetch API (Peticiones HTTP)</h2>
+
+<pre>
+// GET
+fetch("https://api.ejemplo.com/datos")
+    .then(respuesta => respuesta.json())
+    .then(datos => console.log(datos))
+    .catch(error => console.log(error));
+
+// POST
+fetch("https://api.ejemplo.com/datos", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        nombre: "Juan",
+        edad: 28
+    })
+})
+.then(respuesta => respuesta.json())
+.then(datos => console.log(datos));
+
+// Async/await (moderno)
+async function obtenerDatos() {
+    try {
+        const respuesta = await fetch("https://api.ejemplo.com/datos");
+        const datos = await respuesta.json();
+        console.log(datos);
+    } catch (error) {
+        console.log(error);
+    }
+}
+</pre>
+
+<h2>🧪 Examen - JavaScript Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Cuál es la diferencia entre == y ===?</p>
+<button onclick="check('tipo','tipo','r1')">== compara valor, === compara tipo</button>
+<button onclick="check('igual','tipo','r1')">Son iguales</button>
+<button onclick="check('sintaxis','tipo','r1')">Diferencia de sintaxis</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Qué es una arrow function?</p>
+<button onclick="check('moderna','moderna','r2')">Función moderna con =></button>
+<button onclick="check('vieja','moderna','r2')">Función antigua</button>
+<button onclick="check('metodo','moderna','r2')">Método de objeto</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Cómo seleccionas un elemento con id?</p>
+<button onclick="check('getElementById','getElement','r3')">getElementById()</button>
+<button onclick="check('getClass','getElement','r3')">getClass()</button>
+<button onclick="check('select','getElement','r3')">select()</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Qué método transforma elementos de un array?</p>
+<button onclick="check('map','map','r4')">map()</button>
+<button onclick="check('filter','map','r4')">filter()</button>
+<button onclick="check('reduce','map','r4')">reduce()</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Para qué sirve async/await?</p>
+<button onclick="check('asincrono','asincrono','r5')">Manejar código asincrónico</button>
+<button onclick="check('sincronico','asincrono','r5')">Código sincrónico</button>
+<button onclick="check('eventos','asincrono','r5')">Manejo de eventos</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+
+</body>
+</html>

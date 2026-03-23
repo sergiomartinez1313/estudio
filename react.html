@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React - Portal IT</title>
+    <link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📚 React - Apuntes Completos</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>Menú</h2>
+            <h3>Navegación</h3>
+            <a href="estudio.html">← Volver</a>
+            <a href="examen-react.html">📝 Examen React</a>
+            
+            <h3>Índice de Apuntes</h3>
+            <a href="#introduccion">Introducción</a>
+            <a href="#componentes">Componentes</a>
+            <a href="#hooks">Hooks</a>
+            <a href="#estado">Estado</a>
+            <a href="#efectos">Efectos</a>
+            <a href="#routing">Routing</a>
+        </aside>
+
+        <main class="content">
+
+<h1>React - Framework JavaScript Moderno</h1>
+<p>React es una librería de JavaScript para construir interfaces de usuario con componentes reutilizables y una gestión de estado eficiente.</p>
+
+<div class="stats">
+  <div class="stat-box">
+    <h3>Componentes</h3>
+    <p>Elementos base</p>
+  </div>
+  <div class="stat-box">
+    <h3>Hooks</h3>
+    <p>Funcionalidades</p>
+  </div>
+  <div class="stat-box">
+    <h3>JSX</h3>
+    <p>Sintaxis hybrid</p>
+  </div>
+</div>
+
+<section id="introduccion">
+<h2>1. Introducción a React</h2>
+
+<h3>¿Qué es React?</h3>
+<p>React es una librería desarrollada por Facebook que permite crear interfaces dinámicas y responsivas. Utiliza componentes reutilizables y una forma eficiente de actualizar el DOM.</p>
+
+<h3>Características principales:</h3>
+<ul>
+    <li><strong>Componentes:</strong> Bloques reutilizables de UI</li>
+    <li><strong>JSX:</strong> Sintaxis que mezcla JavaScript y HTML</li>
+    <li><strong>Virtual DOM:</strong> Optimización de renderizado</li>
+    <li><strong>Unidireccional:</strong> Flujo de datos de arriba hacia abajo</li>
+    <li><strong>Hooks:</strong> Funcionalidades en componentes funcionales</li>
+</ul>
+
+<h3>Instalación y setup:</h3>
+<pre><code># Con Create React App (CRA)
+npx create-react-app mi-proyecto
+cd mi-proyecto
+npm start
+
+# Con Vite (más rápido)
+npm create vite@latest mi-proyecto -- --template react
+cd mi-proyecto
+npm install
+npm run dev</code></pre>
+</section>
+
+<section id="componentes">
+<h2>2. Componentes en React</h2>
+
+<h3>Componentes Funcionales</h3>
+<p>Son funciones JavaScript que retornan JSX. Son la forma moderna de crear componentes.</p>
+
+<pre><code>// Componente funcional simple
+function Saludo() {
+  return <h1>¡Hola, mundo!</h1>;
+}
+
+// Con props
+function Saludo({ nombre }) {
+  return <h1>¡Hola, {nombre}!</h1>;
+}
+
+// Uso
+<Saludo nombre="Juan" /></code></pre>
+
+<h3>Componentes de Clase (Legacy)</h3>
+<p>Forma antigua pero todavía válida de crear componentes.</p>
+
+<pre><code>import React from 'react';
+
+class Saludo extends React.Component {
+  render() {
+    return <h1>¡Hola, {this.props.nombre}!</h1>;
+  }
+}
+
+// Uso
+<Saludo nombre="María" /></code></pre>
+
+<h3>Props (Propiedades)</h3>
+<p>Son argumentos pasados a componentes, similares a parámetros de función.</p>
+
+<pre><code>function Tarjeta({ titulo, descripcion, imagen }) {
+  return (
+    <div className="tarjeta">
+      <img src={imagen} alt="imagen" />
+      <h2>{titulo}</h2>
+      <p>{descripcion}</p>
+    </div>
+  );
+}
+
+// Uso
+<Tarjeta 
+  titulo="Mi Tarjeta"
+  descripcion="Descripción del contenido"
+  imagen="imagen.jpg"
+/></code></pre>
+
+<h3>Props Destructuradas</h3>
+<p>Forma elegante de acceder a múltiples props.</p>
+
+<pre><code>// Forma 1: Directa
+function Producto({ id, nombre, precio, stock }) {
+  return <div>{nombre} - ${precio}</div>;
+}
+
+// Forma 2: Con rest
+function Componente({ tema, ...props }) {
+  return <div className={tema} {...props}></div>;
+}</code></pre>
+</section>
+
+<section id="hooks">
+<h2>3. Hooks en React</h2>
+
+<h3>¿Qué son los Hooks?</h3>
+<p>Funciones especiales que permiten "engancharse" a características de React en componentes funcionales.</p>
+
+<h3>useState - Estado</h3>
+<p>Hook fundamental para manejar estado en componentes funcionales.</p>
+<pre><code>import { useState } from 'react';
+
+<h3>useState con Objetos</h3>
+<pre><code>function Formulario() {
+  const [formulario, setFormulario] = useState({
+    nombre: '',
+    email: '',
+    edad: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormulario({
+      ...formulario,
+      [name]: value
+    });
+  };
+
+  return (
+    <form>
+      <input 
+        name="nombre"
+        value={formulario.nombre}
+        onChange={handleChange}
+      />
+    </form>
+  );
+}</code></pre>
+
+<h3>useCallback - Memoización de Funciones</h3>
+<p>Memoriza una función para evitar recrearla en cada render.</p>
+
+<pre><code>import { useCallback } from 'react';
+
+function ListaTareas() {
+  const [tareas, setTareas] = useState([]);
+
+  const agregarTarea = useCallback((tarea) => {
+    setTareas([...tareas, tarea]);
+  }, [tareas]);
+
+  return <TareaForm onAgregar={agregarTarea} />;
+}</code></pre>
+
+<h3>useMemo - Memoización de Valores</h3>
+<p>Memoriza el resultado de un cálculo costoso.</p>
+
+<pre><code>import { useMemo } from 'react';
+
+function ListaOrdenada({ items }) {
+  const itemsOrdenados = useMemo(() => {
+    console.log('Ordenando...');
+    return [...items].sort();
+  }, [items]);
+
+  return (
+    <ul>
+      {itemsOrdenados.map((item) => <li key={item}>{item}</li>)}
+    </ul>
+  );
+}</code></pre>
+
+<h3>useRef - Referencias</h3>
+<p>Crear referencias a elementos del DOM o valores que persisten entre renders.</p>
+
+<pre><code>import { useRef } from 'react';
+
+function InputFocusable() {
+  const inputRef = useRef(null);
+
+  const handleFocus = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleFocus}>Enfocar input</button>
+    </>
+  );
+}</code></pre>
+
+<h3>useContext - Contexto Global</h3>
+<p>Pasar datos sin prop drilling.</p>
+
+<pre><code>import { createContext, useContext } from 'react';
+
+// Crear contexto
+const TemaContext = createContext();
+
+// Provider
+function TemaProvider({ children }) {
+  const [tema, setTema] = useState('claro');
+
+  return (
+    <TemaContext.Provider value={{ tema, setTema }}>
+      {children}
+    </TemaContext.Provider>
+  );
+}
+
+// Usar contexto
+function Componente() {
+  const { tema } = useContext(TemaContext);
+  return <div className={tema}>Contenido</div>;
+}</code></pre>
+</section>
+
+<section id="estado">
+<h2>4. Manejo de Estado</h2>
+
+<h3>Estado vs Props</h3>
+<ul>
+    <li><strong>Props:</strong> Datos que vienen del padre, inmutables</li>
+    <li><strong>Estado:</strong> Datos locales del componente, mutables vía setState/useState</li>
+</ul>
+
+<h3>Formularios en React</h3>
+<p>Controlados (React maneja el valor) vs No controlados (DOM maneja el valor).</p>
+
+<pre><code>// Formulario Controlado
+function FormularioControlado() {
+  const [input, setInput] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Enviado:', input);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+
+// Formulario No Controlado
+function FormularioNoControlado() {
+  const inputRef = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Enviado:', inputRef.current.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input ref={inputRef} />
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}</code></pre>
+
+<h3>Lifting State Up</h3>
+<p>Cuando dos componentes necesitan compartir estado, subirlo al padre común.</p>
+
+<pre><code>function Padre() {
+  const [mensaje, setMensaje] = useState('');
+
+  return (
+    <>
+      <Hijo1 mensaje={mensaje} />
+      <Hijo2 onCambiar={setMensaje} />
+    </>
+  );
+}
+
+function Hijo1({ mensaje }) {
+  return <p>{mensaje}</p>;
+}
+
+function Hijo2({ onCambiar }) {
+  return (
+    <input onChange={(e) => onCambiar(e.target.value)} />
+  );
+}</code></pre>
+</section>
+
+<section id="efectos">
+<h2>5. Efectos Secundarios (useEffect)</h2>
+
+<p>useEffect permite ejecutar código después de que el componente se renderiza.</p>
+
+<h3>useEffect Básico</h3>
+<pre><code>import { useEffect } from 'react';
+
+function Componente() {
+  useEffect(() => {
+    console.log('Componente montado o actualizado');
+  });
+
+  return <div>Contenido</div>;
+}</code></pre>
+
+<h3>userEffect con Dependencias</h3>
+<pre><code>// Sin dependencias: se ejecuta cada render
+useEffect(() => {
+  console.log('Cada render');
+});
+
+// Array vacío: se ejecuta solo al montar
+useEffect(() => {
+  console.log('Solo al montar');
+}, []);
+
+// Con dependencias: se ejecuta si las dependencias cambian
+useEffect(() => {
+  console.log('Cambió contador');
+}, [contador]);</code></pre>
+
+<h3>Cleanup en useEffect</h3>
+<p>Limpiar efectos cuando el componente se desmonta.</p>
+
+<pre><code>function Temporizador() {
+  const [segundos, setSegundos] = useState(0);
+
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setSegundos(s => s + 1);
+    }, 1000);
+
+    // Cleanup: se ejecuta al desmontar
+    return () => clearInterval(intervalo);
+  }, []);
+
+  return <p>Segundos: {segundos}</p>;
+}</code></pre>
+
+<h3>API Calls con useEffect</h3>
+<pre><code>import { useState, useEffect } from 'react';
+
+function Usuario({ id }) {
+  const [usuario, setUsuario] = useState(null);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    setCargando(true);
+    fetch(`/api/usuarios/${id}`)
+      .then(res => res.json())
+      .then(datos => {
+        setUsuario(datos);
+        setCargando(false);
+      });
+  }, [id]);
+
+  if (cargando) return <p>Cargando...</p>;
+
+  return (
+    <div>
+      <h1>{usuario.nombre}</h1>
+      <p>{usuario.email}</p>
+    </div>
+  );
+}</code></pre>
+</section>
+
+<section id="routing">
+<h2>6. Routing con React Router</h2>
+
+<p>React Router permite crear navegación entre páginas sin recargar.</p>
+
+<h3>Instalación</h3>
+<pre><code>npm install react-router-dom</code></pre>
+
+<h3>Setup Básico</h3>
+<pre><code>import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <nav>
+        <Link to="/">Inicio</Link>
+        <Link to="/acerca">Acerca de</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/acerca" element={<Acerca />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}</code></pre>
+
+<h3>Rutas Dinámicas</h3>
+<pre><code>import { useParams } from 'react-router-dom';
+
+function Producto() {
+  const { id } = useParams();
+
+  return <h1>Producto {id}</h1>;
+}
+
+// En rutas
+<Route path="/producto/:id" element={<Producto />} /></code></pre>
+
+<h3>Navigate - Navegación Programática</h3>
+<pre><code>import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+  const navigate = useNavigate();
+
+  const handleLogin = (credenciales) => {
+    // Validar credenciales...
+    navigate('/dashboard');
+  };
+
+  return <form onSubmit={handleLogin}>...</form>;
+}</code></pre>
+
+<h3>Protected Routes</h3>
+<pre><code>function ProtectedRoute({ element, isAutenticado }) {
+  return isAutenticado ? element : <Navigate to="/login" />;
+}
+
+// Uso
+<Route 
+  path="/admin" 
+  element={<ProtectedRoute element={<Admin />} isAutenticado={true} />}
+/></code></pre>
+</section>
+
+<h2>Buenas Prácticas</h2>
+<ul>
+    <li>Mantener componentes pequeños y enfocados</li>
+    <li>Usar hooks en lugar de clases cuando sea posible</li>
+    <li>Memoizar componentes cuando sea necesario (React.memo, useMemo)</li>
+    <li>Evitar crear funciones en el render (usar useCallback)</li>
+    <li>Separar lógica en custom hooks</li>
+    <li>Usar TypeScript para mejor tipado</li>
+    <li>Testing: Jest + React Testing Library</li>
+    <li>Performance: Code splitting con lazy y Suspense</li>
+</ul>
+
+<h2>Recursos Recomendados</h2>
+<ul>
+    <li><strong>Documentación oficial:</strong> <a href="https://react.dev">react.dev</a></li>
+    <li><strong>Cursos:</strong> React Docs, Udemy, Coursera</li>
+    <li><strong>Comunidad:</strong> Stack Overflow, Reddit r/reactjs</li>
+    <li><strong>Librerías populares:</strong> Redux, Next.js, Remix</li>
+</ul>
+
+        </main>
+    </div>
+</body>
+<script src="chatbot.js"></script>
+</html>

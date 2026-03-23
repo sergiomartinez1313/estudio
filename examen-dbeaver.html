@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen DBeaver</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen DBeaver</h1>
+
+<div class="card">
+<p>¿Qué es DBeaver?</p>
+<button onclick="check('manager','manager','r1')">Gestor de bases de datos</button>
+<button onclick="check('editor','manager','r1')">Editor de código</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Cómo conectas a una base de datos en DBeaver?</p>
+<button onclick="check('newconnection','newconnection','r2')">Nueva conexión</button>
+<button onclick="check('importar','newconnection','r2')">Importar archivo</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Qué comando SQL crea una tabla?</p>
+<button onclick="check('create','create','r3')">CREATE TABLE</button>
+<button onclick="check('select','create','r3')">SELECT</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Cómo insertas datos en una tabla?</p>
+<button onclick="check('insert','insert','r4')">INSERT INTO</button>
+<button onclick="check('update','insert','r4')">UPDATE</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Para qué sirve el comando SELECT?</p>
+<button onclick="check('consultar','consultar','r5')">Consultar datos</button>
+<button onclick="check('eliminar','consultar','r5')">Eliminar datos</button>
+<p id="r5"></p>
+</div>
+
+</div>
+
+</body>
+</html>

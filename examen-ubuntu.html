@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen Ubuntu</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen Ubuntu</h1>
+
+<div class="card">
+<p>¿Qué comando lista los archivos de una carpeta?</p>
+<button onclick="check('ls','ls','r1')">ls</button>
+<button onclick="check('cat','ls','r1')">cat</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Cómo cambias de directorio?</p>
+<button onclick="check('cd','cd','r2')">cd</button>
+<button onclick="check('pwd','cd','r2')">pwd</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Qué comando crea una carpeta?</p>
+<button onclick="check('mkdir','mkdir','r3')">mkdir</button>
+<button onclick="check('touch','mkdir','r3')">touch</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Qué comando elimina un archivo?</p>
+<button onclick="check('rm','rm','r4')">rm</button>
+<button onclick="check('mv','rm','r4')">mv</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Qué comando muestra la ruta actual?</p>
+<button onclick="check('pwd','pwd','r5')">pwd</button>
+<button onclick="check('ls','pwd','r5')">ls</button>
+<p id="r5"></p>
+</div>
+
+<div class="card">
+<p>¿Cuál es el gestor de paquetes en Ubuntu?</p>
+<button onclick="check('apt','apt','r6')">apt</button>
+<button onclick="check('npm','apt','r6')">npm</button>
+<p id="r6"></p>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>API REST</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-api { font-size: 18px; line-height: 1.8; }
+  .content-api h2 { font-size: 28px; margin-top: 30px; }
+  .content-api h3 { font-size: 24px; margin-top: 20px; }
+  .content-api p { font-size: 18px; }
+  .content-api pre { font-size: 16px; }
+  .content-api button { font-size: 16px; padding: 12px 18px; }
+  .content-api li { font-size: 18px; margin: 8px 0; }
+  .content-api ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-api">
+
+<h1>🔗 API REST - Arquitectura Web Profesional</h1>
+
+<p>REST (Representational State Transfer) es un estilo arquitectónico para diseñar APIs web. Las APIs REST son la forma estándar de comunicación entre aplicaciones en internet. Son, escalables y fáciles de entender.</p>
+
+<h2>🎯 Conceptos de REST</h2>
+
+<ul>
+<li><strong>Resource (Recurso):</strong> Objeto que representa datos (usuario, producto, etc.)</li>
+<li><strong>Endpoint:</strong> URL donde accedes a un recurso</li>
+<li><strong>HTTP Methods:</strong> GET, POST, PUT, DELETE, PATCH</li>
+<li><strong>Status Codes:</strong> Códigos que indican resultado de la operación</li>
+<li><strong>JSON:</strong> Formato de intercambio de datos</li>
+</ul>
+
+<h2>📡 Métodos HTTP</h2>
+
+<ul>
+<li><strong>GET:</strong> Obtener datos (no modifica)</li>
+<li><strong>POST:</strong> Crear nuevo recurso</li>
+<li><strong>PUT:</strong> Actualizar recurso completo</li>
+<li><strong>PATCH:</strong> Actualizar recurso parcial</li>
+<li><strong>DELETE:</strong> Eliminar recurso</li>
+<li><strong>HEAD:</strong> Como GET pero sin body</li>
+</ul>
+
+<h2>🎯 Status Codes HTTP</h2>
+
+<ul>
+<li><strong>2xx (Éxito)</strong>
+  <ul>
+    <li>200: OK - Éxito general</li>
+    <li>201: Created - Recurso creado</li>
+    <li>204: No Content - Sin contenido que retornar</li>
+  </ul>
+</li>
+<li><strong>3xx (Redirección)</strong>
+  <ul>
+    <li>301: Moved Permanently</li>
+    <li>304: Not Modified</li>
+  </ul>
+</li>
+<li><strong>4xx (Error del cliente)</strong>
+  <ul>
+    <li>400: Bad Request - Solicitud inválida</li>
+    <li>401: Unauthorized - No autenticado</li>
+    <li>403: Forbidden - Sin permisos</li>
+    <li>404: Not Found - Recurso no existe</li>
+  </ul>
+</li>
+<li><strong>5xx (Error del servidor)</strong>
+  <ul>
+    <li>500: Internal Server Error</li>
+    <li>503: Service Unavailable</li>
+  </ul>
+</li>
+</ul>
+
+<h2>🏗️ Estructura y Endpoints</h2>
+
+<pre>
+# Estructura REST profesional
+GET    /api/v1/usuarios              # Listar todos
+GET    /api/v1/usuarios/123          # Obtener uno
+POST   /api/v1/usuarios              # Crear
+PUT    /api/v1/usuarios/123          # Actualizar completo
+PATCH  /api/v1/usuarios/123          # Actualizar parcial
+DELETE /api/v1/usuarios/123          # Eliminar
+
+# Con categorías
+GET    /api/v1/usuarios/123/posts    # Posts de usuario 123
+POST   /api/v1/usuarios/123/posts    # Crear post en usuario 123
+</pre>
+
+<h2>📨 Peticiones y Respuestas</h2>
+
+<h3>GET - Obtener datos</h3>
+<pre>
+# Request
+GET /api/v1/usuarios/1
+Authorization: Bearer token123
+
+# Response
+{
+  "id": 1,
+  "nombre": "Juan",
+  "edad": 28,
+  "email": "juan@example.com"
+}
+</pre>
+
+<h3>POST - Crear recurso</h3>
+<pre>
+# Request
+POST /api/v1/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "María",
+  "edad": 25,
+  "email": "maria@example.com"
+}
+
+# Response (201 Created)
+{
+  "id": 2,
+  "nombre": "María",
+  "edad": 25,
+  "email": "maria@example.com"
+}
+</pre>
+
+<h3>PUT - Actualizar completo</h3>
+<pre>
+# Request
+PUT /api/v1/usuarios/1
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "edad": 29,
+  "email": "juan.perez@example.com"
+}
+
+# Response (200 OK)
+{
+  "id": 1,
+  "nombre": "Juan Pérez",
+  "edad": 29,
+  "email": "juan.perez@example.com"
+}
+</pre>
+
+<h3>DELETE - Eliminar</h3>
+<pre>
+# Request
+DELETE /api/v1/usuarios/1
+
+# Response (204 No Content)
+</pre>
+
+<h2>🔐 Autenticación</h2>
+
+<h3>Bearer Token</h3>
+<pre>
+# Header
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# Verificación en servidor
+const token = req.headers['authorization'].split(' ')[1];
+const decoded = jwt.verify(token, secret);
+</pre>
+
+<h3>API Key</h3>
+<pre>
+# URL parameter
+GET /api/v1/usuarios?api_key=sk_test_123456
+
+# Header
+X-API-Key: sk_test_123456
+</pre>
+
+<h2>✅ Validación de Datos</h2>
+
+<pre>
+# Validar en servidor
+app.post('/usuarios', (req, res) => {
+    const { nombre, email, edad } = req.body;
+    
+    // Validar campos
+    if (!nombre || nombre.length < 3) {
+        return res.status(400).json({
+            error: "Nombre inválido"
+        });
+    }
+    
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({
+            error: "Email inválido"
+        });
+    }
+    
+    if (edad < 0 || edad > 150) {
+        return res.status(400).json({
+            error: "Edad inválida"
+        });
+    }
+    
+    // Si todo es válido, procesar
+    res.status(201).json({ id: 1, nombre, email, edad });
+});
+</pre>
+
+<h2>📚 Ejemplo Completo - API de Tareas</h2>
+
+<pre>
+# app.py (Flask)
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+tareas = []
+
+@app.route('/api/v1/tareas', methods=['GET'])
+def obtener_tareas():
+    return jsonify(tareas)
+
+@app.route('/api/v1/tareas', methods=['POST'])
+def crear_tarea():
+    data = request.json
+    if not data or 'titulo' not in data:
+        return jsonify({'error': 'título requerido'}), 400
+    
+    tarea = {
+        'id': len(tareas) + 1,
+        'titulo': data['titulo'],
+        'completada': False
+    }
+    tareas.append(tarea)
+    return jsonify(tarea), 201
+
+@app.route('/api/v1/tareas/<int:id>', methods=['GET'])
+def obtener_tarea(id):
+    for tarea in tareas:
+        if tarea['id'] == id:
+            return jsonify(tarea)
+    return jsonify({'error': 'no encontrada'}), 404
+
+@app.route('/api/v1/tareas/<int:id>', methods=['DELETE'])
+def eliminar_tarea(id):
+    global tareas
+    tareas = [t for t in tareas if t['id'] != id]
+    return '', 204
+</pre>
+
+<h2>🧪 Examen - API REST Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué significa REST?</p>
+<button onclick="check('transfer','transfer','r1')">Representational State Transfer</button>
+<button onclick="check('remote','transfer','r1')">Remote EST</button>
+<button onclick="check('real','transfer','r1')">Real EST</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Qué status code indica éxito?</p>
+<button onclick="check('200','200','r2')">200</button>
+<button onclick="check('400','200','r2')">400</button>
+<button onclick="check('500','200','r2')">500</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Qué método GET hace?</p>
+<button onclick="check('obtener','obtener','r3')">Obtener datos</button>
+<button onclick="check('crear','obtener','r3')">Crear datos</button>
+<button onclick="check('eliminar','obtener','r3')">Eliminar datos</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Qué método crea un nuevo recurso?</p>
+<button onclick="check('POST','POST','r4')">POST</button>
+<button onclick="check('GET','POST','r4')">GET</button>
+<button onclick="check('PUT','POST','r4')">PUT</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Status code para recurso no encontrado?</p>
+<button onclick="check('404','404','r5')">404</button>
+<button onclick="check('400','404','r5')">400</button>
+<button onclick="check('500','404','r5')">500</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+
+</body>
+</html>

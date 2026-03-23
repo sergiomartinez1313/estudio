@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Código - Desafíos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-nav {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-nav:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .challenge-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .xp-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 350px 1fr 1fr;
+            gap: 10px;
+            height: calc(100vh - 54px);
+            padding: 10px;
+        }
+
+        /* Panel de Desafío */
+        .challenge-panel {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-title {
+            background: #f5f5f5;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .challenge-info {
+            margin-bottom: 15px;
+        }
+
+        .challenge-info h3 {
+            font-size: 14px;
+            color: #1e88e5;
+            margin-bottom: 8px;
+        }
+
+        .challenge-info p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .difficulty-badge.principiante {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .difficulty-badge.intermedio {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .difficulty-badge.avanzado {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .enunciado {
+            background: #f9f9fb;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #1e88e5;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #333;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .enunciado h1, .enunciado h2, .enunciado h3 {
+            font-size: 12px;
+            margin: 8px 0 4px 0;
+            color: #1e88e5;
+        }
+
+        .enunciado ul, .enunciado ol {
+            margin-left: 15px;
+            margin-bottom: 8px;
+        }
+
+        .enunciado li {
+            margin-bottom: 4px;
+        }
+
+        .enunciado code {
+            background: #e8f5e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+
+        .enunciado pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 11px;
+            margin: 8px 0;
+        }
+
+        .btn-finish-challenge {
+            width: 100%;
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-finish-challenge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-finish-challenge:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .editor-section {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .editor-title {
+            background: #1e88e5;
+            color: white;
+            padding: 10px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        #codeEditor {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: none;
+            background: #f9f9fb;
+            color: #333;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        #preview {
+            flex: 1;
+            border: none;
+            background: white;
+            overflow: auto;
+        }
+
+        .no-challenge {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 300px 1fr 1fr;
+                gap: 5px;
+                padding: 5px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .challenge-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <button class="btn-nav" onclick="window.location.href='estudio.html'">← Menú Principal</button>
+            <span class="challenge-title" id="challengeTitle">Editor de Código</span>
+        </div>
+        <span class="xp-badge" id="xpDisplay" style="display:none;">⭐ <span id="xpAmount">0</span> XP</span>
+    </div>
+
+    <div class="container">
+        <!-- Panel Desafío -->
+        <div class="challenge-panel" id="challengePanel">
+            <div class="panel-title">📌 DESAFÍO</div>
+            <div class="panel-content" id="challengeContent">
+                <div class="no-challenge">Selecciona un desafío desde el menú principal</div>
+            </div>
+        </div>
+
+        <!-- Editor -->
+        <div class="editor-section">
+            <div class="editor-title">✏️ CÓDIGO</div>
+            <textarea id="codeEditor" placeholder="Escribe tu HTML/CSS/JavaScript aquí..."></textarea>
+        </div>
+
+        <!-- Preview -->
+        <div class="editor-section">
+            <div class="editor-title">👁 RESULTADO</div>
+            <iframe id="preview" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+    </div>
+
+    <script src="desafios.js"></script>
+    <script>
+        const codeEditor = document.getElementById('codeEditor');
+        const preview = document.getElementById('preview');
+        let currentChallenge = null;
+
+        // Ejecutar código en tiempo real
+        codeEditor.addEventListener('input', runCode);
+
+        function runCode() {
+            const code = codeEditor.value;
+            const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
+  </style>
+</head>
+<body>
+${code}
+</body>
+</html>`;
+            
+            try {
+                preview.srcdoc = html;
+            } catch (e) {
+                preview.srcdoc = '<p style="color: red;">Error: ' + e.message + '</p>';
+            }
+        }
+
+        // Cargar desafío desde URL
+        function loadChallenge() {
+            const params = new URLSearchParams(window.location.search);
+            const challengeId = params.get('challenge');
+            
+            if (challengeId && typeof getDesafioById !== 'undefined') {
+                currentChallenge = getDesafioById(challengeId);
+                if (currentChallenge) {
+                    renderChallenge();
+                }
+            }
+        }
+
+        function renderChallenge() {
+            if (!currentChallenge) return;
+
+            const title = document.getElementById('challengeTitle');
+            const xpDisplay = document.getElementById('xpDisplay');
+            const xpAmount = document.getElementById('xpAmount');
+            const content = document.getElementById('challengeContent');
+
+            title.textContent = `${currentChallenge.titulo}`;
+            xpAmount.textContent = currentChallenge.xp;
+            xpDisplay.style.display = 'flex';
+            xpDisplay.style.alignItems = 'center';
+            xpDisplay.style.gap = '5px';
+
+            const diffClass = currentChallenge.dificultad.toLowerCase();
+            
+            content.innerHTML = `
+                <div class="challenge-info">
+                    <h3>${currentChallenge.area}</h3>
+                    <span class="difficulty-badge ${diffClass}">${currentChallenge.dificultad}</span>
+                </div>
+                
+                <div class="enunciado" id="enunciadoContent">
+                    ${markdownToHtml(currentChallenge.enunciado)}
+                </div>
+                
+                <button class="btn-finish-challenge" onclick="finishChallenge()">
+                    ✅ Terminar Prueba
+                </button>
+            `;
+        }
+
+        function markdownToHtml(md) {
+            let html = md;
+            // Convertir headers
+            html = html.replace(/### (.*?)\n/g, '<h3>$1</h3>');
+            html = html.replace(/## (.*?)\n/g, '<h2>$1</h2>');
+            html = html.replace(/# (.*?)\n/g, '<h1>$1</h1>');
+            // Convertir listas
+            html = html.replace(/\n- (.*?)\n/g, '\n<li>$1</li>\n');
+            html = html.replace(/(\n<li>.*?<\/li>)+/g, '<ul>$&</ul>');
+            // Convertir código inline
+            html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+            // Convertir código bloques
+            html = html.replace(/```[\s\S]*?```/g, (match) => {
+                const code = match.replace(/```/g, '');
+                return '<pre>' + code + '</pre>';
+            });
+            return html;
+        }
+
+        function finishChallenge() {
+            if (!currentChallenge) {
+                alert('No hay desafío activo');
+                return;
+            }
+
+            // Crear modal de confirmación atractivo
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+            `;
+
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                padding: 40px;
+                border-radius: 12px;
+                text-align: center;
+                max-width: 400px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                animation: slideUp 0.3s ease;
+            `;
+
+            const icon = document.createElement('div');
+            icon.style.cssText = `
+                font-size: 60px;
+                margin-bottom: 20px;
+            `;
+            icon.textContent = '🎉';
+
+            const title = document.createElement('h2');
+            title.style.cssText = `
+                color: #333;
+                margin: 20px 0;
+                font-size: 24px;
+            `;
+            title.textContent = '¡Desafío Completado!';
+
+            const xpText = document.createElement('p');
+            xpText.style.cssText = `
+                color: #1e88e5;
+                font-size: 32px;
+                font-weight: 700;
+                margin: 15px 0;
+            `;
+            xpText.textContent = `+${currentChallenge.xp} XP`;
+
+            const message = document.createElement('p');
+            message.style.cssText = `
+                color: #666;
+                font-size: 14px;
+                line-height: 1.6;
+                margin: 15px 0;
+            `;
+            message.textContent = `Has ganado experiencia en ${currentChallenge.area}. Tu progreso se ha guardado automáticamente.`;
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = `
+                display: flex;
+                gap: 10px;
+                margin-top: 30px;
+            `;
+
+            const confirmBtn = document.createElement('button');
+            confirmBtn.style.cssText = `
+                flex: 1;
+                background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.3s;
+            `;
+            confirmBtn.textContent = '✓ Volver al Portal';
+            confirmBtn.onmouseover = () => confirmBtn.style.transform = 'scale(1.05)';
+            confirmBtn.onmouseout = () => confirmBtn.style.transform = '';
+            confirmBtn.onclick = () => {
+                // Marcar desafío como completado
+                if (typeof parent.completeChallenge === 'function') {
+                    parent.completeChallenge(
+                        currentChallenge.id, 
+                        currentChallenge.dificultad.toLowerCase(), 
+                        currentChallenge.area
+                    );
+                }
+                if (typeof parent.addXP === 'function') {
+                    parent.addXP(currentChallenge.xp);
+                }
+                window.location.href = 'estudio.html';
+            };
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.style.cssText = `
+                flex: 1;
+                background: #f0f0f0;
+                color: #333;
+                border: 1px solid #ddd;
+                padding: 12px;
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.3s;
+            `;
+            cancelBtn.textContent = '↻ Seguir Practicando';
+            cancelBtn.onmouseover = () => cancelBtn.style.background = '#e0e0e0';
+            cancelBtn.onmouseout = () => cancelBtn.style.background = '#f0f0f0';
+            cancelBtn.onclick = () => document.body.removeChild(modal);
+
+            buttonContainer.appendChild(confirmBtn);
+            buttonContainer.appendChild(cancelBtn);
+
+            modalContent.appendChild(icon);
+            modalContent.appendChild(title);
+            modalContent.appendChild(xpText);
+            modalContent.appendChild(message);
+            modalContent.appendChild(buttonContainer);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+
+            // Agregar estilos de animación
+            if (!document.getElementById('modal-styles')) {
+                const style = document.createElement('style');
+                style.id = 'modal-styles';
+                style.textContent = `
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { 
+                            opacity: 0;
+                            transform: translateY(30px);
+                        }
+                        to { 
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Ejecutar al cargar la página
+        window.addEventListener('load', () => {
+            loadChallenge();
+            runCode();
+        });
+
+        // Ctrl+Enter también execute
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                runCode();
+            }
+        });
+    </script>
+
+    <script src="chatbot.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            if (typeof crearChatbot === 'function') {
+                crearChatbot();
+            }
+        });
+    </script>
+</body>
+</html>

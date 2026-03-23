@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Avanzado - Portal IT</title>
+    <link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📚 SQL Avanzado - Apuntes Completos</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>Menú</h2>
+            <h3>Navegación</h3>
+            <a href="estudio.html">← Volver</a>
+            <a href="examen-sql.html">📝 Examen SQL</a>
+            
+            <h3>Índice de Apuntes</h3>
+            <a href="#introduccion">Introducción</a>
+            <a href="#select">SELECT Avanzado</a>
+            <a href="#joins">JOINS</a>
+            <a href="#aggregates">Agregados</a>
+            <a href="#subconsultas">Subconsultas</a>
+            <a href="#procedimientos">Procedimientos</a>
+        </aside>
+
+        <main class="content">
+
+<h1>SQL Avanzado - Queries Complejas</h1>
+<p>SQL Avanzado te permite trabajar con queries complejas, optimización de bases de datos y operaciones sofisticadas.</p>
+
+<div class="stats">
+  <div class="stat-box">
+    <h3>Consultas</h3>
+    <p>Queries avanzadas</p>
+  </div>
+  <div class="stat-box">
+    <h3>Índices</h3>
+    <p>Optimización</p>
+  </div>
+  <div class="stat-box">
+    <h3>Transacciones</h3>
+    <p>Integridad de datos</p>
+  </div>
+</div>
+
+<section id="introduccion">
+<h2>1. Fundamentos SQL Avanzado</h2>
+
+<h3>Diferencia entre SQL Básico y Avanzado</h3>
+<ul>
+    <li><strong>Básico:</strong> SELECT, INSERT, UPDATE, DELETE simples</li>
+    <li><strong>Avanzado:</strong> JOINS, subconsultas, window functions, índices, transacciones</li>
+</ul>
+
+<h3>Entorno típico</h3>
+<ul>
+    <li>MySQL / MariaDB</li>
+    <li>PostgreSQL</li>
+    <li>SQL Server (Microsoft)</li>
+    <li>SQLite</li>
+    <li>Oracle Database</li>
+</ul>
+</section>
+
+<section id="select">
+<h2>2. SELECT Avanzado</h2>
+
+<h3>SELECT con DISTINCT</h3>
+<p>Obtener valores únicos sin duplicados.</p>
+
+<pre><code>-- Obtener todas las ciudades diferentes
+SELECT DISTINCT ciudad FROM clientes;
+
+-- Con múltiples columnas
+SELECT DISTINCT ciudad, pais FROM clientes;</code></pre>
+
+<h3>SELECT con WHERE complejo</h3>
+<pre><code>-- Múltiples condiciones
+SELECT * FROM productos 
+WHERE precio > 100 
+  AND categoria = 'Electrónica' 
+  OR descuento > 0.2;
+
+-- IN (pertenencia)
+SELECT * FROM empleados 
+WHERE departamento IN ('Ventas', 'IT', 'Marketing');
+
+-- BETWEEN (rango)
+SELECT * FROM pedidos 
+WHERE fecha BETWEEN '2024-01-01' AND '2024-12-31';
+
+-- LIKE (búsqueda de texto)
+SELECT * FROM clientes 
+WHERE nombre LIKE 'Juan%';  -- Comienza con Juan
+SELECT * FROM clientes 
+WHERE email LIKE '%@gmail.com';  -- Termina con @gmail.com</code></pre>
+
+<h3>ORDER BY y LIMIT</h3>
+<pre><code>-- Ordenar por una columna
+SELECT * FROM productos 
+ORDER BY precio DESC;  -- DESC = descendente, ASC = ascendente
+
+-- Múltiples columnas
+SELECT * FROM ventas 
+ORDER BY fecha DESC, monto ASC;
+
+-- LIMIT (limitar resultados)
+SELECT * FROM productos 
+ORDER BY ventas DESC 
+LIMIT 10;  -- Top 10 productos más vendidos
+
+-- LIMIT con OFFSET
+SELECT * FROM usuarios 
+LIMIT 10 OFFSET 20;  -- Registros 21 a 30 (paginación)</code></pre>
+
+<h3>GROUP BY y HAVING</h3>
+<pre><code>-- Agrupar por departamento
+SELECT departamento, COUNT(*) as empleados 
+FROM empleados 
+GROUP BY departamento;
+
+-- Agrupar con múltiples columnas
+SELECT ciudad, pais, COUNT(*) as total 
+FROM clientes 
+GROUP BY ciudad, pais;
+
+-- HAVING (filtro después de GROUP BY)
+SELECT departamento, AVG(salario) as salario_promedio 
+FROM empleados 
+GROUP BY departamento 
+HAVING AVG(salario) > 50000;</code></pre>
+</section>
+
+<section id="joins">
+<h2>3. JOINS - Unir Tablas</h2>
+
+<h3>INNER JOIN</h3>
+<p>Retorna solo registros que coinciden en ambas tablas.</p>
+
+<pre><code>SELECT p.nombre, c.nombre as cliente 
+FROM pedidos p 
+INNER JOIN clientes c ON p.cliente_id = c.id;</code></pre>
+
+<h3>LEFT JOIN (LEFT OUTER JOIN)</h3>
+<p>Todos los registros de la izquierda + coincidencias de la derecha.</p>
+
+<pre><code>SELECT c.nombre, COUNT(p.id) as cantidad_pedidos 
+FROM clientes c 
+LEFT JOIN pedidos p ON c.id = p.cliente_id 
+GROUP BY c.id;</code></pre>
+
+<h3>RIGHT JOIN (RIGHT OUTER JOIN)</h3>
+<p>Todos los registros de la derecha + coincidencias de la izquierda.</p>
+
+<pre><code>SELECT c.nombre, p.fecha 
+FROM clientes c 
+RIGHT JOIN pedidos p ON c.id = p.cliente_id;</code></pre>
+
+<h3>FULL OUTER JOIN</h3>
+<p>Todos los registros de ambas tablas (no soportado en MySQL).</p>
+
+<pre><code>-- MySQL: simular con UNION
+SELECT c.nombre, p.fecha 
+FROM clientes c 
+LEFT JOIN pedidos p ON c.id = p.cliente_id 
+UNION 
+SELECT c.nombre, p.fecha 
+FROM clientes c 
+RIGHT JOIN pedidos p ON c.id = p.cliente_id;</code></pre>
+
+<h3>CROSS JOIN</h3>
+<p>Producto cartesiano: cada fila de la izquierda con cada fila de la derecha.</p>
+
+<pre><code>SELECT c.nombre, p.nombre 
+FROM clientes c 
+CROSS JOIN productos p;  -- Combinación de todos los clientes con todos los productos</code></pre>
+
+<h3>Self Join</h3>
+<p>Unir una tabla consigo misma.</p>
+
+<pre><code>-- Obtener jefe de cada empleado
+SELECT e.nombre as empleado, j.nombre as jefe 
+FROM empleados e 
+LEFT JOIN empleados j ON e.jefe_id = j.id;</code></pre>
+
+<h3>Múltiples JOINs</h3>
+<pre><code>SELECT 
+    p.id as pedido_id,
+    c.nombre as cliente,
+    pr.nombre as producto,
+    dp.cantidad
+FROM pedidos p
+INNER JOIN clientes c ON p.cliente_id = c.id
+INNER JOIN detalles_pedido dp ON p.id = dp.pedido_id
+INNER JOIN productos pr ON dp.producto_id = pr.id;</code></pre>
+</section>
+
+<section id="aggregates">
+<h2>4. Funciones de Agregación</h2>
+
+<h3>COUNT, MIN, MAX, AVG, SUM</h3>
+<pre><code>-- COUNT (contar registros)
+SELECT COUNT(*) as total_usuarios FROM usuarios;
+SELECT COUNT(DISTINCT ciudad) as ciudades FROM clientes;
+
+-- MIN y MAX (mínimo y máximo)
+SELECT MIN(precio) as precio_minimo, MAX(precio) as precio_maximo 
+FROM productos;
+
+-- AVG (promedio)
+SELECT AVG(salario) as salario_promedio 
+FROM empleados;
+
+-- SUM (suma)
+SELECT SUM(monto) as total_vendido 
+FROM ventas 
+WHERE año = 2024;</code></pre>
+
+<h3>Window Functions (SQL 2012+)</h3>
+<p>Funciones que operan sobre un "ventana" de filas.</p>
+
+<pre><code>-- ROW_NUMBER: número de fila
+SELECT nombre, salario,
+       ROW_NUMBER() OVER (ORDER BY salario DESC) as rango
+FROM empleados;
+
+-- RANK: ranking con empates
+SELECT nombre, salario,
+       RANK() OVER (ORDER BY salario DESC) as rango
+FROM empleados;
+
+-- DENSE_RANK: ranking sin gaps
+SELECT nombre, salario,
+       DENSE_RANK() OVER (ORDER BY salario DESC) as rango
+FROM empleados;
+
+-- LAG/LEAD: acceder a filas anteriores/siguientes
+SELECT 
+    fecha, 
+    monto,
+    LAG(monto) OVER (ORDER BY fecha) as monto_anterior,
+    LEAD(monto) OVER (ORDER BY fecha) as monto_siguiente
+FROM ventas;
+
+-- SUM con OVER
+SELECT 
+    fecha,
+    monto,
+    SUM(monto) OVER (ORDER BY fecha) as monto_acumulado
+FROM ventas;</code></pre>
+</section>
+
+<section id="subconsultas">
+<h2>5. Subconsultas (Subqueries)</h2>
+
+<h3>Subconsultas en SELECT</h3>
+<pre><code>-- Obtener cliente y total de sus pedidos
+SELECT 
+    nombre,
+    (SELECT COUNT(*) FROM pedidos WHERE cliente_id = clientes.id) as total_pedidos
+FROM clientes;</code></pre>
+
+<h3>Subconsultas en WHERE</h3>
+<pre><code>-- Productos más caros que el promedio
+SELECT * FROM productos 
+WHERE precio > (SELECT AVG(precio) FROM productos);
+
+-- Clientes que han realizado pedidos
+SELECT * FROM clientes 
+WHERE id IN (SELECT cliente_id FROM pedidos);</code></pre>
+
+<h3>Subconsultas con ANY/ALL</h3>
+<pre><code>-- ANY: comparación con al menos un valor
+SELECT * FROM empleados 
+WHERE salario > ANY (SELECT salario FROM empleados WHERE departamento = 'IT');
+
+-- ALL: comparación con todos los valores
+SELECT * FROM empleados 
+WHERE salario > ALL (SELECT salario FROM empleados WHERE departamento = 'Recursos Humanos');</code></pre>
+
+<h3>Subconsultas Correlacionadas</h3>
+<p>Subconsulta que referencia columnas de la consulta externa.</p>
+
+<pre><code>-- Empleados con salario mayor al promedio de su departamento
+SELECT * FROM empleados e1
+WHERE salario > (
+    SELECT AVG(salario) 
+    FROM empleados e2 
+    WHERE e1.departamento = e2.departamento
+);</code></pre>
+</section>
+
+<section id="procedimientos">
+<h2>6. Procedimientos Almacenados y Triggers</h2>
+
+<h3>Creación de Procedimiento Almacenado</h3>
+<pre><code>-- MySQL
+DELIMITER //
+CREATE PROCEDURE ObtenerClientesPorCiudad(IN p_ciudad VARCHAR(100))
+BEGIN
+    SELECT * FROM clientes WHERE ciudad = p_ciudad;
+END //
+DELIMITER ;
+
+-- Ejecutar
+CALL ObtenerClientesPorCiudad('Madrid');</code></pre>
+
+<h3>Procedimiento con OUT</h3>
+<pre><code>DELIMITER //
+CREATE PROCEDURE ContarPedidos(IN p_cliente_id INT, OUT p_total INT)
+BEGIN
+    SELECT COUNT(*) INTO p_total FROM pedidos WHERE cliente_id = p_cliente_id;
+END //
+DELIMITER ;
+
+-- Ejecutar
+CALL ContarPedidos(1, @total);
+SELECT @total;</code></pre>
+
+<h3>Transacciones</h3>
+<pre><code>-- Garantizar integridad: todo o nada
+START TRANSACTION;
+
+UPDATE cuentas SET saldo = saldo - 1000 WHERE id = 1;
+UPDATE cuentas SET saldo = saldo + 1000 WHERE id = 2;
+
+COMMIT;  -- Guardar cambios
+-- ROLLBACK;  -- Deshacer si hay error</code></pre>
+
+<h3>Triggers</h3>
+<p>Acciones automáticas cuando ocurren eventos en BD.</p>
+
+<pre><code>-- Trigger: actualizar precio_actualizado cuando se inserta producto
+DELIMITER //
+CREATE TRIGGER actualizar_timestamp_producto
+BEFORE INSERT ON productos
+FOR EACH ROW
+BEGIN
+    SET NEW.precio_actualizado = NOW();
+END //
+DELIMITER ;</code></pre>
+</section>
+
+<h2>Índices y Optimización</h2>
+
+<h3>Crear Índices</h3>
+<pre><code>-- Índice simple
+CREATE INDEX idx_email ON usuarios(email);
+
+-- Índice único (garantiza no duplicados)
+CREATE UNIQUE INDEX idx_usuario_email ON usuarios(email);
+
+-- Índice compuesto (multiple)
+CREATE INDEX idx_ciudad_pais ON clientes(ciudad, pais);
+
+-- Ver índices
+SHOW INDEXES FROM usuarios;</code></pre>
+
+<h3>EXPLAIN - Analizar queries</h3>
+<pre><code>-- Ver cómo la BD ejecuta la query
+EXPLAIN SELECT * FROM productos WHERE categoria = 'Electrónica';</code></pre>
+
+<h2>Buenas Prácticas SQL</h2>
+<ul>
+    <li>Use alias significativos: SELECT nombre AS nombre_cliente, email AS correo</li>
+    <li>Evite SELECT *: especifique columnas necesarias</li>
+    <li>Use índices en columnas de búsqueda frecuente</li>
+    <li>Normalice la BD para evitar redundancia</li>
+    <li>Use prepared statements para evitar SQL injection</li>
+    <li>Documente queries complejas con comentarios</li>
+    <li>Use transacciones para operaciones críticas</li>
+    <li>Realice backups regularmente</li>
+</ul>
+
+        </main>
+    </div>
+</body>
+<script src="chatbot.js"></script>
+</html>

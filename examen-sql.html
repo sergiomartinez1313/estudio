@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen SQL - Portal IT</title>
+    <link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📝 Examen SQL Avanzado</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>Menú</h2>
+            <h3>Navegación</h3>
+            <a href="estudio.html">← Volver</a>
+            <a href="sql.html">📚 Apuntes SQL</a>
+            
+            <h3>Instrucciones</h3>
+            <p>Responde las 5 preguntas. Haz clic en "Revisar Respuestas" al terminar.</p>
+        </aside>
+
+        <main class="content">
+
+<h1>Examen: SQL Avanzado - 5 Preguntas</h1>
+<p>Prueba tus conocimientos sobre SQL avanzado. Selecciona la respuesta correcta para cada pregunta.</p>
+
+<div class="exam-container">
+
+<div class="question">
+    <h3>Pregunta 1: ¿Cuál es la diferencia entre INNER JOIN y LEFT JOIN?</h3>
+    <label><input type="radio" name="q1" value="a"> a) No hay diferencia, son sinónimos</label><br>
+    <label><input type="radio" name="q1" value="b"> b) INNER JOIN retorna solo coincidencias, LEFT JOIN retorna todas las filas de la izquierda</label><br>
+    <label><input type="radio" name="q1" value="c"> c) LEFT JOIN es más rápido que INNER JOIN</label><br>
+    <label><input type="radio" name="q1" value="d"> d) INNER JOIN es para múltiples tablas, LEFT JOIN para una sola</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 2: ¿Cuál es la función de GROUP BY?</h3>
+    <label><input type="radio" name="q2" value="a"> a) Agrupar filas según una o más columnas</label><br>
+    <label><input type="radio" name="q2" value="b"> b) Eliminar duplicados</label><br>
+    <label><input type="radio" name="q2" value="c"> c) Ordenar resultados</label><br>
+    <label><input type="radio" name="q2" value="d"> d) Limitar cantidad de resultados</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 3: ¿Cuál es la diferencia entre WHERE y HAVING?</h3>
+    <label><input type="radio" name="q3" value="a"> a) No hay diferencia</label><br>
+    <label><input type="radio" name="q3" value="b"> b) WHERE filtra antes de GROUP BY, HAVING filtra después</label><br>
+    <label><input type="radio" name="q3" value="c"> c) HAVING es solo para tablas grandes</label><br>
+    <label><input type="radio" name="q3" value="d"> d) WHERE es para números, HAVING para texto</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 4: ¿Qué es una transacción en SQL?</h3>
+    <label><input type="radio" name="q4" value="a"> a) Una sola consulta SELECT</label><br>
+    <label><input type="radio" name="q4" value="b"> b) Un conjunto de operaciones que se ejecutan como "todo o nada"</label><br>
+    <label><input type="radio" name="q4" value="c"> c) Un procedimiento almacenado</label><br>
+    <label><input type="radio" name="q4" value="d"> d) Una copia de seguridad</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 5: ¿Para qué sirven los índices en una tabla?</h3>
+    <label><input type="radio" name="q5" value="a"> a) Almacenar datos duplicados</label><br>
+    <label><input type="radio" name="q5" value="b"> b) Acelerar búsquedas y JOINS</label><br>
+    <label><input type="radio" name="q5" value="c"> c) Eliminar registros automáticamente</label><br>
+    <label><input type="radio" name="q5" value="d"> d) Comprimir la base de datos</label><br>
+</div>
+
+<button onclick="revisarRespuestas()">✓ Revisar Respuestas</button>
+<div id="resultado" style="margin-top: 20px; display: none;"></div>
+
+</div>
+
+<script>
+function revisarRespuestas() {
+    const respuestasCorrectas = {
+        q1: 'b',
+        q2: 'a',
+        q3: 'b',
+        q4: 'b',
+        q5: 'b'
+    };
+
+    let aciertos = 0;
+    let resultadoHTML = '<h2>Resultados:</h2><ul>';
+
+    for (let i = 1; i <= 5; i++) {
+        const respuesta = document.querySelector(`input[name="q${i}"]:checked`);
+        const pregunta = i;
+        
+        if (!respuesta) {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ❌ No respondida</li>`;
+        } else if (respuesta.value === respuestasCorrectas[`q${i}`]) {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ✓ Correcta</li>`;
+            aciertos++;
+        } else {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ❌ Incorrecta (respuesta correcta: ${respuestasCorrectas[`q${i}`].toUpperCase()})</li>`;
+        }
+    }
+
+    resultadoHTML += '</ul>';
+    const porcentaje = (aciertos / 5) * 100;
+    resultadoHTML += `<h3>Puntuación: ${aciertos}/5 (${porcentaje}%)</h3>`;
+
+    if (porcentaje >= 80) {
+        resultadoHTML += '<p style="color: green; font-weight: bold;">¡Excelente! Dominas SQL Avanzado</p>';
+    } else if (porcentaje >= 60) {
+        resultadoHTML += '<p style="color: orange; font-weight: bold;">Bien, pero necesitas repasar algunos conceptos</p>';
+    } else {
+        resultadoHTML += '<p style="color: red; font-weight: bold;">Necesitas estudiar más. Vuelve a los apuntes</p>';
+    }
+
+    const resultadoDiv = document.getElementById('resultado');
+    resultadoDiv.innerHTML = resultadoHTML;
+    resultadoDiv.style.display = 'block';
+
+    window.scrollTo(0, resultadoDiv.offsetTop - 100);
+}
+</script>
+
+        </main>
+    </div>
+</body>
+</html>

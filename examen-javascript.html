@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen JavaScript</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen JavaScript</h1>
+
+<div class="card">
+<p>¿Diferencia entre == y ===?</p>
+<button onclick="check('tipo','tipo','r1')">== valor, === tipo</button>
+<button onclick="check('igual','tipo','r1')">Son iguales</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Qué es una arrow function?</p>
+<button onclick="check('moderna','moderna','r2')">Función moderna con =></button>
+<button onclick="check('vieja','moderna','r2')">Función antigua</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Cómo seleccionas un elemento?</p>
+<button onclick="check('getElementById','getElement','r3')">getElementById()</button>
+<button onclick="check('getClass','getElement','r3')">getClass()</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Método que transforma arrays?</p>
+<button onclick="check('map','map','r4')">map()</button>
+<button onclick="check('filter','map','r4')">filter()</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Para qué sirve async/await?</p>
+<button onclick="check('asincrono','asincrono','r5')">Código asincrónico</button>
+<button onclick="check('sincronico','asincrono','r5')">Código sincrónico</button>
+<p id="r5"></p>
+</div>
+
+</div>
+
+</body>
+</html>

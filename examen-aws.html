@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen AWS - Portal IT</title>
+    <link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📝 Examen AWS Cloud</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>Menú</h2>
+            <h3>Navegación</h3>
+            <a href="estudio.html">← Volver</a>
+            <a href="aws.html">📚 Apuntes AWS</a>
+            
+            <h3>Instrucciones</h3>
+            <p>Responde las 5 preguntas. Haz clic en "Revisar Respuestas" al terminar.</p>
+        </aside>
+
+        <main class="content">
+
+<h1>Examen: AWS Cloud - 5 Preguntas</h1>
+<p>Prueba tus conocimientos sobre Amazon Web Services. Selecciona la respuesta correcta para cada pregunta.</p>
+
+<div class="exam-container">
+
+<div class="question">
+    <h3>Pregunta 1: ¿Qué es EC2?</h3>
+    <label><input type="radio" name="q1" value="a"> a) Base de datos administrada</label><br>
+    <label><input type="radio" name="q1" value="b"> b) Almacenamiento de objetos ilimitado</label><br>
+    <label><input type="radio" name="q1" value="c"> c) Servidores virtuales en la nube</label><br>
+    <label><input type="radio" name="q1" value="d"> d) Servicio de CDN global</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 2: ¿Cuál es el propósito de S3?</h3>
+    <label><input type="radio" name="q2" value="a"> a) Ejecutar aplicaciones sin servidores</label><br>
+    <label><input type="radio" name="q2" value="b"> b) Almacenar objetos (archivos) de forma escalable</label><br>
+    <label><input type="radio" name="q2" value="c"> c) Procesar datos en tiempo real</label><br>
+    <label><input type="radio" name="q2" value="d"> d) Gestionar identidades y acceso</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 3: ¿Qué es AWS Lambda?</h3>
+    <label><input type="radio" name="q3" value="a"> a) Un lenguaje de programación</label><br>
+    <label><input type="radio" name="q3" value="b"> b) Computación serverless: ejecutar código sin pensar en servidores</label><br>
+    <label><input type="radio" name="q3" value="c"> c) Un servicio de email</label><br>
+    <label><input type="radio" name="q3" value="d"> d) Una framework web</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 4: ¿Cuál es la diferencia entre una Región y una Zona de Disponibilidad?</h3>
+    <label><input type="radio" name="q4" value="a"> a) No hay diferencia</label><br>
+    <label><input type="radio" name="q4" value="b"> b) Región es geográfica, AZ es un data center dentro de la región</label><br>
+    <label><input type="radio" name="q4" value="c"> c) AZ es geográfica, Región es un data center</label><br>
+    <label><input type="radio" name="q4" value="d"> d) Ambas son iguales pero con nombres diferentes</label><br>
+</div>
+
+<div class="question">
+    <h3>Pregunta 5: ¿Para qué sirve el servicio RDS?</h3>
+    <label><input type="radio" name="q5" value="a"> a) Almacenar archivos estáticos</label><br>
+    <label><input type="radio" name="q5" value="b"> b) Gestionar bases de datos relacionales administradas</label><br>
+    <label><input type="radio" name="q5" value="c"> c) Ejecutar contenedores</label><br>
+    <label><input type="radio" name="q5" value="d"> d) Distribuir contenido globalmente</label><br>
+</div>
+
+<button onclick="revisarRespuestas()">✓ Revisar Respuestas</button>
+<div id="resultado" style="margin-top: 20px; display: none;"></div>
+
+</div>
+
+<script>
+function revisarRespuestas() {
+    const respuestasCorrectas = {
+        q1: 'c',
+        q2: 'b',
+        q3: 'b',
+        q4: 'b',
+        q5: 'b'
+    };
+
+    let aciertos = 0;
+    let resultadoHTML = '<h2>Resultados:</h2><ul>';
+
+    for (let i = 1; i <= 5; i++) {
+        const respuesta = document.querySelector(`input[name="q${i}"]:checked`);
+        const pregunta = i;
+        
+        if (!respuesta) {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ❌ No respondida</li>`;
+        } else if (respuesta.value === respuestasCorrectas[`q${i}`]) {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ✓ Correcta</li>`;
+            aciertos++;
+        } else {
+            resultadoHTML += `<li>Pregunta ${pregunta}: ❌ Incorrecta (respuesta correcta: ${respuestasCorrectas[`q${i}`].toUpperCase()})</li>`;
+        }
+    }
+
+    resultadoHTML += '</ul>';
+    const porcentaje = (aciertos / 5) * 100;
+    resultadoHTML += `<h3>Puntuación: ${aciertos}/5 (${porcentaje}%)</h3>`;
+
+    if (porcentaje >= 80) {
+        resultadoHTML += '<p style="color: green; font-weight: bold;">¡Excelente! Estás listo para AWS</p>';
+    } else if (porcentaje >= 60) {
+        resultadoHTML += '<p style="color: orange; font-weight: bold;">Bien, pero necesitas repasar algunos conceptos</p>';
+    } else {
+        resultadoHTML += '<p style="color: red; font-weight: bold;">Necesitas estudiar más. Vuelve a los apuntes</p>';
+    }
+
+    const resultadoDiv = document.getElementById('resultado');
+    resultadoDiv.innerHTML = resultadoHTML;
+    resultadoDiv.style.display = 'block';
+
+    window.scrollTo(0, resultadoDiv.offsetTop - 100);
+}
+</script>
+
+        </main>
+    </div>
+</body>
+</html>

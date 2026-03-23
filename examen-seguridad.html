@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen Seguridad</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen Seguridad</h1>
+
+<div class="card">
+<p>¿Qué es SQL Injection?</p>
+<button onclick="check('insertar','insertar','r1')">Insertar SQL malicioso</button>
+<button onclick="check('error','insertar','r1')">Error de BD</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Cómo protegen prepared statements?</p>
+<button onclick="check('separar','separar','r2')">Separan código de datos</button>
+<button onclick="check('encriptar','separar','r2')">Encriptan datos</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Para hash de contraseñas?</p>
+<button onclick="check('bcrypt','bcrypt','r3')">bcrypt o Argon2</button>
+<button onclick="check('md5','bcrypt','r3')">MD5</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Qué es XSS?</p>
+<button onclick="check('script','script','r4')">Inyectar scripts</button>
+<button onclick="check('error','script','r4')">Error de servidor</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Protocolo seguro?</p>
+<button onclick="check('HTTPS','HTTPS','r5')">HTTPS</button>
+<button onclick="check('HTTP','HTTPS','r5')">HTTP</button>
+<p id="r5"></p>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cloud - Portal IT</title>
+    <link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>📚 AWS Cloud - Apuntes Completos</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2>Menú</h2>
+            <h3>Navegación</h3>
+            <a href="estudio.html">← Volver</a>
+            <a href="examen-aws.html">📝 Examen AWS</a>
+            
+            <h3>Índice de Apuntes</h3>
+            <a href="#introduccion">Introducción</a>
+            <a href="#ec2">EC2</a>
+            <a href="#s3">S3</a>
+            <a href="#rds">RDS</a>
+            <a href="#lambda">Lambda</a>
+            <a href="#networking">Networking</a>
+        </aside>
+
+        <main class="content">
+
+<h1>AWS Cloud - Amazon Web Services</h1>
+<p>AWS es la plataforma de computación en la nube más utilizada. Ofrece servicios escalables, seguros y económicos para alojar aplicaciones y datos.</p>
+
+<div class="stats">
+  <div class="stat-box">
+    <h3>Servicios</h3>
+    <p>200+ servicios</p>
+  </div>
+  <div class="stat-box">
+    <h3>Regiones</h3>
+    <p>30+ regiones</p>
+  </div>
+  <div class="stat-box">
+    <h3>Clientes</h3>
+    <p>Millones</p>
+  </div>
+</div>
+
+<section id="introduccion">
+<h2>1. Introducción a AWS</h2>
+
+<h3>¿Qué es AWS?</h3>
+<p>Amazon Web Services es una plataforma de computación en la nube que ofrece servicios bajo demanda con modelo de pago por uso.</p>
+
+<h3>Ventajas de AWS:</h3>
+<ul>
+    <li><strong>Escalabilidad:</strong> Crece con tu demanda automáticamente</li>
+    <li><strong>Confiabilidad:</strong> SLA de 99.99% de disponibilidad</li>
+    <li><strong>Costo:</strong> Paga solo por lo que usas</li>
+    <li><strong>Seguridad:</strong> Múltiples capas de seguridad</li>
+    <li><strong>Flexibilidad:</strong> Elige qué, cuándo y cómo desplegar</li>
+</ul>
+
+<h3>Servicios Principales</h3>
+<ul>
+    <li><strong>Compute:</strong> EC2, Lambda, ECS, Lightsail</li>
+    <li><strong>Storage:</strong> S3, EBS, Glacier, FSx</li>
+    <li><strong>Database:</strong> RDS, DynamoDB, Redshift</li>
+    <li><strong>Networking:</strong> VPC, CloudFront, Route 53</li>
+    <li><strong>Management:</strong> CloudWatch, CloudFormation, IAM</li>
+</ul>
+
+<h3>Regiones y Zonas de Disponibilidad</h3>
+<pre><code>Regiones: Ubicaciones geográficas (us-east-1, eu-west-1, ap-southeast-1)
+Zonas de Disponibilidad (AZ): Data centers independientes dentro de una región
+Ejemplo: us-east-1a, us-east-1b, us-east-1c</code></pre>
+</section>
+
+<section id="ec2">
+<h2>2. EC2 - Elastic Compute Cloud</h2>
+
+<h3>¿Qué es EC2?</h3>
+<p>Servidores virtuales (instancias) en la nube. Permiten alojar aplicaciones web, bases de datos, etc.</p>
+
+<h3>Tipos de Instancias</h3>
+<ul>
+    <li><strong>General Purpose (t, m):</strong> Balance CPU/RAM/Red</li>
+    <li><strong>Compute Optimized (c):</strong> Alto procesamiento</li>
+    <li><strong>Memory Optimized (r, x):</strong> Mucha RAM</li>
+    <li><strong>Storage Optimized (i, h, d):</strong> Disco rápido</li>
+    <li><strong>GPU (p, g):</strong> Aceleración GPU</li>
+</ul>
+
+<h3>Lanzar una Instancia EC2</h3>
+<pre><code>1. Elegir AMI (Amazon Machine Image): Sistema Operativo
+2. Elegir tipo de instancia: t2.micro, t2.small, etc.
+3. Configurar detalles: VPC, subnet, auto-assign IP
+4. Agregar storage: Volumen EBS
+5. Hacer tag: Etiquetar para identificar
+6. Security group: Firewall de instancia
+7. Key pair: Para conectar via SSH
+8. Lanzar</code></pre>
+
+<h3>Conectar a EC2 vía SSH</h3>
+<pre><code>ssh -i mi-llave.pem ubuntu@ec2-xx-xxx-xx-xxx.compute-1.amazonaws.com
+
+# Útil: chmod 400 mi-llave.pem (permisos correctos)
+
+# Desde Windows, usar PuTTY o WSL</code></pre>
+
+<h3>Opciones de Precios EC2</h3>
+<ul>
+    <li><strong>On-Demand:</strong> Paga por hora, sin compromiso</li>
+    <li><strong>Reserved Instances:</strong> 1-3 años, 40% descuento</li>
+    <li><strong>Spot Instances:</strong> Hasta 90% descuento, puede terminarse</li>
+    <li><strong>Dedicated Hosts:</strong> Hardware físico exclusivo</li>
+</ul>
+
+<h3>Auto Scaling</h3>
+<p>Crear/eliminar instancias automáticamente según demanda.</p>
+
+<pre><code>-- Configurar grupo de auto-scaling
+1. Crear Launch Template con configuración de instancia
+2. Crear Auto Scaling Group
+3. Definir capacidad min/max y deseada
+4. Configurar políticas de escalado:
+   - Target Tracking: Mantener métrica en rango
+   - Step Scaling: Agregar/quitar según condiciones</code></pre>
+</section>
+
+<section id="s3">
+<h2>3. S3 - Simple Storage Service</h2>
+
+<h3>¿Qué es S3?</h3>
+<p>Almacenamiento de objetos escalable infinitamente. Ideal para archivos estáticos, backups, data lakes, etc.</p>
+
+<h3>Conceptos Básicos</h3>
+<ul>
+    <li><strong>Bucket:</strong> Contenedor principal (nombre único globalmente)</li>
+    <li><strong>Object:</strong> Archivo individual con key (ruta) y value (contenido)</li>
+    <li><strong>Región:</strong> Ubicación del bucket</li>
+</ul>
+
+<h3>Crear Bucket</h3>
+<pre><code>-- Vía AWS CLI
+aws s3 mb s3://mi-bucket-unico --region us-east-1
+
+-- Vía SDK Python (Boto3)
+import boto3
+s3 = boto3.client('s3')
+s3.create_bucket(Bucket='mi-bucket-unico')</code></pre>
+
+<h3>Operaciones Básicas S3</h3>
+<pre><code>-- Subir archivo
+aws s3 cp archivo.txt s3://mi-bucket/
+
+-- Descargar archivo
+aws s3 cp s3://mi-bucket/archivo.txt .
+
+-- Listar contenido bucket
+aws s3 ls s3://mi-bucket/
+
+-- Eliminar archivo
+aws s3 rm s3://mi-bucket/archivo.txt
+
+-- Sincronizar carpeta local con S3
+aws s3 sync ./local-folder s3://mi-bucket/</code></pre>
+
+<h3>Clases de Almacenamiento S3</h3>
+<ul>
+    <li><strong>S3 Standard:</strong> Acceso frecuente, caro</li>
+    <li><strong>S3 IA (Infrequent Access):</strong> Acceso infrecuente, barato</li>
+    <li><strong>S3 Glacier:</strong> Archivado a largo plazo, muy barato</li>
+    <li><strong>S3 Intelligent-Tiering:</strong> Mueve automáticamente entre clases</li>
+</ul>
+
+<h3>Subir Archivo desde Python</h3>
+<pre><code>import boto3
+
+s3 = boto3.client('s3')
+
+# Subir archivo local
+s3.upload_file(
+    Filename='mi-archivo.txt',
+    Bucket='mi-bucket',
+    Key='carpeta/mi-archivo.txt'
+)
+
+# Generar URL presignada (acceso temporal)
+url = s3.generate_presigned_url(
+    'get_object',
+    Params={'Bucket': 'mi-bucket', 'Key': 'mi-archivo.txt'},
+    ExpiresIn=3600  # 1 hora
+)</code></pre>
+
+<h3>Control de Acceso</h3>
+<pre><code>-- Hacer bucket privado (por defecto)
+aws s3api put-bucket-acl --bucket mi-bucket --acl private
+
+-- Permitir acceso público a un objeto
+aws s3api put-object-acl --bucket mi-bucket --key mi-archivo.txt --acl public-read
+
+-- Usar bucket policy para acceso específico
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::mi-bucket/*"
+  }]
+}</code></pre>
+</section>
+
+<section id="rds">
+<h2>4. RDS - Relational Database Service</h2>
+
+<h3>¿Qué es RDS?</h3>
+<p>Servicio de base de datos administrado. AWS se encarga de backups, parches, replicación.</p>
+
+<h3>Motores Soportados</h3>
+<ul>
+    <li>MySQL / MariaDB</li>
+    <li>PostgreSQL</li>
+    <li>Oracle</li>
+    <li>SQL Server</li>
+    <li>Amazon Aurora</li>
+</ul>
+
+<h3>Crear Instancia RDS</h3>
+<pre><code>-- Vía AWS CLI
+aws rds create-db-instance \
+  --db-instance-identifier mi-bd-mysql \
+  --db-instance-class db.t2.micro \
+  --engine mysql \
+  --master-username admin \
+  --master-user-password MinhaContraseña123 \
+  --allocated-storage 20</code></pre>
+
+<h3>Multi-AZ Deployment</h3>
+<p>Replica síncrona en otra AZ para alta disponibilidad.</p>
+
+<pre><code>-- RDS Standard (Single-AZ)
+Costo menor, menos disponibilidad
+
+-- RDS Multi-AZ
+Costo mayor, failover automático en segundos
+Replicación síncrona a otra AZ</code></pre>
+
+<h3>Backup y Restore</h3>
+<pre><code>-- RDS realiza backups automáticos:
+- Daily snapshots (retención: 1-35 días)
+- Transaction logs para point-in-time restore
+
+-- Restaurar a un punto en tiempo
+aws rds restore-db-instance-to-point-in-time \
+  --source-db-instance-identifier mi-bd-original \
+  --target-db-instance-identifier mi-bd-restaurada \
+  --restore-time 2024-03-20T14:30:00Z</code></pre>
+
+<h3>Read Replicas</h3>
+<p>Copias de lectura para distribuir carga de lectura.</p>
+
+<pre><code>-- Crear read replica en otra región
+aws rds create-db-instance-read-replica \
+  --db-instance-identifier mi-bd-replica \
+  --source-db-instance-identifier mi-bd-principal \
+  --db-instance-class db.t2.small</code></pre>
+</section>
+
+<section id="lambda">
+<h2>5. Lambda - Serverless Computing</h2>
+
+<h3>¿Qué es Lambda?</h3>
+<p>Ejecutar código sin servidores. Paga solo por tiempo de ejecución, sin pensar en infraestructura.</p>
+
+<h3>Lenguajes Soportados</h3>
+<ul>
+    <li>Python</li>
+    <li>Node.js</li>
+    <li>Java</li>
+    <li>C# (.NET)</li>
+    <li>Go</li>
+    <li>Ruby</li>
+    <li>Custom runtimes</li>
+</ul>
+
+<h3>Crear Función Lambda (Python)</h3>
+<pre><code>def lambda_handler(event, context):
+    print(f"Evento recibido: {event}")
+    
+    nombre = event.get('nombre', 'Mundo')
+    
+    return {
+        'statusCode': 200,
+        'body': f'Hola {nombre}!'
+    }</code></pre>
+
+<h3>Disparadores (Triggers) Lambda</h3>
+<ul>
+    <li><strong>API Gateway:</strong> Invocación vía HTTP</li>
+    <li><strong>S3:</strong> Al subir archivo</li>
+    <li><strong>DynamoDB:</strong> Cambio en tabla</li>
+    <li><strong>CloudWatch:</strong> Según horario (cron)</li>
+    <li><strong>SNS/SQS:</strong> Mensaje de cola</li>
+    <li><strong>EventBridge:</strong> Eventos personalizados</li>
+</ul>
+
+<h3>Ejemplo: Lambda con API Gateway</h3>
+<pre><code>def lambda_handler(event, context):
+    # event contiene: path, httpMethod, headers, body, etc.
+    
+    if event['httpMethod'] == 'GET':
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'mensaje': 'GET realizó'})
+        }
+    
+    elif event['httpMethod'] == 'POST':
+        body = json.loads(event['body'])
+        return {
+            'statusCode': 201,
+            'body': json.dumps({'id': 123, 'datos': body})
+        }</code></pre>
+
+<h3>Limitaciones Lambda</h3>
+<ul>
+    <li>Timeout máximo: 15 minutos</li>
+    <li>Memoria: 128 MB - 10 GB</li>
+    <li>Tamaño de archivo: 250 MB (descomprimido)</li>
+    <li>Almacenamiento temporal: 512 MB</li>
+</ul>
+
+<h3>Layers Lambda</h3>
+<p>Compartir código/dependencias entre funciones.</p>
+
+<pre><code>-- Crear layer con dependencias Python
+mkdir python
+pip install requests -t python/
+zip -r mi-layer.zip python/
+
+-- Subir via AWS CLI
+aws lambda publish-layer-version \
+  --layer-name mis-dependencias \
+  --zip-file fileb://mi-layer.zip \
+  --compatible-runtimes python3.9</code></pre>
+</section>
+
+<section id="networking">
+<h2>6. Networking - VPC y Conectividad</h2>
+
+<h3>VPC (Virtual Private Cloud)</h3>
+<p>Red privada en AWS donde residen tus recursos.</p>
+
+<h3>Componentes VPC</h3>
+<ul>
+    <li><strong>Subnets:</strong> Rango de IPs dentro de VPC</li>
+    <li><strong>Internet Gateway:</strong> Conecta VPC a internet</li>
+    <li><strong>Route Tables:</strong> Reglas de enrutamiento</li>
+    <li><strong>Security Groups:</strong> Firewall de instancia</li>
+    <li><strong>Network ACLs:</strong> Firewall de subred</li>
+</ul>
+
+<h3>Security Groups</h3>
+<p>Controla tráfico de entrada y salida.</p>
+
+<pre><code>-- Regla típica: Permitir SSH desde tu IP
+Inbound: TCP puerto 22, fuente XX.XX.XX.XX/32
+
+-- Regla: Permitir HTTP/HTTPS público
+Inbound: TCP puerto 80, fuente 0.0.0.0/0
+Inbound: TCP puerto 443, fuente 0.0.0.0/0
+
+-- Salida por defecto
+Outbound: Todo permitido por defecto</code></pre>
+
+<h3>Conectividad</h3>
+<ul>
+    <li><strong>Internet:</strong> Via Internet Gateway + Route Table</li>
+    <li><strong>On-premises:</strong> Via VPN (Site-to-Site VPN)</li>
+    <li><strong>Entre VPCs:</strong> VPC Peering o Transit Gateway</li>
+</ul>
+
+<h3>Elastic IP</h3>
+<p>Dirección IP pública estática (no cambia al reiniciar).</p>
+
+<pre><code>-- Asignar Elastic IP a instancia
+aws ec2 allocate-address --domain vpc
+aws ec2 associate-address --instance-id i-xxxxx --allocation-id eipalloc-xxxxx</code></pre>
+
+<h3>CloudFront - CDN</h3>
+<p>Distribuye contenido globalmente con baja latencia.</p>
+
+<pre><code>Origen: S3 bucket o servidor custom
+Edge Locations: Cachés en 300+ ubicaciones mundiales
+Result: Usuarios acceden contenido desde ubicación más cercana</code></pre>
+</section>
+
+<h2>IAM - Gestión de Acceso</h2>
+
+<h3>Conceptos Básicos IAM</h3>
+<ul>
+    <li><strong>Usuarios:</strong> Identidades individuales</li>
+    <li><strong>Grupos:</strong> Conjunto de usuarios</li>
+    <li><strong>Roles:</strong> Conjuntos de permisos reutilizables</li>
+    <li><strong>Políticas:</strong> Reglas de permiso (JSON)</li>
+</ul>
+
+<h3>Crear Usuario IAM</h3>
+<pre><code>aws iam create-user --user-name developer1
+aws iam create-access-key --user-name developer1
+aws iam attach-user-policy --user-name developer1 --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess</code></pre>
+
+<h2>Monitoreo y Logs</h2>
+
+<h3>CloudWatch</h3>
+<p>Servicio de monitoreo centralizado.</p>
+
+<pre><code>-- Métricas: CPU, Red, Disco
+-- Logs: De aplicaciones y servicios
+-- Alarmas: Notificaciones cuando métrica cruza umbral
+-- Dashboard: Visualización personalizada</code></pre>
+
+        </main>
+    </div>
+</body>
+<script src="chatbot.js"></script>
+</html>

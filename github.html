@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apuntes GitHub</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-github { font-size: 18px; line-height: 1.8; }
+  .content-github h2 { font-size: 28px; margin-top: 30px; }
+  .content-github h3 { font-size: 24px; margin-top: 20px; }
+  .content-github p { font-size: 18px; }
+  .content-github pre { font-size: 16px; }
+  .content-github button { font-size: 16px; padding: 12px 18px; }
+  .content-github li { font-size: 18px; margin: 8px 0; }
+  .content-github ul { margin: 20px 0; }
+</style>
+</head>
+
+<body>
+
+<div class="content content-github">
+
+<h1>🚀 GitHub - Control de Versiones Profesional</h1>
+
+<p>GitHub es la plataforma líder para alojar repositorios Git. Te permite colaborar con otros desarrolladores, controlar versiones de código y mantener un historial completo de cambios.</p>
+
+<h2>📌 Conceptos Fundamentales de Git</h2>
+
+<ul>
+<li><strong>Repositorio (Repo):</strong> Carpeta del proyecto con control de versiones</li>
+<li><strong>Commit:</strong> Foto/snapshot de los cambios en un momento específico</li>
+<li><strong>Branch:</strong> Versión paralela del proyecto para trabajo independiente</li>
+<li><strong>Merge:</strong> Juntar cambios de una rama a otra</li>
+<li><strong>Push:</strong> Subir cambios locales a GitHub</li>
+<li><strong>Pull:</strong> Traer cambios de GitHub a tu máquina local</li>
+<li><strong>Clone:</strong> Descargar un repositorio completo de GitHub</li>
+<li><strong>Fork:</strong> Copia personal de un proyecto de otro usuario</li>
+<li><strong>Pull Request:</strong> Solicitud para fusionar cambios con revisión</li>
+</ul>
+
+<h2>🔧 Configuración Inicial de Git</h2>
+
+<pre>
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu@email.com"
+git config --list              # Ver configuración
+</pre>
+
+<h2>📁 Crear y Clonar Repositorios</h2>
+
+<h3>Inicializar un nuevo repo local:</h3>
+<pre>
+mkdir mi-proyecto
+cd mi-proyecto
+git init                       # Inicia repositorio
+git status                     # Ver estado
+</pre>
+
+<h3>Clonar un repositorio existente:</h3>
+<pre>
+git clone https://github.com/usuario/proyecto.git
+cd proyecto
+</pre>
+
+<h2>💾 Flujo Básico de Trabajo (Local)</h2>
+
+<pre>
+# 1. Crear/modificar archivos
+echo "contenido" > archivo.txt
+
+# 2. Ver cambios
+git status
+git diff                       # Ver diferencias
+
+# 3. Preparar cambios (staging)
+git add archivo.txt            # Un archivo
+git add .                      # Todos los archivos
+
+# 4. Confirmar cambios (commit)
+git commit -m "Mensaje descriptivo"
+
+# 5. Ver historial
+git log
+git log --oneline              # Versión corta
+</pre>
+
+<h2>🌐 Conectar con GitHub y Subir Cambios</h2>
+
+<pre>
+# 1. Crear repositorio en GitHub
+# 2. Agregar URL remota
+git remote add origin https://github.com/tuusuario/mi-proyecto.git
+git remote -v                  # Ver remoto configurado
+
+# 3. Primera vez subiendo
+git branch -M main             # Renombrar a main
+git push -u origin main        # Subir a GitHub
+
+# 4. Siguientes cambios
+git push                       # Solo push
+git push origin main           # Especificar rama
+</pre>
+
+<h2>🔀 Trabajar con Ramas</h2>
+
+<pre>
+# Ver ramas
+git branch                     # Ramas locales
+git branch -a                  # Todas las ramas
+
+# Crear rama
+git branch nueva-funcionalidad
+git checkout -b nueva-rama     # Crear y cambiar
+
+# Cambiar de rama
+git checkout main
+git checkout nombre-rama
+
+# Eliminar rama
+git branch -d rama-vieja       # Local
+git push origin --delete rama  # Remoto
+
+# Fusionar ramas
+git checkout main
+git merge nueva-funcionalidad
+</pre>
+
+<h2>🔄 Actualizar desde GitHub</h2>
+
+<pre>
+# Traer cambios
+git fetch                      # Descargar cambios
+git pull                       # Descargar y fusionar
+git pull origin main           # Rama específica
+</pre>
+
+<h2>🆘 Deshaciendo Cambios</h2>
+
+<pre>
+# Deshacer cambios locales
+git checkout -- archivo.txt    # Deshacer archivo
+git reset HEAD archivo.txt     # Sacar del staging
+
+# Modificar último commit
+git commit --amend -m "Nuevo mensaje"
+
+# Deshacer commit
+git revert HEAD                # Crear nuevo commit que deshace
+git reset HEAD~1               # Volver atrás (cuidado!)
+</pre>
+
+<h2>👥 Colaboración y Pull Requests</h2>
+
+<pre>
+# Workflow colaborativo:
+# 1. Fork el proyecto
+# 2. Clone tu fork
+git clone https://github.com/TU_USUARIO/proyecto.git
+
+# 3. Crear rama para tu cambio
+git checkout -b fix/bug-importante
+
+# 4. Hacer cambios y commit
+git add .
+git commit -m "Arreglado: descripción del bug"
+
+# 5. Push a tu fork
+git push origin fix/bug-importante
+
+# 6. Crear Pull Request en GitHub
+# 7. Esperar revisión y merge
+</pre>
+
+<h2>📊 Ver Historial y Cambios</h2>
+
+<pre>
+git log                        # Historial completo
+git log --oneline -10          # Últimos 10 commits
+git log --author="nombre"      # Commits de un autor
+git log -p                     # Ver cambios detallados
+git diff HEAD~1                # Diferencia con commit anterior
+git show commit-id             # Ver cambios de un commit
+</pre>
+
+<h2>⚡ Comandos Útiles Adicionales</h2>
+
+<pre>
+git status                     # Estado actual
+git add --interactive          # Seleccionar cambios
+git stash                      # Guardar cambios temporales
+git stash pop                  # Recuperar cambios
+git tag v1.0.0                 # Crear etiqueta
+git push --tags                # Subir etiquetas
+</pre>
+
+<h2>🎯 Buenas Prácticas</h2>
+
+<ul>
+<li>Hacer commits pequeños y frecuentes con mensajes claros</li>
+<li>Usar ramas para nuevas funcionalidades</li>
+<li>Revisar cambios antes de commit (git diff)</li>
+<li>Hacer Pull antes de Push para evitar conflictos</li>
+<li>Dar nombres descriptivos a ramas y commits</li>
+<li>Usar .gitignore para archivos que no quieres versionar</li>
+<li>Escribir mensajes de commit en presente y descriptivos</li>
+<li>Hacer merge de forma regular para evitar conflictos grandes</li>
+</ul>
+
+</div>
+
+</body>
+</html>

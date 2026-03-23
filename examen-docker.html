@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examen Docker</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Examen Docker</h1>
+
+<div class="card">
+<p>¿Qué es una imagen Docker?</p>
+<button onclick="check('plantilla','plantilla','r1')">Plantilla de contenedor</button>
+<button onclick="check('contenedor','plantilla','r1')">Contenedor activo</button>
+<p id="r1"></p>
+</div>
+
+<div class="card">
+<p>¿Qué archivo construye una imagen?</p>
+<button onclick="check('Dockerfile','dockerfile','r2')">Dockerfile</button>
+<button onclick="check('docker.yml','dockerfile','r2')">docker.yml</button>
+<p id="r2"></p>
+</div>
+
+<div class="card">
+<p>¿Comando para ejecutar contenedor?</p>
+<button onclick="check('run','run','r3')">docker run</button>
+<button onclick="check('execute','run','r3')">docker execute</button>
+<p id="r3"></p>
+</div>
+
+<div class="card">
+<p>¿Para qué sirve Docker Compose?</p>
+<button onclick="check('multiples','multiples','r4')">Múltiples servicios</button>
+<button onclick="check('imagenes','multiples','r4')">Crear imágenes</button>
+<p id="r4"></p>
+</div>
+
+<div class="card">
+<p>¿Qué es un volumen?</p>
+<button onclick="check('persistencia','persistencia','r5')">Almacenamiento persistente</button>
+<button onclick="check('red','persistencia','r5')">Conexión de red</button>
+<p id="r5"></p>
+</div>
+
+</div>
+
+</body>
+</html>

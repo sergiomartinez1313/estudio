@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ubuntu</title>
+<link rel="stylesheet" href="estudio.css">
+<script src="script.js"></script>
+<style>
+  .content-ubuntu { font-size: 18px; line-height: 1.8; }
+  .content-ubuntu h2 { font-size: 28px; margin-top: 30px; }
+  .content-ubuntu h3 { font-size: 24px; margin-top: 20px; }
+  .content-ubuntu p { font-size: 18px; }
+  .content-ubuntu pre { font-size: 16px; }
+  .content-ubuntu button { font-size: 16px; padding: 12px 18px; }
+  .content-ubuntu li { font-size: 18px; margin: 8px 0; }
+</style>
+</head>
+
+<body>
+
+<header><h1>🐧 Ubuntu y Terminal</h1></header>
+
+<main class="center">
+<div class="card content-ubuntu">
+
+<h2>📚 ¿Qué es Ubuntu?</h2>
+<p>Ubuntu es un sistema operativo basado en Linux, gratuito y de código abierto. Es muy utilizado por desarrolladores y profesionales de IT. Ubuntu te permite trabajar desde la terminal, ejecutar comandos poderosos y tener control total sobre tu sistema.</p>
+
+<h2>🎯 Comandos Básicos de Terminal</h2>
+
+<h3>Navegación</h3>
+<pre>
+pwd              # Muestra el directorio actual
+ls               # Lista archivos y carpetas
+cd carpeta       # Cambia de directorio
+cd ..            # Sube un nivel
+cd ~             # Va al home
+</pre>
+
+<h3>Crear y Eliminar</h3>
+<pre>
+mkdir carpeta              # Crea una carpeta
+touch archivo.txt          # Crea un archivo vacío
+rm archivo.txt             # Elimina un archivo
+rm -r carpeta              # Elimina carpeta y contenido
+cp archivo.txt copia.txt   # Copia un archivo
+mv archivo.txt nuevo.txt   # Mueve o renombra
+</pre>
+
+<h3>Ver Contenido</h3>
+<pre>
+cat archivo.txt            # Muestra el contenido
+less archivo.txt           # Muestra con scroll
+head archivo.txt           # Primeras líneas
+tail archivo.txt           # Últimas líneas
+</pre>
+
+<h3>Permisos</h3>
+<pre>
+chmod +x script.sh         # Hace ejecutable
+chmod 755 archivo          # Permisos específicos
+sudo comando               # Ejecuta como administrador
+</pre>
+
+<h3>Búsqueda</h3>
+<pre>
+find . -name "*.py"        # Busca archivos
+grep "texto" archivo.txt   # Busca texto
+whereis comando            # Ubica un comando
+</pre>
+
+<h3>Otros Útiles</h3>
+<pre>
+clear                      # Limpia la terminal
+history                    # Muestra historial
+whoami                     # Muestra usuario actual
+date                       # Muestra fecha/hora
+df -h                      # Espacio en disco
+ps aux                     # Procesos activos
+</pre>
+
+<h2>📦 Gestor de Paquetes - APT</h2>
+<p>APT es el gestor de paquetes de Ubuntu. Te permite instalar, actualizar y desinstalar programas fácilmente.</p>
+<pre>
+sudo apt update            # Actualiza lista de paquetes
+sudo apt upgrade           # Actualiza programas
+sudo apt install git       # Instala un programa
+sudo apt remove git        # Desinstala
+sudo apt search python     # Busca paquetes
+</pre>
+
+<h2>💻 Git en Terminal</h2>
+<pre>
+git init                   # Inicia repositorio
+git status                 # Estado del repo
+git add .                  # Prepara cambios
+git commit -m "mensaje"    # Confirma cambios
+git push                   # Sube cambios
+git pull                   # Trae cambios
+git clone URL              # Clona repositorio
+</pre>
+
+<h2>🧪 Examen - Ubuntu Nivel Básico</h2>
+
+<div class="card" style="background: #f9f9f9; margin-top: 20px;">
+<p style="font-size: 20px; font-weight: bold;">1. ¿Qué comando lista los archivos de una carpeta?</p>
+<button onclick="check('ls','ls','r1')">ls</button>
+<button onclick="check('pwd','ls','r1')">pwd</button>
+<button onclick="check('cd','ls','r1')">cd</button>
+<p id="r1" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">2. ¿Cómo cambias de directorio?</p>
+<button onclick="check('cd','cd','r2')">cd</button>
+<button onclick="check('ls','cd','r2')">ls</button>
+<button onclick="check('mkdir','cd','r2')">mkdir</button>
+<p id="r2" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">3. ¿Qué comando crea una carpeta ?</p>
+<button onclick="check('mkdir','mkdir','r3')">mkdir</button>
+<button onclick="check('touch','mkdir','r3')">touch</button>
+<button onclick="check('rm','mkdir','r3')">rm</button>
+<p id="r3" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">4. ¿Qué comando elimina un archivo?</p>
+<button onclick="check('rm','rm','r4')">rm</button>
+<button onclick="check('rm -r','rm','r4')">rm -r</button>
+<button onclick="check('mv','rm','r4')">mv</button>
+<p id="r4" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+<div class="card" style="background: #f9f9f9;">
+<p style="font-size: 20px; font-weight: bold;">5. ¿Cuál es el gestor de paquetes en Ubuntu?</p>
+<button onclick="check('apt','apt','r5')">apt</button>
+<button onclick="check('npm','apt','r5')">npm</button>
+<button onclick="check('pip','apt','r5')">pip</button>
+<p id="r5" style="font-size: 18px; font-weight: bold;"></p>
+</div>
+
+</div>
+</main>
+
+</body>
+</html>
