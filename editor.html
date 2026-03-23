@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor de Código - Desafíos</title>
+    <title>Editor de Código</title>
     <style>
         * {
             margin: 0;
@@ -69,6 +69,13 @@
             gap: 10px;
             height: calc(100vh - 54px);
             padding: 10px;
+        }
+
+        /* Cuando no hay ejercicio, ocupar todo el espacio */
+        .container.full-mode {
+            grid-template-columns: 1fr 1fr;
+            gap: 0px;
+            padding: 0px;
         }
 
         /* Panel de Desafío */
@@ -216,6 +223,18 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* En full-mode, sin bordes ni sombras */
+        .full-mode .editor-section {
+            border: none;
+            border-radius: 0px;
+            box-shadow: none;
+            border-right: 1px solid #ddd;
+        }
+
+        .full-mode .editor-section:last-child {
+            border-right: none;
+        }
+
         .editor-title {
             background: #1e88e5;
             color: white;
@@ -290,18 +309,26 @@
     </div>
 
     <div class="container">
-        <!-- Panel Desafío -->
-        <div class="challenge-panel" id="challengePanel">
-            <div class="panel-title">📌 DESAFÍO</div>
-            <div class="panel-content" id="challengeContent">
-                <div class="no-challenge">Selecciona un desafío desde el menú principal</div>
+        <!-- Panel de Ejercicio -->
+        <div class="challenge-panel" id="ejercicioPanel" style="display: none;">
+            <div class="panel-title">🧪 EJERCICIO</div>
+            <div class="panel-content">
+                <div class="challenge-info">
+                    <h3 id="ejercicioTitle">Cargando...</h3>
+                    <div class="difficulty-badge" id="ejercicioDifficulty"></div>
+                </div>
+                <div class="enunciado" id="ejercicioEnunciado"></div>
+                <button class="btn-finish-challenge" id="corregirBtn" onclick="corregirEjercicio()">
+                    ✅ Corregir Ejercicio
+                </button>
+                <div id="resultadoCorreccion" style="margin-top: 10px; display: none;"></div>
             </div>
         </div>
 
         <!-- Editor -->
         <div class="editor-section">
             <div class="editor-title">✏️ CÓDIGO</div>
-            <textarea id="codeEditor" placeholder="Escribe tu HTML/CSS/JavaScript aquí..."></textarea>
+            <textarea id="codeEditor" placeholder="Escribe tu código aquí..."></textarea>
         </div>
 
         <!-- Preview -->
@@ -311,11 +338,211 @@
         </div>
     </div>
 
-    <script src="desafios.js"></script>
+    <script src="ejercicios.js"></script>
     <script>
         const codeEditor = document.getElementById('codeEditor');
         const preview = document.getElementById('preview');
-        let currentChallenge = null;
+        let ejercicioActual = null;
+
+        // Cargar ejercicio si viene desde la URL
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ejercicioId = urlParams.get('ejercicio');
+            const container = document.querySelector('.container');
+            
+            if (ejercicioId) {
+                cargarEjercicio(ejercicioId);
+                container.classList.remove('full-mode');
+            } else {
+                // Modo pantalla completa sin ejercicio
+                container.classList.add('full-mode');
+            }
+            
+            if (typeof crearChatbot === 'function') {
+                crearChatbot();
+            }
+        });
+
+        // Cargar ejercicio en el editor
+        function cargarEjercicio(ejercicioId) {
+            ejercicioActual = getEjercicioById(ejercicioId);
+            
+            if (ejercicioActual) {
+                // Mostrar panel de ejercicio
+                document.getElementById('ejercicioPanel').style.display = 'flex';
+                document.getElementById('ejercicioTitle').textContent = ejercicioActual.titulo;
+                document.getElementById('ejercicioEnunciado').innerHTML = ejercicioActual.enunciado;
+                
+                // Configurar dificultad
+                const difficultyEl = document.getElementById('ejercicioDifficulty');
+                const nivel = ejercicioActual.id.split('-')[1];
+                difficultyEl.textContent = nivel.charAt(0).toUpperCase() + nivel.slice(1);
+                difficultyEl.className = 'difficulty-badge ' + nivel;
+                
+                // Cargar código inicial
+                codeEditor.value = ejercicioActual.codigoInicial || '';
+                runCode();
+                
+                // Actualizar título del header
+                document.getElementById('challengeTitle').textContent = ejercicioActual.titulo;
+            }
+        }
+
+        // Corregir ejercicio
+        function corregirEjercicio() {
+            if (!ejercicioActual) return;
+            
+            const codigoUsuario = codeEditor.value.trim();
+            const resultadoDiv = document.getElementById('resultadoCorreccion');
+            
+            // Validación básica
+            let esCorrecto = false;
+            let errores = [];
+            
+            if (ejercicioActual.tests) {
+                // Usar tests definidos
+                for (const test of ejercicioActual.tests) {
+                    if (test.tipo === 'contiene') {
+                        if (!codigoUsuario.includes(test.texto)) {
+                            errores.push(`Falta incluir: ${test.texto}`);
+                        }
+                    }
+                }
+                esCorrecto = errores.length === 0;
+            } else {
+                // Validación simple: comparar con solución
+                const solucionNormalizada = ejercicioActual.solucion.replace(/\s+/g, ' ').trim();
+                const codigoNormalizado = codigoUsuario.replace(/\s+/g, ' ').trim();
+                esCorrecto = codigoNormalizado.includes(solucionNormalizada) || 
+                           solucionNormalizada.includes(codigoNormalizado);
+                
+                if (!esCorrecto) {
+                    errores.push('El código no coincide con la solución esperada.');
+                }
+            }
+            
+            // Mostrar resultado
+            resultadoDiv.style.display = 'block';
+            if (esCorrecto) {
+                resultadoDiv.innerHTML = `
+                    <div style="background: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                        🎉 ¡Correcto! Has completado el ejercicio.
+                    </div>
+                    <button onclick="completarEjercicio()" style="background: #4caf50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                        🏅 Obtener Logro
+                    </button>
+                `;
+            } else {
+                resultadoDiv.innerHTML = `
+                    <div style="background: #ffebee; color: #c62828; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                        ❌ Incorrecto. Revisa los siguientes errores:
+                        <ul style="margin-top: 5px;">
+                            ${errores.map(error => `<li>${error}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div style="font-size: 12px; color: #666; margin-top: 10px;">
+                        💡 Pista: ${ejercicioActual.pistas ? ejercicioActual.pistas[Math.floor(Math.random() * ejercicioActual.pistas.length)] : 'Revisa la sintaxis y vuelve a intentarlo.'}
+                    </div>
+                `;
+            }
+        }
+
+        // Completar ejercicio y dar logro
+        function completarEjercicio() {
+            if (!ejercicioActual) return;
+            
+            // Guardar progreso
+            let progresoEjercicios = JSON.parse(localStorage.getItem('progresoEjercicios')) || [];
+            if (!progresoEjercicios.includes(ejercicioActual.id)) {
+                progresoEjercicios.push(ejercicioActual.id);
+                localStorage.setItem('progresoEjercicios', JSON.stringify(progresoEjercicios));
+            }
+            
+            // Mostrar notificación de logro
+            mostrarNotificacionLogro(ejercicioActual);
+            
+            // Actualizar logros en la página principal
+            actualizarLogros();
+            
+            // Volver al menú principal después de 3 segundos
+            setTimeout(() => {
+                window.location.href = 'estudio.html';
+            }, 3000);
+        }
+
+        // Mostrar notificación de logro
+        function mostrarNotificacionLogro(ejercicio) {
+            const notificacion = document.createElement('div');
+            notificacion.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideInRight 0.5s ease-out;
+                max-width: 300px;
+            `;
+            
+            const nivelTexto = ejercicio.id.split('-')[1];
+            const nivelEmoji = nivelTexto === 'facil' ? '🟢' : nivelTexto === 'intermedio' ? '🟡' : '🔴';
+            
+            notificacion.innerHTML = `
+                <h3 style="margin: 0 0 10px 0; font-size: 18px;">🏅 ¡Logro Desbloqueado!</h3>
+                <p style="margin: 0 0 10px 0; font-size: 14px;">Has completado: <strong>${ejercicio.titulo}</strong></p>
+                <p style="margin: 0; font-size: 12px;">${nivelEmoji} Nivel ${nivelTexto.charAt(0).toUpperCase() + nivelTexto.slice(1)}</p>
+            `;
+            
+            document.body.appendChild(notificacion);
+            
+            setTimeout(() => {
+                notificacion.remove();
+            }, 5000);
+        }
+
+        // Actualizar logros en localStorage
+        function actualizarLogros() {
+            const progresoEjercicios = JSON.parse(localStorage.getItem('progresoEjercicios')) || [];
+            const userProgress = JSON.parse(localStorage.getItem('userProgress')) || {
+                completedTopics: [],
+                examsApproved: 0,
+                unlockedBadges: []
+            };
+            
+            // Contar ejercicios completados por nivel
+            const ejerciciosFaciles = progresoEjercicios.filter(id => id.includes('-facil-')).length;
+            const ejerciciosIntermedios = progresoEjercicios.filter(id => id.includes('-intermedio-')).length;
+            const ejerciciosDificiles = progresoEjercicios.filter(id => id.includes('-dificil-')).length;
+            
+            // Desbloquear logros basados en ejercicios
+            const nuevosLogros = [];
+            
+            if (ejerciciosFaciles >= 1 && !userProgress.unlockedBadges.includes('first-exercise')) {
+                nuevosLogros.push('first-exercise');
+            }
+            
+            if (ejerciciosFaciles >= 3 && !userProgress.unlockedBadges.includes('coder-basic')) {
+                nuevosLogros.push('coder-basic');
+            }
+            
+            if (ejerciciosIntermedios >= 3 && !userProgress.unlockedBadges.includes('coder-intermediate')) {
+                nuevosLogros.push('coder-intermediate');
+            }
+            
+            if (ejerciciosDificiles >= 3 && !userProgress.unlockedBadges.includes('coder-advanced')) {
+                nuevosLogros.push('coder-advanced');
+            }
+            
+            if (progresoEjercicios.length >= 12 && !userProgress.unlockedBadges.includes('exercise-master')) {
+                nuevosLogros.push('exercise-master');
+            }
+            
+            userProgress.unlockedBadges.push(...nuevosLogros);
+            localStorage.setItem('userProgress', JSON.stringify(userProgress));
+        }
 
         // Ejecutar código en tiempo real
         codeEditor.addEventListener('input', runCode);
@@ -343,239 +570,13 @@ ${code}
             }
         }
 
-        // Cargar desafío desde URL
-        function loadChallenge() {
-            const params = new URLSearchParams(window.location.search);
-            const challengeId = params.get('challenge');
-            
-            if (challengeId && typeof getDesafioById !== 'undefined') {
-                currentChallenge = getDesafioById(challengeId);
-                if (currentChallenge) {
-                    renderChallenge();
-                }
-            }
-        }
+    </script>
 
-        function renderChallenge() {
-            if (!currentChallenge) return;
 
-            const title = document.getElementById('challengeTitle');
-            const xpDisplay = document.getElementById('xpDisplay');
-            const xpAmount = document.getElementById('xpAmount');
-            const content = document.getElementById('challengeContent');
 
-            title.textContent = `${currentChallenge.titulo}`;
-            xpAmount.textContent = currentChallenge.xp;
-            xpDisplay.style.display = 'flex';
-            xpDisplay.style.alignItems = 'center';
-            xpDisplay.style.gap = '5px';
 
-            const diffClass = currentChallenge.dificultad.toLowerCase();
-            
-            content.innerHTML = `
-                <div class="challenge-info">
-                    <h3>${currentChallenge.area}</h3>
-                    <span class="difficulty-badge ${diffClass}">${currentChallenge.dificultad}</span>
-                </div>
-                
-                <div class="enunciado" id="enunciadoContent">
-                    ${markdownToHtml(currentChallenge.enunciado)}
-                </div>
-                
-                <button class="btn-finish-challenge" onclick="finishChallenge()">
-                    ✅ Terminar Prueba
-                </button>
-            `;
-        }
 
-        function markdownToHtml(md) {
-            let html = md;
-            // Convertir headers
-            html = html.replace(/### (.*?)\n/g, '<h3>$1</h3>');
-            html = html.replace(/## (.*?)\n/g, '<h2>$1</h2>');
-            html = html.replace(/# (.*?)\n/g, '<h1>$1</h1>');
-            // Convertir listas
-            html = html.replace(/\n- (.*?)\n/g, '\n<li>$1</li>\n');
-            html = html.replace(/(\n<li>.*?<\/li>)+/g, '<ul>$&</ul>');
-            // Convertir código inline
-            html = html.replace(/`(.*?)`/g, '<code>$1</code>');
-            // Convertir código bloques
-            html = html.replace(/```[\s\S]*?```/g, (match) => {
-                const code = match.replace(/```/g, '');
-                return '<pre>' + code + '</pre>';
-            });
-            return html;
-        }
 
-        function finishChallenge() {
-            if (!currentChallenge) {
-                alert('No hay desafío activo');
-                return;
-            }
-
-            // Crear modal de confirmación atractivo
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 10000;
-                animation: fadeIn 0.3s ease;
-            `;
-
-            const modalContent = document.createElement('div');
-            modalContent.style.cssText = `
-                background: white;
-                padding: 40px;
-                border-radius: 12px;
-                text-align: center;
-                max-width: 400px;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-                animation: slideUp 0.3s ease;
-            `;
-
-            const icon = document.createElement('div');
-            icon.style.cssText = `
-                font-size: 60px;
-                margin-bottom: 20px;
-            `;
-            icon.textContent = '🎉';
-
-            const title = document.createElement('h2');
-            title.style.cssText = `
-                color: #333;
-                margin: 20px 0;
-                font-size: 24px;
-            `;
-            title.textContent = '¡Desafío Completado!';
-
-            const xpText = document.createElement('p');
-            xpText.style.cssText = `
-                color: #1e88e5;
-                font-size: 32px;
-                font-weight: 700;
-                margin: 15px 0;
-            `;
-            xpText.textContent = `+${currentChallenge.xp} XP`;
-
-            const message = document.createElement('p');
-            message.style.cssText = `
-                color: #666;
-                font-size: 14px;
-                line-height: 1.6;
-                margin: 15px 0;
-            `;
-            message.textContent = `Has ganado experiencia en ${currentChallenge.area}. Tu progreso se ha guardado automáticamente.`;
-
-            const buttonContainer = document.createElement('div');
-            buttonContainer.style.cssText = `
-                display: flex;
-                gap: 10px;
-                margin-top: 30px;
-            `;
-
-            const confirmBtn = document.createElement('button');
-            confirmBtn.style.cssText = `
-                flex: 1;
-                background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 6px;
-                font-weight: 600;
-                cursor: pointer;
-                font-size: 14px;
-                transition: all 0.3s;
-            `;
-            confirmBtn.textContent = '✓ Volver al Portal';
-            confirmBtn.onmouseover = () => confirmBtn.style.transform = 'scale(1.05)';
-            confirmBtn.onmouseout = () => confirmBtn.style.transform = '';
-            confirmBtn.onclick = () => {
-                // Marcar desafío como completado
-                if (typeof parent.completeChallenge === 'function') {
-                    parent.completeChallenge(
-                        currentChallenge.id, 
-                        currentChallenge.dificultad.toLowerCase(), 
-                        currentChallenge.area
-                    );
-                }
-                if (typeof parent.addXP === 'function') {
-                    parent.addXP(currentChallenge.xp);
-                }
-                window.location.href = 'estudio.html';
-            };
-
-            const cancelBtn = document.createElement('button');
-            cancelBtn.style.cssText = `
-                flex: 1;
-                background: #f0f0f0;
-                color: #333;
-                border: 1px solid #ddd;
-                padding: 12px;
-                border-radius: 6px;
-                font-weight: 600;
-                cursor: pointer;
-                font-size: 14px;
-                transition: all 0.3s;
-            `;
-            cancelBtn.textContent = '↻ Seguir Practicando';
-            cancelBtn.onmouseover = () => cancelBtn.style.background = '#e0e0e0';
-            cancelBtn.onmouseout = () => cancelBtn.style.background = '#f0f0f0';
-            cancelBtn.onclick = () => document.body.removeChild(modal);
-
-            buttonContainer.appendChild(confirmBtn);
-            buttonContainer.appendChild(cancelBtn);
-
-            modalContent.appendChild(icon);
-            modalContent.appendChild(title);
-            modalContent.appendChild(xpText);
-            modalContent.appendChild(message);
-            modalContent.appendChild(buttonContainer);
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-
-            // Agregar estilos de animación
-            if (!document.getElementById('modal-styles')) {
-                const style = document.createElement('style');
-                style.id = 'modal-styles';
-                style.textContent = `
-                    @keyframes fadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-                    @keyframes slideUp {
-                        from { 
-                            opacity: 0;
-                            transform: translateY(30px);
-                        }
-                        to { 
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
-
-        // Ejecutar al cargar la página
-        window.addEventListener('load', () => {
-            loadChallenge();
-            runCode();
-        });
-
-        // Ctrl+Enter también execute
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                runCode();
-            }
-        });
     </script>
 
     <script src="chatbot.js"></script>

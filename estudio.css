@@ -106,9 +106,8 @@ header {
 /* SEARCH BOX EN SIDEBAR */
 
 .sidebar-search {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
+  margin: 15px 0 20px 0;
+  padding: 0;
 }
 
 .sidebar-search input {
@@ -132,7 +131,7 @@ header {
 
 .content {
   flex: 1;
-  padding: 40px 60px 40px 40px;
+  padding: 40px 60px 60px 80px;
   background: #ffffff;
   width: 100%;
   max-width: 1200px;
@@ -253,7 +252,6 @@ pre {
   text-align: center;
   box-shadow: 0 2px 10px rgba(30, 136, 229, 0.12);
   border: 1px solid #efefef;
-  border-top: 3px solid #1e88e5;
 }
 
 .stat-box:hover {
@@ -328,64 +326,6 @@ p {
   color: white;
   margin-bottom: 40px;
   box-shadow: 0 4px 15px rgba(30, 136, 229, 0.2);
-}
-
-.user-level {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.level-circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid rgba(255, 255, 255, 0.4);
-  flex-shrink: 0;
-}
-
-.level-number {
-  font-size: 48px;
-  font-weight: bold;
-}
-
-.level-name {
-  margin: 5px 0 0 0;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.level-info h3 {
-  margin: 0 0 15px 0;
-  font-size: 20px;
-  color: white;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #4CAF50;
-  border-radius: 10px;
-  transition: width 0.5s ease;
-}
-
-.progress-text {
-  font-size: 13px;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.9);
 }
 
 /* BADGES / LOGROS */
@@ -620,13 +560,95 @@ p {
   .badges-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  .level-circle {
-    width: 100px;
-    height: 100px;
+/* SECCIÓN DE EJERCICIOS */
+.ejercicios-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ejercicio-selector h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.selector-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.selector-grid select, .selector-grid button {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.selector-grid select:focus {
+  outline: none;
+  border-color: #1e88e5;
+}
+
+.selector-grid button {
+  background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.selector-grid button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+}
+
+.selector-grid button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ejercicio-preview {
+  background: #f9f9fb;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #1e88e5;
+}
+
+.ejercicio-preview h3 {
+  margin: 0 0 12px 0;
+  color: #1e88e5;
+  font-size: 16px;
+}
+
+.ejercicio-info {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.ejercicio-info span {
+  display: inline-block;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-right: 8px;
+}
+
+/* Responsive para ejercicios */
+@media (max-width: 768px) {
+  .selector-grid {
+    grid-template-columns: 1fr;
   }
-
-  .level-number {
-    font-size: 36px;
+  
+  .ejercicios-section {
+    padding: 16px;
   }
 }

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal IT - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-register {
+            background: #f5f5f5;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-register:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 13px;
+            border-left: 4px solid #c62828;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 13px;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .form-title {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .toggle-form a {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-size: 13px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>📚 Portal IT</h1>
+            <p>Aprende programación y cloud</p>
+        </div>
+
+        <div id="errorMsg" class="error"></div>
+        <div id="successMsg" class="success"></div>
+
+        <!-- FORMULARIO DE LOGIN -->
+        <div id="loginForm" class="form-section active">
+            <div class="form-title">Iniciar Sesión</div>
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Contraseña</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+            </div>
+            <div class="loading" id="loginLoading">
+                <div class="spinner"></div> Iniciando sesión...
+            </div>
+            <div class="button-group">
+                <button class="btn-login" onclick="realizarLogin()">Entrar</button>
+                <button class="btn-register" onclick="cambiarFormulario('register')">Registrarse</button>
+            </div>
+        </div>
+
+        <!-- FORMULARIO DE REGISTRO -->
+        <div id="registerForm" class="form-section">
+            <div class="form-title">Crear Cuenta</div>
+            <div class="form-group">
+                <label for="regUsername">Usuario</label>
+                <input type="text" id="regUsername" placeholder="tu_usuario" required>
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Contraseña</label>
+                <input type="password" id="regPassword" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="regPassword2">Confirmar Contraseña</label>
+                <input type="password" id="regPassword2" placeholder="••••••••" required>
+            </div>
+            <div class="loading" id="registerLoading">
+                <div class="spinner"></div> Creando cuenta...
+            </div>
+            <div class="button-group">
+                <button class="btn-login" onclick="realizarRegistro()">Registrarse</button>
+                <button class="btn-register" onclick="cambiarFormulario('login')">Volver</button>
+            </div>
+        </div>
+
+        <div class="toggle-form">
+            ¿No tienes cuenta? <a onclick="cambiarFormulario('register')">Regístrate gratis</a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        function cambiarFormulario(tipo) {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById(tipo + 'Form').classList.add('active');
+            document.getElementById('errorMsg').textContent = '';
+            document.getElementById('successMsg').textContent = '';
+        }
+
+        function mostrarError(mensaje) {
+            const errorEl = document.getElementById('errorMsg');
+            errorEl.textContent = '❌ ' + mensaje;
+            errorEl.style.display = 'block';
+            setTimeout(() => {
+                errorEl.style.display = 'none';
+            }, 5000);
+        }
+
+        function mostrarExito(mensaje) {
+            const successEl = document.getElementById('successMsg');
+            successEl.textContent = '✅ ' + mensaje;
+            successEl.style.display = 'block';
+            setTimeout(() => {
+                successEl.style.display = 'none';
+            }, 3000);
+        }
+
+        async function realizarLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                mostrarError('Por favor completa todos los campos');
+                return;
+            }
+
+            document.getElementById('loginLoading').style.display = 'block';
+
+            try {
+                const response = await fetch(API_URL + '/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                document.getElementById('loginLoading').style.display = 'none';
+
+                if (response.ok && data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    mostrarExito('¡Bienvenido! ' + data.usuario.username);
+                    setTimeout(() => {
+                        window.location.href = '/estudio';
+                    }, 1500);
+                } else {
+                    mostrarError(data.error || 'Error en el login');
+                }
+            } catch (error) {
+                document.getElementById('loginLoading').style.display = 'none';
+                mostrarError('Error de conexión: ' + error.message);
+            }
+        }
+
+        async function realizarRegistro() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const password2 = document.getElementById('regPassword2').value;
+
+            if (!username || !email || !password || !password2) {
+                mostrarError('Por favor completa todos los campos');
+                return;
+            }
+
+            if (password !== password2) {
+                mostrarError('Las contraseñas no coinciden');
+                return;
+            }
+
+            if (password.length < 6) {
+                mostrarError('La contraseña debe tener al menos 6 caracteres');
+                return;
+            }
+
+            document.getElementById('registerLoading').style.display = 'block';
+
+            try {
+                const response = await fetch(API_URL + '/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await response.json();
+                document.getElementById('registerLoading').style.display = 'none';
+
+                if (response.ok && data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    mostrarExito('¡Cuenta creada! Bienvenido ' + data.usuario.username);
+                    setTimeout(() => {
+                        window.location.href = '/estudio';
+                    }, 1500);
+                } else {
+                    mostrarError(data.error || 'Error en el registro');
+                }
+            } catch (error) {
+                document.getElementById('registerLoading').style.display = 'none';
+                mostrarError('Error de conexión: ' + error.message);
+            }
+        }
+
+        // Verifica si ya hay sesión activa
+        window.addEventListener('load', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = '/estudio';
+            }
+        });
+
+        // Permitir Enter en inputs
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const activeForm = document.querySelector('.form-section.active');
+                if (activeForm.id === 'loginForm') {
+                    realizarLogin();
+                } else {
+                    realizarRegistro();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

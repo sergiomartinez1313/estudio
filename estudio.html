@@ -19,13 +19,437 @@
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 30px 0; }
   .stat-box h3 { margin: 0; font-size: 32px; color: #666; }
   .stat-box p { margin: 10px 0 0 0; font-size: 13px; }
+
+  /* Estilos para login/registro */
+  .auth-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .auth-form {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    padding: 40px;
+    animation: slideUp 0.5s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .auth-logo {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .auth-logo h1 {
+    font-size: 32px;
+    color: #667eea;
+    margin-bottom: 10px;
+  }
+
+  .auth-logo p {
+    color: #999;
+    font-size: 14px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #eee;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .button-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .auth-button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .auth-button.primary {
+    background: #667eea;
+    color: white;
+    width: 100%;
+  }
+
+  .auth-button.primary:hover {
+    background: #5a6fd8;
+  }
+
+  .auth-button.secondary {
+    background: #f8f9fa;
+    color: #667eea;
+    border: 2px solid #667eea;
+  }
+
+  .auth-button.secondary:hover {
+    background: #667eea;
+    color: white;
+  }
+
+  .auth-button.guest {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .auth-button.guest:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+  }
+
+  .auth-toggle {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .auth-toggle a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .auth-toggle a:hover {
+    text-decoration: underline;
+  }
+
+  .error-message {
+    background: #fee;
+    color: #c33;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .success-message {
+    background: #efe;
+    color: #363;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Ocultar contenido principal inicialmente */
+  .main-content {
+    display: none;
+  }
+
+  /* ===== ESTILOS DEL CHATBOT ===== */
+
+  /* Botón flotante del chatbot */
+  .chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+  }
+
+  .chatbot-button svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+  }
+
+  /* Modal del chatbot */
+  .chatbot-modal {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1002;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: chatSlideUp 0.3s ease-out;
+  }
+
+  @keyframes chatSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Header del chat */
+  .chatbot-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chatbot-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Área de mensajes */
+  .chatbot-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .message {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    animation: messageSlideIn 0.3s ease-out;
+  }
+
+  @keyframes messageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .message.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .message.bot {
+    align-self: flex-start;
+    background: white;
+    color: #333;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .message.bot::before {
+    content: '🤖';
+    margin-right: 8px;
+    font-size: 16px;
+  }
+
+  /* Área de input */
+  .chatbot-input-area {
+    border-top: 1px solid #eee;
+    padding: 16px;
+    background: white;
+    display: flex;
+    gap: 8px;
+  }
+
+  .chatbot-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #eee;
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .chatbot-input:focus {
+    border-color: #667eea;
+  }
+
+  .chatbot-send {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+
+  .chatbot-send:hover {
+    transform: scale(1.1);
+  }
+
+  .chatbot-send svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: none;
+    align-self: flex-start;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #666;
+  }
+
+  .typing-dots {
+    display: inline-block;
+  }
+
+  .typing-dots::after {
+    content: '...';
+    animation: typing 1.5s infinite;
+  }
+
+  @keyframes typing {
+    0%, 60%, 100% {
+      opacity: 0.3;
+    }
+    30% {
+      opacity: 1;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .chatbot-modal {
+      width: calc(100vw - 40px);
+      height: calc(100vh - 140px);
+      bottom: 90px;
+      right: 20px;
+    }
+  }
 </style>
 <script>
   function buscar() {
     const input = document.getElementById('searchInput');
     const filtro = input.value.toLowerCase();
-    const cards = document.querySelectorAll('.study-card');
     
+    // Buscar en las tarjetas de estudio
+    const cards = document.querySelectorAll('.study-card');
     cards.forEach(card => {
       const texto = card.textContent.toLowerCase();
       const titulo = card.querySelector('h3').textContent.toLowerCase();
@@ -38,15 +462,121 @@
         card.classList.remove('visible');
       }
     });
+    
+    // Buscar en los enlaces del sidebar
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+    sidebarLinks.forEach(link => {
+      const texto = link.textContent.toLowerCase();
+      if (texto.includes(filtro) || filtro === '') {
+        link.style.display = 'block';
+      } else {
+        link.style.display = 'none';
+      }
+    });
+    
+    // Buscar en los títulos h3 del sidebar
+    const sidebarTitles = document.querySelectorAll('.sidebar h3');
+    sidebarTitles.forEach(title => {
+      const texto = title.textContent.toLowerCase();
+      const nextLinks = [];
+      let sibling = title.nextElementSibling;
+      while (sibling && sibling.tagName === 'A') {
+        nextLinks.push(sibling);
+        sibling = sibling.nextElementSibling;
+      }
+      
+      const hasVisibleLinks = nextLinks.some(link => link.style.display !== 'none');
+      if (texto.includes(filtro) || hasVisibleLinks || filtro === '') {
+        title.style.display = 'block';
+      } else {
+        title.style.display = 'none';
+      }
+    });
   }
 </script>
 </head>
 
 <body>
 
+<!-- Contenedor de autenticación -->
+<div id="authContainer" class="auth-container">
+  <div class="auth-form">
+    <div class="auth-logo">
+      <h1>Portal IT</h1>
+      <p>Tu plataforma de aprendizaje profesional</p>
+    </div>
+
+    <div id="errorMessage" class="error-message"></div>
+    <div id="successMessage" class="success-message"></div>
+
+    <!-- Formulario de Login -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="tu@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Contraseña</label>
+        <input type="password" id="loginPassword" placeholder="Tu contraseña" required>
+      </div>
+
+      <div class="button-group">
+        <button class="auth-button primary" onclick="login()" id="loginButton">
+          <span id="loginText">Iniciar Sesión</span>
+          <span id="loginLoading" class="loading" style="display: none;"></span>
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="auth-button guest" onclick="entrarComoInvitado()" id="guestButton">
+          👤 Entrar como Invitado
+        </button>
+      </div>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <div id="registerForm" style="display: none;">
+      <div class="form-group">
+        <label for="registerUsername">Nombre de Usuario</label>
+        <input type="text" id="registerUsername" placeholder="Tu nombre de usuario" required>
+      </div>
+
+      <div class="form-group">
+        <label for="registerEmail">Email</label>
+        <input type="email" id="registerEmail" placeholder="tu@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="registerPassword">Contraseña</label>
+        <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required>
+      </div>
+
+      <div class="button-group">
+        <button class="auth-button primary" onclick="register()" id="registerButton">
+          <span id="registerText">Crear Cuenta</span>
+          <span id="registerLoading" class="loading" style="display: none;"></span>
+        </button>
+        <button class="auth-button secondary" onclick="showLogin()">Volver al Login</button>
+      </div>
+    </div>
+
+    <div class="auth-toggle">
+      <span id="toggleText">¿No tienes cuenta? <a href="#" onclick="showRegister()">Regístrate aquí</a></span>
+    </div>
+  </div>
+</div>
+
+<!-- Contenido principal (oculto inicialmente) -->
+<div id="mainContent" class="main-content">
+
 <header>
-  <div class="header-content">
-    <h1>Portal IT</h1>
+  <div class="header-content" style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">Portal IT</h1>
+    <div id="userMenu" style="display: none; display: flex; gap: 15px; align-items: center;">
+      <span id="usernameDisplay" style="color: #666; font-size: 13px;"></span>
+      <button onclick="logout()" style="background: #ff6b6b; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px;">Salir</button>
+    </div>
   </div>
 </header>
 
@@ -54,6 +584,10 @@
 
 <aside class="sidebar">
 <h2>📚 Menú Estudio</h2>
+
+<div class="sidebar-search">
+  <input type="text" id="searchInput" placeholder="Buscar..." onkeyup="buscar()">
+</div>
 
 <h3>🔗 Fundamentos</h3>
 <a href="github.html">GitHub</a>
@@ -94,30 +628,11 @@
 <a href="examen-seguridad.html">Examen Seguridad</a>
 <a href="examen-devops.html">Examen DevOps</a>
 
-<div class="sidebar-search">
-  <input type="text" id="searchInput" placeholder="Buscar..." onkeyup="buscar()">
-</div>
-
 </aside>
 
 <main class="content">
 
 <!-- DASHBOARD DEL USUARIO -->
-<div class="dashboard">
-  <div class="user-level">
-    <div class="level-circle">
-      <span class="level-number">1</span>
-      <p class="level-name">Principiante</p>
-    </div>
-    <div class="level-info">
-      <h3>Tu Progreso</h3>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: 25%"></div>
-      </div>
-      <p class="progress-text">25% completado - 25/100 XP para siguiente nivel</p>
-    </div>
-  </div>
-</div>
 
 <div class="stats">
   <div class="stat-box">
@@ -231,41 +746,80 @@
 
 </div>
 
-<!-- SECCIÓN DE LOGROS/BADGES -->
-<h2>🏅 Tus Logros</h2>
-<div class="badges-grid">
-  <div class="badge locked" data-badge="first-steps" title="Completa tu primer tema">
-    <span class="badge-icon">🚀</span>
-    <p>Primeros Pasos</p>
+
+
+<!-- SECCIÓN DE EJERCICIOS -->
+<h2>🧪 Ejercicios Prácticos</h2>
+<div class="ejercicios-section">
+  <div class="ejercicio-selector">
+    <h3>Selecciona un Área y Nivel</h3>
+    <div class="selector-grid">
+      <select id="areaSelect" onchange="cargarNiveles()">
+        <option value="">Elige un área...</option>
+        <option value="github">🌐 GitHub</option>
+        <option value="ubuntu">🐧 Ubuntu</option>
+        <option value="dbeaver">🗄️ DBeaver</option>
+        <option value="python">🐍 Python</option>
+        <option value="javascript">⚡ JavaScript</option>
+        <option value="react">⚛️ React</option>
+        <option value="sql">🔍 SQL</option>
+        <option value="aws">☁️ AWS</option>
+        <option value="docker">🐳 Docker</option>
+        <option value="api-rest">🔗 API REST</option>
+        <option value="devops">⚙️ DevOps</option>
+        <option value="seguridad">🔒 Seguridad</option>
+      </select>
+      
+      <select id="nivelSelect" onchange="mostrarEjercicio()" disabled>
+        <option value="">Elige un nivel...</option>
+      </select>
+      
+      <button id="iniciarEjercicioBtn" onclick="iniciarEjercicio()" disabled>
+        🚀 Iniciar Ejercicio
+      </button>
+    </div>
   </div>
-  <div class="badge locked" data-badge="coder" title="Aprueba 3 exámenes">
-    <span class="badge-icon">💻</span>
-    <p>Programador</p>
-  </div>
-  <div class="badge locked" data-badge="expert" title="Aprueba todos los exámenes de una área">
-    <span class="badge-icon">🎖️</span>
-    <p>Experto</p>
-  </div>
-  <div class="badge locked" data-badge="master" title="Completa una ruta de aprendizaje">
-    <span class="badge-icon">⭐</span>
-    <p>Maestro</p>
-  </div>
-  <div class="badge locked" data-badge="speedrun" title="Completa 3 desafíos">
-    <span class="badge-icon">⚡</span>
-    <p>Speedrunner</p>
-  </div>
-  <div class="badge locked" data-badge="legend" title="Alcanza nivel 5">
-    <span class="badge-icon">👑</span>
-    <p>Leyenda</p>
+  
+  <div id="ejercicioPreview" class="ejercicio-preview" style="display: none;">
+    <h3 id="ejercicioTitulo"></h3>
+    <div id="ejercicioEnunciado"></div>
+    <div class="ejercicio-info">
+      <span id="ejercicioArea"></span> | 
+      <span id="ejercicioNivel"></span>
+    </div>
   </div>
 </div>
 
-<!-- SECCIÓN DE DESAFÍOS/MINI-PROYECTOS POR TEMA -->
-<h2>⚡ Desafíos & Mini-Proyectos por Tema</h2>
-<p style="color: #666; margin-bottom: 20px; font-size: 14px;">
-  Después de estudiar cada tema, practica con desafíos específicos. Los desafíos están vinculados a la teoría que aprendiste.
-</p>
-<div id="challengesByThemeContainer"></div>
+<!-- SECCIÓN DE LOGROS/BADGES -->
+<h2>🏅 Tus Logros</h2>
+<div class="badges-grid">
+  <div class="badge locked" data-badge="first-exercise" title="Completa tu primer ejercicio">
+    <span class="badge-icon">🚀</span>
+    <p>Primer Ejercicio</p>
+  </div>
+  <div class="badge locked" data-badge="coder-basic" title="Completa 3 ejercicios fáciles">
+    <span class="badge-icon">🟢</span>
+    <p>Programador Básico</p>
+  </div>
+  <div class="badge locked" data-badge="coder-intermediate" title="Completa 3 ejercicios intermedios">
+    <span class="badge-icon">🟡</span>
+    <p>Programador Intermedio</p>
+  </div>
+  <div class="badge locked" data-badge="coder-advanced" title="Completa 3 ejercicios difíciles">
+    <span class="badge-icon">🔴</span>
+    <p>Programador Avanzado</p>
+  </div>
+  <div class="badge locked" data-badge="exercise-master" title="Completa 12 ejercicios">
+    <span class="badge-icon">👑</span>
+    <p>Maestro de Ejercicios</p>
+  </div>
+  <div class="badge locked" data-badge="polyglot" title="Completa ejercicios en 3 áreas diferentes">
+    <span class="badge-icon">🌍</span>
+    <p>Políglota</p>
+  </div>
+</div>
+
+
 
 <!-- SECCIÓN DE RECURSOS EXTERNOS -->
 <h2>📚 Recursos Externos</h2>
@@ -351,52 +905,80 @@
   </div>
 </div>
 
-
-
-<div class="card">
-<h3>1. Selecciona un Tema</h3>
-<p>Usa el menú de la izquierda o busca qué quieres aprender. Cada tema tiene apuntes y exámenes.</p>
-
-<h3>2. Estudia los Apuntes</h3>
-<p>Encontrarás conceptos teóricos, ejemplos prácticos y código que puedes copiar.</p>
-
-<h3>3. Practica con Ejemplos</h3>
-<p>Ejecuta cada ejemplo en tu máquina. La práctica es la mejor forma de aprender.</p>
-
-<h3>4. Haz los Exámenes</h3>
-<p>Verifica tu comprensión con exámenes interactivos. No dudes en revisar si necesitas reforzar.</p>
-</div>
-
 </main>
 
 </div>
 
 </body>
+<script src="ejercicios.js"></script>
 <script src="desafios.js"></script>
 <script src="chatbot.js"></script>
 <script>
+// SISTEMA DE EJERCICIOS
+let ejercicioActual = null;
+
+// Cargar niveles cuando se selecciona un área
+function cargarNiveles() {
+  const areaSelect = document.getElementById('areaSelect');
+  const nivelSelect = document.getElementById('nivelSelect');
+  const area = areaSelect.value;
+  
+  nivelSelect.innerHTML = '<option value="">Elige un nivel...</option>';
+  
+  if (area && ejercicios[area]) {
+    nivelSelect.disabled = false;
+    nivelSelect.innerHTML += '<option value="facil">🟢 Fácil</option>';
+    nivelSelect.innerHTML += '<option value="intermedio">🟡 Intermedio</option>';
+    nivelSelect.innerHTML += '<option value="dificil">🔴 Difícil</option>';
+  } else {
+    nivelSelect.disabled = true;
+  }
+  
+  document.getElementById('iniciarEjercicioBtn').disabled = true;
+  document.getElementById('ejercicioPreview').style.display = 'none';
+}
+
+// Mostrar preview del ejercicio
+function mostrarEjercicio() {
+  const areaSelect = document.getElementById('areaSelect');
+  const nivelSelect = document.getElementById('nivelSelect');
+  const area = areaSelect.value;
+  const nivel = nivelSelect.value;
+  
+  if (area && nivel && ejercicios[area] && ejercicios[area][nivel]) {
+    const ejercicio = ejercicios[area][nivel];
+    ejercicioActual = ejercicio;
+    
+    document.getElementById('ejercicioTitulo').textContent = ejercicio.titulo;
+    document.getElementById('ejercicioEnunciado').innerHTML = ejercicio.enunciado;
+    document.getElementById('ejercicioArea').textContent = areaSelect.options[areaSelect.selectedIndex].text;
+    document.getElementById('ejercicioNivel').textContent = nivelSelect.options[nivelSelect.selectedIndex].text;
+    
+    document.getElementById('ejercicioPreview').style.display = 'block';
+    document.getElementById('iniciarEjercicioBtn').disabled = false;
+  } else {
+    document.getElementById('ejercicioPreview').style.display = 'none';
+    document.getElementById('iniciarEjercicioBtn').disabled = true;
+  }
+}
+
+// Iniciar ejercicio - ir al editor
+function iniciarEjercicio() {
+  if (ejercicioActual) {
+    // Guardar el ejercicio actual en localStorage para que el editor lo cargue
+    localStorage.setItem('ejercicioActual', JSON.stringify(ejercicioActual));
+    // Ir al editor
+    window.location.href = 'editor.html?ejercicio=' + ejercicioActual.id;
+  }
+}
+
 // SISTEMA DE LOGROS Y PROGRESO
-const badges = {
-  'primer-paso': { name: 'Primer Paso', icon: '🚀', require: 'desafiosPrincipiante', value: 1 },
-  'aprendiz': { name: 'Aprendiz', icon: '📚', require: 'desafiosIntermedio', value: 1 },
-  'competente': { name: 'Competente', icon: '💪', require: 'desafiosAvanzado', value: 1 },
-  'especialista': { name: 'Especialista', icon: '🎖️', require: 'desafiosPrincipiante', value: 3 },
-  'maestro': { name: 'Maestro', icon: '⭐', require: 'desafiosIntermedio', value: 2 },
-  'leyenda': { name: 'Leyenda', icon: '👑', require: 'desafiosAvanzado', value: 2 }
-};
+
 
 let userProgress = JSON.parse(localStorage.getItem('userProgress')) || {
-  level: 1,
-  xp: 0,
   completedTopics: [],
   examsApproved: 0,
-  completedChallenges: {
-    principiante: [],  // Array de IDs
-    intermedio: [],
-    avanzado: []
-  },
-  unlockedBadges: [],
-  challengesByArea: {} // {area: {principiante: [], intermedio: [], avanzado: []}}
+  unlockedBadges: []
 };
 
 // Guardar progreso
@@ -407,26 +989,7 @@ function saveProgress() {
 
 // Actualizar interfaz
 function updateUI() {
-  // Actualizar nivel
-  const levelNumber = document.querySelector('.level-number');
-  const levelName = document.querySelector('.level-name');
-  const progressFill = document.querySelector('.progress-fill');
-  const progressText = document.querySelector('.progress-text');
-  const badgeCount = document.getElementById('badgeCount');
-
-  if (levelNumber) {
-    const levelNames = ['', 'Principiante', 'Aprendiz', 'Experto', 'Profesional', 'Leyenda'];
-    levelNumber.textContent = userProgress.level;
-    levelName.textContent = levelNames[userProgress.level] || 'Leyenda';
-    
-    const xpForLevel = userProgress.level * 100;
-    const percentage = Math.min((userProgress.xp % xpForLevel) / xpForLevel * 100, 100);
-    progressFill.style.width = percentage + '%';
-    progressText.textContent = `${Math.round(percentage)}% completado - ${userProgress.xp % xpForLevel}/${xpForLevel} XP para siguiente nivel`;
-  }
-
   // Actualizar badges
-  checkAndUnlockBadges();
   if (badgeCount) {
     badgeCount.textContent = userProgress.unlockedBadges.length;
   }
@@ -439,444 +1002,67 @@ function updateUI() {
       badge.classList.remove('locked');
     }
   });
-}
-
-// Verificar y desbloquear badges (basado en desafíos por dificultad)
-function checkAndUnlockBadges() {
-  Object.keys(badges).forEach(badgeId => {
-    if (userProgress.unlockedBadges.includes(badgeId)) return;
-
-    const badge = badges[badgeId];
-    let shouldUnlock = false;
-
-    switch (badge.require) {
-      case 'desafiosPrincipiante':
-        shouldUnlock = userProgress.completedChallenges.principiante.length >= badge.value;
-        break;
-      case 'desafiosIntermedio':
-        shouldUnlock = userProgress.completedChallenges.intermedio.length >= badge.value;
-        break;
-      case 'desafiosAvanzado':
-        shouldUnlock = userProgress.completedChallenges.avanzado.length >= badge.value;
-        break;
-    }
-
-    if (shouldUnlock) {
-      userProgress.unlockedBadges.push(badgeId);
-      showBadgeNotification(badge.name, badge.icon);
-      saveProgress();
-    }
-  });
-}
-
-// Notificación de nuevo badge
-function showBadgeNotification(badgeName, badgeIcon) {
-  const notification = document.createElement('div');
-  notification.style.cssText = `
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    background: linear-gradient(135deg, #1e88e5, #1565c0);
-    color: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(30, 136, 229, 0.3);
-    font-weight: bold;
-    z-index: 10000;
-    animation: slideInRight 0.5s ease;
-  `;
-  notification.textContent = `¡Desbloqueado! ${badgeIcon} ${badgeName}`;
-  document.body.appendChild(notification);
-  setTimeout(() => notification.remove(), 3000);
-}
-
-// Añadir XP
-function addXP(amount) {
-  userProgress.xp += amount;
-  const xpForLevel = userProgress.level * 100;
   
-  while (userProgress.xp >= xpForLevel && userProgress.level < 5) {
-    userProgress.xp -= xpForLevel;
-    userProgress.level++;
-    showLevelUpNotification(userProgress.level);
+  // Actualizar estadísticas de ejercicios
+  const progresoEjercicios = JSON.parse(localStorage.getItem('progresoEjercicios')) || [];
+  const ejerciciosFaciles = progresoEjercicios.filter(id => id.includes('-facil-')).length;
+  const ejerciciosIntermedios = progresoEjercicios.filter(id => id.includes('-intermedio-')).length;
+  const ejerciciosDificiles = progresoEjercicios.filter(id => id.includes('-dificil-')).length;
+  
+  // Verificar si hay nuevos logros por desbloquear
+  const nuevosLogros = [];
+  
+  if (ejerciciosFaciles >= 1 && !userProgress.unlockedBadges.includes('first-exercise')) {
+    nuevosLogros.push('first-exercise');
   }
   
-  saveProgress();
-}
-
-// Notificación de subida de nivel
-function showLevelUpNotification(newLevel) {
-  const notification = document.createElement('div');
-  notification.style.cssText = `
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
-    font-weight: bold;
-    font-size: 18px;
-    z-index: 10000;
-    animation: slideInRight 0.5s ease;
-  `;
-  notification.textContent = `¡SUBISTE DE NIVEL! Nivel ${newLevel}`;
-  document.body.appendChild(notification);
-  setTimeout(() => notification.remove(), 3000);
-}
-
-// Renderizar desafíos agrupados por tema de estudio - MEJORADO
-function renderChallengesByTheme() {
-  if (typeof desafios === 'undefined') return;
-
-  const container = document.getElementById('challengesByThemeContainer');
-  if (!container) return;
-
-  container.innerHTML = '';
-  const areas = Object.keys(desafios);
-
-  // Crear una sección por cada área de estudio
-  areas.forEach(area => {
-    const areaChallenges = desafios[area];
+  if (ejerciciosFaciles >= 3 && !userProgress.unlockedBadges.includes('coder-basic')) {
+    nuevosLogros.push('coder-basic');
+  }
+  
+  if (ejerciciosIntermedios >= 3 && !userProgress.unlockedBadges.includes('coder-intermediate')) {
+    nuevosLogros.push('coder-intermediate');
+  }
+  
+  if (ejerciciosDificiles >= 3 && !userProgress.unlockedBadges.includes('coder-advanced')) {
+    nuevosLogros.push('coder-advanced');
+  }
+  
+  if (progresoEjercicios.length >= 12 && !userProgress.unlockedBadges.includes('exercise-master')) {
+    nuevosLogros.push('exercise-master');
+  }
+  
+  // Contar áreas diferentes completadas
+  const areasCompletadas = new Set();
+  progresoEjercicios.forEach(id => {
+    const area = id.split('-')[0];
+    areasCompletadas.add(area);
+  });
+  
+  if (areasCompletadas.size >= 3 && !userProgress.unlockedBadges.includes('polyglot')) {
+    nuevosLogros.push('polyglot');
+  }
+  
+  // Agregar nuevos logros
+  if (nuevosLogros.length > 0) {
+    userProgress.unlockedBadges.push(...nuevosLogros);
+    saveProgress();
     
-    // Crear sección para el tema
-    const themeSection = document.createElement('div');
-    themeSection.style.cssText = `
-      margin-bottom: 50px;
-      padding: 25px;
-      background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
-      border-radius: 10px;
-      border-left: 5px solid #1e88e5;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    `;
-
-    // Header del tema con teoría + progreso
-    const themeHeader = document.createElement('div');
-    themeHeader.style.cssText = `
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-      gap: 15px;
-    `;
-
-    const titleDiv = document.createElement('div');
-    titleDiv.innerHTML = `
-      <h3 style="margin: 0; color: #1e88e5; font-size: 20px; font-weight: 600;">
-        ${getThemeIcon(area)} ${capitalizeArea(area)}
-      </h3>
-      <p style="margin: 5px 0 0 0; color: #666; font-size: 13px;">
-        Aprende y practica desafíos de diferentes niveles
-      </p>
-    `;
-    themeHeader.appendChild(titleDiv);
-
-    const buttonsDiv = document.createElement('div');
-    buttonsDiv.style.cssText = `
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    `;
-    
-    const theoryBtn = document.createElement('a');
-    theoryBtn.href = area + '.html';
-    theoryBtn.style.cssText = `
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #1e88e5;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.3s;
-      cursor: pointer;
-    `;
-    theoryBtn.textContent = '📚 Ver Teoría';
-    theoryBtn.onmouseover = () => theoryBtn.style.background = '#1565c0';
-    theoryBtn.onmouseout = () => theoryBtn.style.background = '#1e88e5';
-    
-    const progressDiv = document.createElement('div');
-    const completedCount = ['principiante', 'intermedio', 'avanzado'].filter(
-      dif => (userProgress.completedChallenges[dif] || []).some(id => 
-        desafios[area]?.[dif]?.id === id
-      )
-    ).length;
-    
-    progressDiv.style.cssText = `
-      background: white;
-      padding: 10px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #1e88e5;
-      border: 1px solid #e0e0e0;
-    `;
-    progressDiv.textContent = `${completedCount}/3 Completados`;
-    
-    buttonsDiv.appendChild(theoryBtn);
-    buttonsDiv.appendChild(progressDiv);
-    themeHeader.appendChild(buttonsDiv);
-    themeSection.appendChild(themeHeader);
-
-    // Grid de desafíos organizados por dificultad
-    const challengesContainer = document.createElement('div');
-    challengesContainer.style.cssText = `
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-    `;
-
-    // Mostrar 3 desafíos: Principiante, Intermedio, Avanzado
-    const difficulties = [
-      { key: 'principiante', label: '🟢 BÁSICO', color: '#4CAF50', bgColor: '#e8f5e9' },
-      { key: 'intermedio', label: '🟡 INTERMEDIO', color: '#FF9800', bgColor: '#fff3e0' },
-      { key: 'avanzado', label: '🔴 AVANZADO', color: '#f44336', bgColor: '#ffebee' }
-    ];
-    
-    difficulties.forEach(diff => {
-      const challenge = areaChallenges[diff.key];
-      if (!challenge) return;
-
-      const isCompleted = (userProgress.completedChallenges[diff.key] || []).includes(challenge.id);
-      
-      // Card del desafío - MEJORADO
-      const card = document.createElement('div');
-      card.style.cssText = `
-        position: relative;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s;
-        cursor: ${isCompleted ? 'default' : 'pointer'};
-      `;
-      
-      if (!isCompleted) {
-        card.onmouseover = () => {
-          card.style.transform = 'translateY(-6px)';
-          card.style.boxShadow = `0 8px 20px ${diff.color}30`;
-          card.style.borderColor = diff.color;
-        };
-        card.onmouseout = () => {
-          card.style.transform = '';
-          card.style.boxShadow = '';
-        };
-      }
-
-      // Etiqueta de dificultad
-      const diffBadge = document.createElement('div');
-      diffBadge.style.cssText = `
-        display: inline-block;
-        background: ${diff.bgColor};
-        color: ${diff.color};
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 12px;
-      `;
-      diffBadge.textContent = diff.label;
-
-      // XP Badge
-      const xpBadge = document.createElement('div');
-      xpBadge.style.cssText = `
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: linear-gradient(135deg, #FFD700, #FFA500);
-        color: white;
-        padding: 8px 14px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 700;
-        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
-      `;
-      xpBadge.textContent = `⭐ ${challenge.xp} XP`;
-
-      // Título
-      const titleEl = document.createElement('h4');
-      titleEl.style.cssText = `
-        margin: 0 0 10px 0;
-        color: #333;
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 1.4;
-        padding-right: 80px;
-      `;
-      titleEl.textContent = challenge.titulo;
-
-      // Resumen
-      const summaryEl = document.createElement('p');
-      summaryEl.style.cssText = `
-        margin: 10px 0;
-        color: #666;
-        font-size: 13px;
-        line-height: 1.6;
-      `;
-      summaryEl.textContent = getChallengeSummary(challenge.enunciado);
-
-      // Botón de acción
-      const actionBtn = document.createElement('button');
-      actionBtn.style.cssText = `
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 16px;
-        background: ${isCompleted ? '#ccc' : '#e0e0e0'};
-        color: ${isCompleted ? '#999' : '#333'};
-        border: none;
-        border-radius: 6px;
-        cursor: ${isCompleted ? 'not-allowed' : 'pointer'};
-        font-weight: 600;
-        font-size: 14px;
-        box-shadow: 0 2px 8px rgba(30, 136, 229, 0.15);
-        transition: all 0.3s;
-        position: relative;
-        z-index: 1;
-        border-left: 4px solid ${diff.color};
-      `;
-      
-      if (isCompleted) {
-        actionBtn.textContent = '✅ COMPLETADO';
-        actionBtn.style.opacity = '0.7';
-      } else {
-        actionBtn.textContent = '🎯 INTENTAR DESAFÍO';
-        actionBtn.onclick = () => startChallenge(challenge.id);
-        actionBtn.onmouseover = () => {
-          actionBtn.style.background = '#d0d0d0';
-          actionBtn.style.transform = 'scale(1.03)';
-          actionBtn.style.boxShadow = '0 4px 12px rgba(30, 136, 229, 0.2)';
-        };
-        actionBtn.onmouseout = () => {
-          actionBtn.style.background = '#e0e0e0';
-          actionBtn.style.transform = '';
-          actionBtn.style.boxShadow = '0 2px 8px rgba(30, 136, 229, 0.15)';
-        };
-      }
-
-      // Meter todo junto
-      card.appendChild(diffBadge);
-      card.appendChild(xpBadge);
-      card.appendChild(titleEl);
-      card.appendChild(summaryEl);
-      card.appendChild(actionBtn);
-
-      challengesContainer.appendChild(card);
+    // Mostrar notificación de nuevos logros
+    nuevosLogros.forEach(logro => {
+      setTimeout(() => mostrarNotificacionLogro(logro), 500);
     });
-
-    themeSection.appendChild(challengesContainer);
-    container.appendChild(themeSection);
-  });
+  }
 }
 
-// Función auxiliar para ajustar brillo de color
-function adjustBrightness(color, percent) {
-  const usePound = color[0] === "#";
-  const col = usePound ? color.slice(1) : color;
-  const num = parseInt(col, 16);
-  const amt = Math.round(2.55 * percent);
-  const R = (num >> 16) + amt;
-  const G = (num >> 8 & 0x00FF) + amt;
-  const B = (num & 0x0000FF) + amt;
-  return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
-    (G<255?G<1?0:G:255)*0x100 +
-    (B<255?B<1?0:B:255))
-    .toString(16).slice(1);
-}
 
-// Obtener emoji del tema
-function getThemeIcon(area) {
-  const icons = {
-    'github': '🌐',
-    'python': '🐍',
-    'javascript': '⚡',
-    'react': '⚛️',
-    'sql': '🗄️',
-    'docker': '🐳',
-    'aws': '☁️',
-    'seguridad': '🔒',
-    'devops': '🚀',
-    'api-rest': '🔗',
-    'ubuntu': '🐧',
-    'dbeaver': '🛠️'
-  };
-  return icons[area] || '📌';
-}
 
-// Obtener resumen corto del enunciado
-function getChallengeSummary(enunciado) {
-  const lines = enunciado.split('\n').filter(l => l.trim());
-  for (let line of lines) {
-    if (line.length > 20 && !line.startsWith('#') && !line.startsWith('-')) {
-      return line.substring(0, 80) + '...';
-    }
-  }
-  return 'Presiona el botón para ver detalles completos';
-}
 
-// Capitalizar nombre del área
-function capitalizeArea(area) {
-  const names = {
-    'github': 'GitHub - Control de Versiones',
-    'python': 'Python - Programación',
-    'javascript': 'JavaScript - Web',
-    'react': 'React - Frontend',
-    'sql': 'SQL - Bases de Datos',
-    'docker': 'Docker - Contenedores',
-    'aws': 'AWS - Cloud Computing',
-    'seguridad': 'Seguridad - Protección',
-    'devops': 'DevOps - Deployment',
-    'api-rest': 'API REST - Arquitectura',
-    'ubuntu': 'Ubuntu - Terminal',
-    'dbeaver': 'DBeaver - Gestión de BD'
-  };
-  return names[area] || area.toUpperCase();
-}
 
-// Iniciar desafío
-function startChallenge(challengeId) {
-  window.location.href = `editor.html?challenge=${challengeId}`;
-}
 
-// Completar desafío (se llama desde editor.html)
-window.completeChallenge = function(challengeId, dificultad, area) {
-  // Evitar duplicados
-  if (!userProgress.completedChallenges[dificultad]) {
-    userProgress.completedChallenges[dificultad] = [];
-  }
-  
-  if (!userProgress.completedChallenges[dificultad].includes(challengeId)) {
-    userProgress.completedChallenges[dificultad].push(challengeId);
-  }
-  
-  // Rastrear por área
-  if (!userProgress.challengesByArea[area]) {
-    userProgress.challengesByArea[area] = {
-      principiante: [],
-      intermedio: [],
-      avanzado: []
-    };
-  }
-  
-  if (!userProgress.challengesByArea[area][dificultad]) {
-    userProgress.challengesByArea[area][dificultad] = [];
-  }
-  
-  if (!userProgress.challengesByArea[area][dificultad].includes(challengeId)) {
-    userProgress.challengesByArea[area][dificultad].push(challengeId);
-  }
-  
-  saveProgress();
-};
 
 // Inicializar
 window.addEventListener('load', () => {
-  renderChallengesByTheme();
   updateUI();
   
   // Agregar estilos para animación de notificación
@@ -899,17 +1085,481 @@ window.addEventListener('load', () => {
   }
 });
 
-// Funciones públicas para usar desde otros archivos
-window.completeTopic = function(topicName) {
-  if (!userProgress.completedTopics.includes(topicName)) {
-    userProgress.completedTopics.push(topicName);
-    addXP(50);
-  }
-};
-
-window.addXP = function(amount) {
-  addXP(amount);
-};
+// Función para mostrar notificación de logro
+function mostrarNotificacionLogro(logroId) {
+  const notificacionesLogros = {
+    'first-exercise': { titulo: '🚀 Primer Ejercicio', desc: 'Has completado tu primer ejercicio práctico' },
+    'coder-basic': { titulo: '🟢 Programador Básico', desc: 'Has completado 3 ejercicios fáciles' },
+    'coder-intermediate': { titulo: '🟡 Programador Intermedio', desc: 'Has completado 3 ejercicios intermedios' },
+    'coder-advanced': { titulo: '🔴 Programador Avanzado', desc: 'Has completado 3 ejercicios difíciles' },
+    'exercise-master': { titulo: '👑 Maestro de Ejercicios', desc: 'Has completado 12 ejercicios' },
+    'polyglot': { titulo: '🌍 Políglota', desc: 'Has practicado en 3 áreas diferentes' }
+  };
+  
+  const logro = notificacionesLogros[logroId];
+  if (!logro) return;
+  
+  const notificacion = document.createElement('div');
+  notificacion.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1000;
+    animation: slideInRight 0.5s ease-out;
+    max-width: 300px;
+  `;
+  
+  notificacion.innerHTML = `
+    <h3 style="margin: 0 0 10px 0; font-size: 18px;">🏅 ¡Logro Desbloqueado!</h3>
+    <p style="margin: 0 0 5px 0; font-size: 16px; font-weight: bold;">${logro.titulo}</p>
+    <p style="margin: 0; font-size: 14px;">${logro.desc}</p>
+  `;
+  
+  document.body.appendChild(notificacion);
+  
+  setTimeout(() => {
+    notificacion.remove();
+  }, 4000);
+}
 </script>
+<script src="api-helper.js"></script>
+<script>
+// ===== AUTENTICACIÓN =====
+
+// Verificar autenticación al cargar la página
+window.addEventListener('load', async () => {
+  const token = APIHelper.getToken();
+  const usuario = APIHelper.getUsuario();
+  const esInvitado = localStorage.getItem('modoInvitado') === 'true';
+  
+  if ((token && usuario) || esInvitado) {
+    // Usuario autenticado o invitado - mostrar contenido principal
+    document.getElementById('authContainer').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    
+    // Mostrar menú de usuario
+    document.getElementById('userMenu').style.display = 'flex';
+    
+    if (esInvitado) {
+      document.getElementById('usernameDisplay').textContent = '👤 Invitado';
+      // Agregar botón de registro para invitados
+      const userMenu = document.getElementById('userMenu');
+      if (!document.getElementById('registerPrompt')) {
+        const registerButton = document.createElement('button');
+        registerButton.id = 'registerPrompt';
+        registerButton.textContent = 'Registrarse';
+        registerButton.style.cssText = 'background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px; margin-left: 10px;';
+        registerButton.onclick = () => {
+          if (confirm('¿Quieres registrar tu progreso? Se guardarán tus datos y podrás acceder desde cualquier dispositivo.')) {
+            logout();
+            setTimeout(() => showRegister(), 500);
+          }
+        };
+        userMenu.appendChild(registerButton);
+      }
+    } else {
+      document.getElementById('usernameDisplay').textContent = '👤 ' + usuario.username;
+    }
+    
+    // Sincronizar con backend solo si está autenticado
+    if (token && usuario) {
+      await sincronizarProgreso();
+      await sincronizarLogros();
+    }
+    
+    // Inicializar la UI normal
+    updateUI();
+  } else {
+    // No autenticado - mostrar formulario de login
+    document.getElementById('authContainer').style.display = 'flex';
+    document.getElementById('mainContent').style.display = 'none';
+  }
+});
+
+// Mostrar formulario de registro
+function showRegister() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'block';
+  document.getElementById('toggleText').innerHTML = '¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia sesión aquí</a>';
+}
+
+// Mostrar formulario de login
+function showLogin() {
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('toggleText').innerHTML = '¿No tienes cuenta? <a href="#" onclick="showRegister()">Regístrate aquí</a>';
+}
+
+// Función de login
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  
+  if (!email || !password) {
+    showError('Por favor completa todos los campos');
+    return;
+  }
+  
+  // Mostrar loading
+  const loginButton = document.getElementById('loginButton');
+  const loginText = document.getElementById('loginText');
+  const loginLoading = document.getElementById('loginLoading');
+  
+  loginButton.disabled = true;
+  loginText.style.display = 'none';
+  loginLoading.style.display = 'inline-block';
+  
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Login exitoso
+      APIHelper.setToken(data.token);
+      localStorage.setItem('usuario', JSON.stringify(data.usuario));
+      
+      showSuccess('¡Bienvenido de vuelta!');
+      
+      // Ocultar auth y mostrar contenido principal
+      setTimeout(() => {
+        document.getElementById('authContainer').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        
+        // Mostrar menú de usuario
+        document.getElementById('userMenu').style.display = 'flex';
+        document.getElementById('usernameDisplay').textContent = '👤 ' + data.usuario.username;
+        
+        // Inicializar UI
+        updateUI();
+      }, 1500);
+      
+    } else {
+      showError(data.message || 'Error al iniciar sesión');
+    }
+  } catch (error) {
+    showError('Error de conexión. Inténtalo de nuevo.');
+  } finally {
+    // Ocultar loading
+    loginButton.disabled = false;
+    loginText.style.display = 'inline';
+    loginLoading.style.display = 'none';
+  }
+}
+
+// Función de registro
+async function register() {
+  const username = document.getElementById('registerUsername').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value;
+  
+  if (!username || !email || !password) {
+    showError('Por favor completa todos los campos');
+    return;
+  }
+  
+  if (password.length < 6) {
+    showError('La contraseña debe tener al menos 6 caracteres');
+    return;
+  }
+  
+  // Mostrar loading
+  const registerButton = document.getElementById('registerButton');
+  const registerText = document.getElementById('registerText');
+  const registerLoading = document.getElementById('registerLoading');
+  
+  registerButton.disabled = true;
+  registerText.style.display = 'none';
+  registerLoading.style.display = 'inline-block';
+  
+  try {
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, email, password })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Registro exitoso
+      showSuccess('¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.');
+      
+      // Cambiar a formulario de login
+      setTimeout(() => {
+        showLogin();
+        document.getElementById('loginEmail').value = email;
+      }, 2000);
+      
+    } else {
+      showError(data.message || 'Error al crear la cuenta');
+    }
+  } catch (error) {
+    showError('Error de conexión. Inténtalo de nuevo.');
+  } finally {
+    // Ocultar loading
+    registerButton.disabled = false;
+    registerText.style.display = 'inline';
+    registerLoading.style.display = 'none';
+  }
+}
+
+// Función de logout
+function logout() {
+  const esInvitado = localStorage.getItem('modoInvitado') === 'true';
+  
+  if (esInvitado) {
+    if (confirm('¿Estás seguro de que deseas salir? Tu progreso local se perderá.')) {
+      // Limpiar datos de invitado
+      localStorage.removeItem('modoInvitado');
+      localStorage.removeItem('progresoEjercicios');
+      localStorage.removeItem('userProgress');
+      location.reload();
+    }
+  } else {
+    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+      APIHelper.logout();
+      location.reload();
+    }
+  }
+}
+
+// Función para entrar como invitado
+function entrarComoInvitado() {
+  // Marcar como invitado
+  localStorage.setItem('modoInvitado', 'true');
+  
+  // Inicializar progreso vacío si no existe
+  if (!localStorage.getItem('progresoEjercicios')) {
+    localStorage.setItem('progresoEjercicios', JSON.stringify([]));
+  }
+  
+  if (!localStorage.getItem('userProgress')) {
+    localStorage.setItem('userProgress', JSON.stringify({
+      completedTopics: [],
+      examsApproved: 0,
+      unlockedBadges: []
+    }));
+  }
+  
+  // Mostrar mensaje de bienvenida
+  showSuccess('¡Bienvenido como invitado! Tu progreso se guardará localmente.');
+  
+  // Ocultar auth y mostrar contenido principal
+  setTimeout(() => {
+    document.getElementById('authContainer').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    
+    // Mostrar menú de invitado
+    document.getElementById('userMenu').style.display = 'flex';
+    document.getElementById('usernameDisplay').textContent = '👤 Invitado';
+    
+    // Agregar botón de registro
+    const userMenu = document.getElementById('userMenu');
+    const registerButton = document.createElement('button');
+    registerButton.id = 'registerPrompt';
+    registerButton.textContent = 'Registrarse';
+    registerButton.style.cssText = 'background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px; margin-left: 10px;';
+    registerButton.onclick = () => {
+      if (confirm('¿Quieres registrar tu progreso? Se guardarán tus datos y podrás acceder desde cualquier dispositivo.')) {
+        logout();
+        setTimeout(() => showRegister(), 500);
+      }
+    };
+    userMenu.appendChild(registerButton);
+    
+    // Inicializar UI
+    updateUI();
+  }, 1500);
+}
+
+// Funciones de utilidad para mensajes
+function showError(message) {
+  const errorDiv = document.getElementById('errorMessage');
+  const successDiv = document.getElementById('successMessage');
+  
+  errorDiv.textContent = message;
+  errorDiv.style.display = 'block';
+  successDiv.style.display = 'none';
+  
+  setTimeout(() => {
+    errorDiv.style.display = 'none';
+  }, 5000);
+}
+
+function showSuccess(message) {
+  const errorDiv = document.getElementById('errorMessage');
+  const successDiv = document.getElementById('successMessage');
+  
+  successDiv.textContent = message;
+  successDiv.style.display = 'block';
+  errorDiv.style.display = 'none';
+  
+  setTimeout(() => {
+    successDiv.style.display = 'none';
+  }, 5000);
+}
+</script>
+<script>
+// ===== CHATBOT INTERACTIVO =====
+
+// Estado del chatbot
+let chatbotAbierto = false;
+
+// Función para alternar el chatbot
+function toggleChatbot() {
+  const modal = document.getElementById('chatbotModal');
+  const button = document.getElementById('chatbotButton');
+
+  if (chatbotAbierto) {
+    modal.style.display = 'none';
+    chatbotAbierto = false;
+  } else {
+    modal.style.display = 'flex';
+    chatbotAbierto = true;
+
+    // Si es la primera vez, mostrar mensaje de bienvenida
+    const messages = document.getElementById('chatbotMessages');
+    if (messages.children.length === 0) {
+      setTimeout(() => {
+        agregarMensaje('¡Hola! 👋 Soy tu asistente inteligente del Portal IT. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre cualquier tema de estudio, ejercicios, o conceptos técnicos.', 'bot');
+      }, 500);
+    }
+
+    // Enfocar el input
+    document.getElementById('chatbotInput').focus();
+  }
+}
+
+// Función para enviar mensaje
+function enviarMensaje() {
+  const input = document.getElementById('chatbotInput');
+  const mensaje = input.value.trim();
+
+  if (!mensaje) return;
+
+  // Agregar mensaje del usuario
+  agregarMensaje(mensaje, 'user');
+
+  // Limpiar input
+  input.value = '';
+
+  // Mostrar indicador de escritura
+  mostrarTyping();
+
+  // Procesar respuesta después de un pequeño delay (simula "pensamiento")
+  setTimeout(() => {
+    ocultarTyping();
+    const respuesta = procesarMensajeChatBot(mensaje);
+    agregarMensaje(respuesta, 'bot');
+  }, 1000 + Math.random() * 1000); // Delay variable para parecer más natural
+}
+
+// Función para agregar mensaje al chat
+function agregarMensaje(texto, tipo) {
+  const messages = document.getElementById('chatbotMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${tipo}`;
+  messageDiv.textContent = texto;
+
+  messages.appendChild(messageDiv);
+
+  // Scroll automático al final
+  messages.scrollTop = messages.scrollHeight;
+}
+
+// Función para mostrar indicador de escritura
+function mostrarTyping() {
+  const messages = document.getElementById('chatbotMessages');
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'typing-indicator';
+  typingDiv.id = 'typingIndicator';
+  typingDiv.innerHTML = '<span class="typing-dots">Escribiendo</span>';
+
+  messages.appendChild(typingDiv);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+// Función para ocultar indicador de escritura
+function ocultarTyping() {
+  const typingDiv = document.getElementById('typingIndicator');
+  if (typingDiv) {
+    typingDiv.remove();
+  }
+}
+
+// Event listeners para el chatbot
+document.addEventListener('DOMContentLoaded', function() {
+  // Event listener para el botón Enter en el input
+  document.getElementById('chatbotInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      enviarMensaje();
+    }
+  });
+
+  // Event listener para el botón de enviar
+  document.getElementById('chatbotSend').addEventListener('click', enviarMensaje);
+
+  // Event listener para cerrar el chatbot
+  document.getElementById('chatbotClose').addEventListener('click', toggleChatbot);
+
+  // Cerrar chatbot al hacer clic fuera
+  document.addEventListener('click', function(e) {
+    const modal = document.getElementById('chatbotModal');
+    const button = document.getElementById('chatbotButton');
+
+    if (!modal.contains(e.target) && !button.contains(e.target) && chatbotAbierto) {
+      toggleChatbot();
+    }
+  });
+});
+</script>
+
+<!-- ===== HTML DEL CHATBOT ===== -->
+
+<!-- Botón flotante del chatbot -->
+<button id="chatbotButton" class="chatbot-button" onclick="toggleChatbot()" title="¿Necesitas ayuda? Habla conmigo">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.05 1.05 4.42L2 22l5.58-1.05C9.95 21.64 11.46 22 13 22h7c1.1 0 2-.9 2-2V12c0-5.52-4.48-10-10-10z"/>
+    <circle cx="8" cy="12" r="1"/>
+    <circle cx="12" cy="12" r="1"/>
+    <circle cx="16" cy="12" r="1"/>
+  </svg>
+</button>
+
+<!-- Modal del chatbot -->
+<div id="chatbotModal" class="chatbot-modal">
+  <div class="chatbot-header">
+    <h3>🤖 Asistente IT</h3>
+    <button id="chatbotClose" class="chatbot-close">×</button>
+  </div>
+
+  <div id="chatbotMessages" class="chatbot-messages">
+    <!-- Los mensajes se agregarán aquí dinámicamente -->
+  </div>
+
+  <div class="chatbot-input-area">
+    <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Escribe tu pregunta aquí..." maxlength="500">
+    <button id="chatbotSend" class="chatbot-send">
+      <svg viewBox="0 0 24 24">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
 </body>
 </html>

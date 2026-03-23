@@ -1,53 +1,252 @@
-// Base de conocimiento del asistente
-const respuestasBot = {
-  // Saludos
-  'hola': 'Hola! 👋 Soy tu asistente virtual del Portal IT. ¿En qué puedo ayudarte hoy? Pregúntame sobre cualquier tema de estudio.',
-  'hola como estás': 'Hola! 👋 Estoy aquí para ayudarte a aprender. ¿Tienes alguna pregunta sobre los temas del portal?',
-  'hey': 'Hola! 👋 ¿Qué necesitas?',
-  
-  // Temas generales
-  'temas': 'Contamos con 12 áreas de estudio: GitHub, Ubuntu, DBeaver, Python, JavaScript, React, SQL Avanzado, AWS Cloud, Docker, API REST, Seguridad y DevOps. ¿Sobre cuál necesitas ayuda?',
-  'áreas': 'Tenemos 12 áreas disponibles. ¿Cuál te interesa? Fundamentos (GitHub, Ubuntu, DBeaver), Lenguajes (Python, JavaScript, React), Bases de Datos (SQL Avanzado), Cloud (AWS, Docker, API REST, DevOps) y Seguridad.',
-  'que puedo aprender': 'Puedes aprender sobre desarrollo web, backend, bases de datos, infraestructura en la nube, seguridad, DevOps y más. ¿Hay algún tema específico que te interese?',
-  
-  // Python
-  'python': 'Python es un lenguaje versátil ideal para principiantes. En nuestros apuntes encontrarás: variables, funciones, estructuras de datos (listas, diccionarios), y librerías populares.',
-  'como empezar con python': 'Empieza con los conceptos básicos: variables, tipos de datos, y funciones. Luego practica con ejercicios simples. En nuestra sección de Python tienes todo organizado.',
-  'python basico': 'Los conceptos básicos son: print(), variables, tipos (int, str, list), condicionales (if), y bucles (for, while). ¿Necesitas más detalles?',
-  
-  // JavaScript
-  'javascript': 'JavaScript es el lenguaje del navegador. Aprenderás: sintaxis ES6, manipulación del DOM, eventos, y asincronía (Promises, async/await).',
-  'dom': 'El DOM (Document Object Model) es la representación de tu página HTML. Con JavaScript puedes seleccionar elementos (getElementById, querySelector) y modificarlos.',
-  'async await': 'Async/await permite trabajar con código asincrónico de forma legible. Usa "async" para funciones y "await" para esperar promesas.',
-  
-  // React
-  'react': 'React es un framework para UI. Usa componentes reutilizables, JSX (sintaxis HTML en JS), y Hooks (useState, useEffect) para manejar estado.',
-  'componentes': 'Los componentes son bloques reutilizables. Pueden ser funcionales o de clase. Los funcionales con Hooks son lo moderno.',
-  'hooks': 'Los Hooks permiten usar estado en componentes funcionales. Los más comunes: useState (estado), useEffect (efectos), useContext (contexto global).',
-  'jsx': 'JSX es sintaxis que mezcla JavaScript y HTML. Se compila a función React.createElement(). Puedes escribir HTML directamente en JavaScript.',
-  
-  // SQL
-  'sql': 'SQL es para consultar bases de datos. Aprenderás: SELECT, JOIN, GROUP BY, subconsultas, índices y transacciones.',
-  'joins': 'Los JOINS unen tablas: INNER JOIN (solo coincidencias), LEFT JOIN (todo de la izquierda), RIGHT JOIN (todo de la derecha), FULL JOIN (todo).',
-  'where': 'WHERE filtra registros ANTES de agrupar. HAVING filtra DESPUÉS de GROUP BY. En WHERE usas columnas, en HAVING usas agregados.',
-  'bases de datos': 'Las bases de datos almacenan datos organizados. Usamos SQL para consultar. Se pueden normalizalinero para evitar redundancia.',
-  
-  // AWS
-  'aws': 'AWS ofrece servicios en la nube. Los principales: EC2 (servidores), S3 (almacenamiento), Lambda (serverless), RDS (bases de datos).',
-  'ec2': 'EC2 son servidores virtuales en la nube. Elige el tipo de instancia, SO, configura seguridad y conecta via SSH.',
-  's3': 'S3 es almacenamiento escalable infinitamente. Ideal para archivos estáticos, backups. Puedes hacer buckets públicos o privados.',
-  'lambda': 'Lambda ejecuta código sin servidores. Solo pagas el tiempo de ejecución. Perfecto para funciones pequeñas y eventos.',
-  'cloud': 'Cloud es alojamiento en internet. Ventajas: escalabilidad, costo flexible, seguridad, sin pensar en hardware.',
-  
-  // Docker
-  'docker': 'Docker empaqueta aplicaciones en contenedores. Una imagen es un template, un contenedor es la instancia corriendo.',
-  'contenedores': 'Los contenedores son ligeros y portables. Llevan la app + dependencias. Se ejecutan igual en cualquier máquina.',
-  'dockerfile': 'Un Dockerfile define cómo construir una imagen. Especifica: base (FROM ubuntu), instala (RUN apt-get), copia archivos (COPY), ejecuta (CMD).',
-  'docker compose': 'Docker Compose permite orquestar múltiples contenedores. Defines servicios en un archivo YAML y ejecutas "docker-compose up".',
-  
-  // Seguridad
-  'seguridad': 'Aprenderás a proteger aplicaciones: validación de entrada, hashing de contraseñas, JWT, CORS, CSRF, SQL injection protection.',
-  'sql injection': 'Un ataque donde inyectan código SQL en inputs. Se previene con prepared statements/parametrizadas, validación de entrada.',
+// Sistema de Chatbot Inteligente - Conversacional y en Tiempo Real
+class ChatBot {
+  constructor() {
+    this.contexto = [];
+    this.nombreUsuario = null;
+    this.temasConocidos = {
+      fundamentos: ['github', 'ubuntu', 'dbeaver', 'git', 'linux', 'base de datos'],
+      lenguajes: ['python', 'javascript', 'react', 'js', 'py', 'programacion'],
+      bases_datos: ['sql', 'mysql', 'postgresql', 'mongodb', 'database', 'bd'],
+      cloud: ['aws', 'docker', 'api rest', 'devops', 'seguridad', 'cloud'],
+      ejercicios: ['practica', 'ejercicio', 'desafio', 'practicar', 'resolver']
+    };
+
+    this.respuestasGenerales = {
+      saludos: [
+        '¡Hola! 👋 Soy tu asistente del Portal IT. ¿En qué puedo ayudarte hoy?',
+        '¡Hola! ¿Qué tal? Estoy aquí para ayudarte con tus estudios. ¿Qué necesitas?',
+        '¡Hola! 😊 ¿Cómo estás? ¿Tienes alguna pregunta sobre los temas del portal?'
+      ],
+      despedidas: [
+        '¡Hasta luego! Si necesitas ayuda, estoy aquí. 👋',
+        '¡Nos vemos! Recuerda practicar mucho. 📚',
+        '¡Adiós! Que tengas un excelente día estudiando. 🎓'
+      ],
+      agradecimientos: [
+        '¡De nada! Me alegra poder ayudarte. ¿Algo más?',
+        '¡Con gusto! ¿Tienes alguna otra pregunta?',
+        '¡Es un placer! ¿Necesitas ayuda con algo más?'
+      ]
+    };
+  }
+
+  // Función principal para procesar mensajes
+  procesarMensaje(mensaje) {
+    const mensajeLimpio = mensaje.toLowerCase().trim();
+    this.contexto.push({ tipo: 'usuario', mensaje: mensajeLimpio });
+
+    // Limitar contexto a las últimas 10 interacciones
+    if (this.contexto.length > 10) {
+      this.contexto = this.contexto.slice(-10);
+    }
+
+    let respuesta = this.generarRespuesta(mensajeLimpio);
+
+    this.contexto.push({ tipo: 'bot', mensaje: respuesta });
+    return respuesta;
+  }
+
+  // Generar respuesta inteligente basada en el contexto
+  generarRespuesta(mensaje) {
+    // Detectar tipo de mensaje
+    if (this.esSaludo(mensaje)) {
+      return this.obtenerRespuestaAleatoria(this.respuestasGenerales.saludos);
+    }
+
+    if (this.esDespedida(mensaje)) {
+      return this.obtenerRespuestaAleatoria(this.respuestasGenerales.despedidas);
+    }
+
+    if (this.esAgradecimiento(mensaje)) {
+      return this.obtenerRespuestaAleatoria(this.respuestasGenerales.agradecimientos);
+    }
+
+    // Detectar tema principal
+    const tema = this.detectarTema(mensaje);
+
+    if (tema) {
+      return this.responderPorTema(tema, mensaje);
+    }
+
+    // Preguntas sobre la plataforma
+    if (mensaje.includes('que') && (mensaje.includes('puedo') || mensaje.includes('hay'))) {
+      return this.responderQuePuedoHacer();
+    }
+
+    if (mensaje.includes('como') && mensaje.includes('empezar')) {
+      return this.responderComoEmpezar();
+    }
+
+    if (mensaje.includes('ayuda') || mensaje.includes('help')) {
+      return this.responderAyuda();
+    }
+
+    // Preguntas sobre ejercicios
+    if (mensaje.includes('ejercicio') || mensaje.includes('practica')) {
+      return this.responderEjercicios();
+    }
+
+    // Si no entiende, dar respuesta conversacional
+    return this.respuestaConversacional(mensaje);
+  }
+
+  // Detectores de tipo de mensaje
+  esSaludo(mensaje) {
+    const saludos = ['hola', 'hey', 'buenas', 'buenos', 'saludos', 'hi', 'hello'];
+    return saludos.some(saludo => mensaje.includes(saludo));
+  }
+
+  esDespedida(mensaje) {
+    const despedidas = ['adios', 'bye', 'hasta luego', 'nos vemos', 'chau', 'bye bye'];
+    return despedidas.some(desp => mensaje.includes(desp));
+  }
+
+  esAgradecimiento(mensaje) {
+    const gracias = ['gracias', 'thank', 'thanks', 'agradezco', 'genial'];
+    return gracias.some(grac => mensaje.includes(grac));
+  }
+
+  // Detectar tema principal del mensaje
+  detectarTema(mensaje) {
+    for (const [categoria, palabras] of Object.entries(this.temasConocidos)) {
+      if (palabras.some(palabra => mensaje.includes(palabra))) {
+        return categoria;
+      }
+    }
+    return null;
+  }
+
+  // Respuestas especializadas por tema
+  responderPorTema(tema, mensaje) {
+    const respuestas = {
+      fundamentos: {
+        respuestas: [
+          'Los fundamentos son la base de todo. ¿Quieres que te ayude con GitHub, Ubuntu o bases de datos?',
+          '¡Excelente! Los fundamentos son cruciales. ¿Te interesa Git, Linux o gestión de bases de datos?',
+          'Los fundamentos incluyen GitHub, Ubuntu y DBeaver. ¿Cuál te gustaría explorar primero?'
+        ],
+        detalles: {
+          'github': 'GitHub es fundamental para el control de versiones. Te recomiendo empezar con los comandos básicos: git init, git add, git commit, y git push.',
+          'ubuntu': 'Ubuntu es una distribución Linux amigable. Aprenderás comandos de terminal, gestión de archivos, y instalación de software.',
+          'dbeaver': 'DBeaver es una herramienta universal para bases de datos. Conecta a MySQL, PostgreSQL, y más con una interfaz gráfica intuitiva.'
+        }
+      },
+
+      lenguajes: {
+        respuestas: [
+          '¡Genial! Los lenguajes de programación son apasionantes. ¿Quieres aprender Python, JavaScript o React?',
+          '¿Qué lenguaje te interesa más? Python para backend, JavaScript para web, o React para interfaces modernas.',
+          'Los lenguajes son el corazón de la programación. ¿Prefieres algo versátil como Python o web como JavaScript?'
+        ],
+        detalles: {
+          'python': 'Python es perfecto para principiantes. Es legible, versátil y tiene una comunidad enorme. Ideal para automatización, ciencia de datos y web.',
+          'javascript': 'JavaScript hace que las páginas web cobren vida. Desde manipular elementos HTML hasta crear aplicaciones complejas.',
+          'react': 'React es una librería para crear interfaces de usuario. Usa componentes reutilizables y es muy popular en el desarrollo web moderno.'
+        }
+      },
+
+      bases_datos: {
+        respuestas: [
+          'Las bases de datos son esenciales. ¿Quieres aprender SQL avanzado o gestión de datos?',
+          'SQL es el lenguaje universal de las bases de datos. Te ayudará a consultar, modificar y gestionar información.',
+          'Las bases de datos almacenan el mundo digital. ¿Te interesa aprender a diseñar esquemas eficientes?'
+        ],
+        detalles: {
+          'sql': 'SQL te permite conversar con las bases de datos. SELECT, INSERT, UPDATE, DELETE... ¡son tus nuevas mejores amigos!',
+          'mysql': 'MySQL es una base de datos relacional gratuita y poderosa. Excelente para aplicaciones web.',
+          'postgresql': 'PostgreSQL es avanzado y robusto. Soporta JSON, GIS, y es completamente transaccional.'
+        }
+      },
+
+      cloud: {
+        respuestas: [
+          'La nube es el futuro. ¿Quieres aprender AWS, Docker o desarrollo de APIs?',
+          'Los servicios cloud permiten escalar aplicaciones globalmente. ¿Te interesa infraestructura como código?',
+          'DevOps y cloud van de la mano. ¿Quieres automatizar despliegues o aprender contenedores?'
+        ],
+        detalles: {
+          'aws': 'AWS tiene servicios para todo: EC2 para servidores, S3 para archivos, Lambda para funciones serverless.',
+          'docker': 'Docker empaqueta tus aplicaciones. Un contenedor lleva todo lo necesario: código, dependencias, configuración.',
+          'seguridad': 'La seguridad es crítica. Aprenderás a proteger contraseñas, validar inputs, y prevenir ataques comunes.'
+        }
+      },
+
+      ejercicios: {
+        respuestas: [
+          '¡Practica hace al maestro! ¿Quieres intentar un ejercicio específico?',
+          'Los ejercicios están organizados por dificultad. ¿Prefieres algo básico o desafiante?',
+          '¡Vamos a practicar! Selecciona un área y nivel en la plataforma principal.'
+        ]
+      }
+    };
+
+    const temaData = respuestas[tema];
+    if (!temaData) return this.respuestaConversacional(mensaje);
+
+    // Buscar detalles específicos
+    for (const [palabra, detalle] of Object.entries(temaData.detalles || {})) {
+      if (mensaje.includes(palabra)) {
+        return detalle;
+      }
+    }
+
+    // Respuesta general del tema
+    return this.obtenerRespuestaAleatoria(temaData.respuestas);
+  }
+
+  // Respuestas específicas para preguntas comunes
+  responderQuePuedoHacer() {
+    return 'En el Portal IT puedes aprender: desarrollo web (HTML, CSS, JS, React), backend (Python, Node.js), bases de datos (SQL, MySQL), cloud (AWS, Docker), DevOps, y ciberseguridad. También tienes ejercicios prácticos y un editor integrado. ¿Qué te interesa más?';
+  }
+
+  responderComoEmpezar() {
+    return '¡Excelente pregunta! Te recomiendo empezar por los fundamentos: GitHub para control de versiones, luego un lenguaje como Python o JavaScript, y finalmente bases de datos. ¿Quieres que te guíe paso a paso por algún tema específico?';
+  }
+
+  responderAyuda() {
+    return '¡Claro! Estoy aquí para ayudarte. Puedes preguntarme sobre cualquier tema del portal: lenguajes de programación, bases de datos, cloud, seguridad, ejercicios... También puedo explicarte conceptos específicos o guiarte en tu aprendizaje. ¿Qué necesitas?';
+  }
+
+  responderEjercicios() {
+    return '¡Genial que quieras practicar! En la plataforma principal encontrarás ejercicios organizados por área y nivel de dificultad. Cada ejercicio tiene validación automática y pistas si te atas. ¿Quieres que te recomiende por dónde empezar?';
+  }
+
+  // Respuesta conversacional cuando no entiende exactamente
+  respuestaConversacional(mensaje) {
+    const respuestasGenericas = [
+      'Hmm, no estoy seguro de entender exactamente. ¿Podrías darme más detalles sobre lo que necesitas?',
+      '¡Interesante! ¿Podrías explicarme mejor qué buscas? Puedo ayudarte con temas de programación, bases de datos, cloud, etc.',
+      'No estoy 100% seguro de qué me preguntas. ¿Quieres que te hable sobre algún tema específico del portal?',
+      '¡Cuéntame más! ¿Es sobre desarrollo web, backend, bases de datos, o algo de cloud computing?',
+      'Me gustaría ayudarte mejor. ¿Podrías ser más específico? Por ejemplo: "¿cómo funciona React?" o "¿qué es una API?"'
+    ];
+
+    return this.obtenerRespuestaAleatoria(respuestasGenericas);
+  }
+
+  // Utilidad para obtener respuesta aleatoria
+  obtenerRespuestaAleatoria(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  // Limpiar contexto (útil para reiniciar conversación)
+  limpiarContexto() {
+    this.contexto = [];
+    this.nombreUsuario = null;
+  }
+}
+
+// Instancia global del chatbot
+const chatBot = new ChatBot();
+
+// Función para que el HTML pueda usar el chatbot
+function procesarMensajeChatBot(mensaje) {
+  return chatBot.procesarMensaje(mensaje);
+}
+
+function limpiarContextoChatBot() {
+  chatBot.limpiarContexto();
+}
   'xss': 'Cross-Site Scripting: inyectar JavaScript malicioso. Se previene sanitizando HTML con librerías como DOMPurify.',
   'contraseñas': 'Nunca guardes contraseñas en texto plano. Usa hashing con bcrypt o Argon2. Almacena el hash, no la contraseña.',
   
